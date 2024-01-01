@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageOutputPath>.</PackageOutputPath>
+        <RootNamespace>nuget</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="src\**\*" Exclude="**\bin\**\*;**\obj\**\*"/>
+        <Compile Remove="**\*"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PackageType>Template</PackageType>
+        <Version>1.0.0</Version>
+        <PackageId>Klean</PackageId>
+        <Title>Klean Architecture</Title>
+        <Description>
+            A ready-to-use template for ASP.NET Core with Domain Driven Design - clean architecture, CQRS pattern, 
+            StyleCop, and Blazor WASM front-end
+        </Description>
+        <Company>ddjerqq</Company>
+        <Authors>ddjerqq &lt;ddjerqq@gmail.com&gt;</Authors>
+        <Copyright>ddjerqq © 2017-2023</Copyright>
+        <PackageTags>c#;asp.net;core;template;web;clean architecture;ddd</PackageTags>
+        <PackageCopyright>ddjerqq © 2017-2023</PackageCopyright>
+        <PackageProjectUrl>https://github.com/ddjerqq/klean</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ddjerqq/klean</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+</Project>
