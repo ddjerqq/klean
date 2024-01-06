@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Domain.Common.Abstractions;
+namespace Domain.Common.Interfaces;
 
 /// <summary>
 /// Represents the base AggregateRoot.
@@ -40,7 +40,7 @@ public interface IAggregateRoot : IEntity
     public void ClearDomainEvents();
 }
 
-/// <inheritdoc cref="Domain.Common.Abstractions.IAggregateRoot" />
+/// <inheritdoc cref="IAggregateRoot" />
 public abstract class AggregateRootBase : EntityBase, IAggregateRoot
 {
     [NotMapped]

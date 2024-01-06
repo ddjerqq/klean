@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Domain.Common.Abstractions;
+namespace Domain.Common.Interfaces;
 
 /// <summary>
 /// Represents the base DomainEvent.

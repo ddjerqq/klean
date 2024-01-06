@@ -1,4 +1,4 @@
-namespace Domain.Common.Abstractions;
+namespace Domain.Common.Interfaces;
 
 /// <summary>
 /// Represents the base ValueObject.

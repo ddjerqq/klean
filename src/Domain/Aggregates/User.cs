@@ -1,4 +1,5 @@
-using Domain.Common.Abstractions;
+using Domain.Abstractions;
+using Domain.Common.Interfaces;
 using Domain.ValueObjects;
 
 namespace Domain.Aggregates;
@@ -11,22 +12,22 @@ namespace Domain.Aggregates;
 public sealed class User : AggregateRootBase
 {
     /// <summary>
-    /// Gets or sets the user's username.
+    /// Gets the user's username.
     /// </summary>
-    public string Username { get; set; } = default!;
+    public string Username { get; init; } = default!;
 
     /// <summary>
-    /// Gets or sets the user's email.
+    /// Gets the user's email.
     /// </summary>
-    public string Email { get; set; } = default!;
+    public string Email { get; init; } = default!;
 
     /// <summary>
-    /// Gets or sets the user's username.
+    /// Gets the user's username.
     /// </summary>
-    public Wallet Wallet { get; set; } = default!;
+    public Wallet Wallet { get; init; } = default!;
 
     /// <summary>
-    /// Gets or sets the user's inventory.
+    /// Gets the user's inventory.
     /// </summary>
-    public Inventory Inventory { get; set; } = default!;
+    public Inventory Inventory { get; init; } = default!;
 }
