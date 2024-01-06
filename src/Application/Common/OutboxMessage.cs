@@ -1,5 +1,5 @@
 using Application.Common.Interfaces;
-using Domain.Common.Abstractions;
+using Domain.Common.Interfaces;
 using Newtonsoft.Json;
 
 namespace Application.Common;
@@ -53,16 +53,16 @@ public sealed class OutboxMessage
     /// Creates a new <see cref="OutboxMessage"/> from a <see cref="IDomainEvent"/>.
     /// </summary>
     /// <param name="domainEvent">The domain event.</param>
-    /// <param name="dateTime">The date time.</param>
+    /// <param name="dateTimeProvider">The date time.</param>
     /// <returns>A new <see cref="OutboxMessage"/>.</returns>
-    public static OutboxMessage FromDomainEvent(IDomainEvent domainEvent, IDateTime dateTime)
+    public static OutboxMessage FromDomainEvent(IDomainEvent domainEvent, IDateTimeProvider dateTimeProvider)
     {
         return new OutboxMessage
         {
             Id = Guid.NewGuid(),
             Type = domainEvent.GetType().Name,
             Content = JsonConvert.SerializeObject(domainEvent, JsonSerializerSettings),
-            OccuredOnUtc = dateTime.UtcNow,
+            OccuredOnUtc = dateTimeProvider.UtcNow,
             ProcessedOnUtc = null,
             Error = null,
         };

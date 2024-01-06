@@ -4,7 +4,7 @@ namespace Application.Common.Interfaces;
 /// An interface for getting the current date and time.
 /// This exists for testing purposes.
 /// </summary>
-public interface IDateTime
+public interface IDateTimeProvider
 {
     /// <summary>
     /// Gets the current date and time in UTC.
