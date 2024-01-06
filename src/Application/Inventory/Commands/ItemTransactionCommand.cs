@@ -23,7 +23,7 @@ internal sealed class ItemTransactionValidator : AbstractValidator<ItemTransacti
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(x => x.Sender)
-            .Must((cmd, sender) => sender.Inventory.HasItem(cmd.Item))
+            .Must((cmd, sender) => sender.Inventory.HasItemWithId(cmd.Item.Id))
             .WithMessage("Sender does not have this item.");
     }
 }
@@ -33,7 +33,7 @@ internal sealed class ItemTransactionHandler(IAppDbContext dbContext)
 {
     public async Task<bool> Handle(ItemTransactionCommand command, CancellationToken ct)
     {
-        if (!command.Sender.Inventory.HasItem(command.Item))
+        if (!command.Sender.Inventory.HasItemWithId(command.Item.Id))
             return false;
 
         if (!command.Sender.Inventory.TryTransfer(command.Receiver.Inventory, command.Item))
