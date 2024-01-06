@@ -1,4 +1,4 @@
-using Domain.Common.Abstractions;
+using Domain.Common.Interfaces;
 using Domain.Entities;
 
 namespace Domain.ValueObjects;

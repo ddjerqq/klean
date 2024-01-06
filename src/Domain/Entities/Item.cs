@@ -1,5 +1,5 @@
 using Domain.Aggregates;
-using Domain.Common.Abstractions;
+using Domain.Common.Interfaces;
 using Domain.ValueObjects;
 
 namespace Domain.Entities;
@@ -14,7 +14,7 @@ public sealed class Item : EntityBase
     /// this value is between 0 and 1.
     /// with lower values being more rare.
     /// </summary>
-    public float Rarity { get; set; }
+    public float Rarity { get; init; }
 
     /// <summary>
     /// Gets the item's type.

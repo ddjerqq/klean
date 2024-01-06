@@ -1,4 +1,4 @@
-using Domain.Common.Abstractions;
+using Domain.Common.Interfaces;
 using Domain.Entities;
 
 namespace Domain.Events;
@@ -30,7 +30,7 @@ public sealed record ItemSoldEvent
     /// <summary>
     /// Gets the time the item was sold.
     /// </summary>
-    public DateTime SoldAt { get; set; } = DateTime.UtcNow;
+    public DateTime SoldAt { get; set; }
 
     /// <summary>
     /// Gets the item that was sold.
