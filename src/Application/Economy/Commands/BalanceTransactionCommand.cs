@@ -9,10 +9,6 @@ namespace Application.Economy.Commands;
 /// <summary>
 /// Base balance transaction command.
 /// </summary>
-/// <param name="Sender">The sender of the transaction.</param>
-/// <param name="Receiver">The receiver of the transaction.</param>
-/// <param name="Amount">The amount of the transaction.</param>
-/// <returns>True if the transaction was successful, false otherwise.</returns>
 public sealed record BalanceTransactionCommand(User Sender, User Receiver, decimal Amount) : IRequest<bool>;
 
 internal sealed class BalanceTransactionValidator : AbstractValidator<BalanceTransactionCommand>

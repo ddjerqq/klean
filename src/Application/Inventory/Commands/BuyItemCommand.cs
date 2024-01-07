@@ -10,8 +10,6 @@ namespace Application.Inventory.Commands;
 /// <summary>
 /// Command for buying an item.
 /// </summary>
-/// <param name="ItemTypeId">The item type id to buy.</param>
-/// <returns>The item that was bought, if the item with this Id exists</returns>
 public sealed record BuyItemCommand(string ItemTypeId) : IRequest<Item?>;
 
 internal sealed class BuyItemValidator : AbstractValidator<BuyItemCommand>

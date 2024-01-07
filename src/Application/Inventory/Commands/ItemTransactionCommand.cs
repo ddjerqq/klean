@@ -10,10 +10,6 @@ namespace Application.Inventory.Commands;
 /// <summary>
 /// The base item transaction command.
 /// </summary>
-/// <param name="Sender">The sender of the transaction.</param>
-/// <param name="Receiver">The receiver of the transaction.</param>
-/// <param name="Item">The item to be transferred.</param>
-/// <returns>True if the transaction was successful, false otherwise.</returns>
 public sealed record ItemTransactionCommand(User Sender, User Receiver, Item Item) : IRequest<bool>;
 
 internal sealed class ItemTransactionValidator : AbstractValidator<ItemTransactionCommand>
