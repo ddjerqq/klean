@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Threading.RateLimiting;
 using Application.Common.Interfaces;
 using Domain.Common.Extensions;
 using Infrastructure.Auth;
@@ -7,13 +6,9 @@ using Infrastructure.BackgroundJobs;
 using Infrastructure.Idempotency;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
-using Infrastructure.RateLimiting;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -83,50 +78,6 @@ public static class ConfigureServices
         });
 
         services.AddQuartzHostedService();
-
-        return services;
-    }
-
-    /// <summary>
-    /// Adds the rate limiting services to the service collection.
-    /// </summary>
-    public static IServiceCollection AddRateLimiting(this IServiceCollection services, IConfiguration configuration)
-    {
-        var policies = RateLimitConstants.LoadRateLimitOptions(configuration)
-            .ToList();
-
-        var globalPolicy = policies
-            .First(x => x.PolicyName == RateLimitConstants.GlobalPolicyName);
-
-        services.AddRateLimiter(rateLimitOptions =>
-        {
-            rateLimitOptions.RejectionStatusCode = 429;
-
-            rateLimitOptions.OnRejected = (ctx, _) =>
-            {
-                if (ctx.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
-                    ctx.HttpContext.Response.Headers.RetryAfter = retryAfter.ToString("R");
-
-                return ValueTask.CompletedTask;
-            };
-
-            rateLimitOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-            {
-                var key = context.Connection.RemoteIpAddress?.ToString() ?? context.Connection.Id;
-
-                if (context.User is { Identity.IsAuthenticated: true, Claims: var claims })
-                {
-                    var id = claims
-                        .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
-                        .Value;
-
-                    if (!string.IsNullOrEmpty(id))
-                        key = id;
-                }
-
-                return RateLimitPartition.GetTokenBucketLimiter(key, _ => globalPolicy);
-            });
-        });
 
         return services;
     }
