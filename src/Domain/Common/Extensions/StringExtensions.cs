@@ -37,4 +37,19 @@ public static class StringExtensions
 
         return sb.ToString();
     }
+
+    /// <summary>
+    /// Gets a value from the environment.
+    /// </summary>
+    /// <param name="key">The key for the environmental variable</param>
+    /// <param name="default">Optional default, to return if the value is not found, otherwise an exception is thrown</param>
+    /// <returns>The value, or the default (if supplied) otherwise throws an exception</returns>
+    /// <exception cref="Exception">If no default is provided, and the environmental variable is not found</exception>
+    public static string GetFromEnvironment(this string key, string? @default = null)
+    {
+        var value = Environment.GetEnvironmentVariable(key);
+        return value
+               ?? @default
+               ?? throw new Exception($"{key} is not present in the environment");
+    }
 }
