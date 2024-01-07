@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Application.Common.Interfaces;
+using Domain.Common.Extensions;
 using Infrastructure.Auth;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.Idempotency;
@@ -32,7 +33,6 @@ public static class ConfigureServices
         services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
         services.AddIdempotency();
         services.AddMemoryCache();
-
         return services;
     }
 
@@ -46,9 +46,8 @@ public static class ConfigureServices
 
         services.AddDbContext<AppDbContext>(o =>
         {
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is "Development")
+            if ("ASPNETCORE_ENVIRONMENT".FromEnv() is "Development")
             {
-                Console.Error.WriteLine("Running in development mode!!!");
                 o.EnableDetailedErrors();
                 o.EnableSensitiveDataLogging();
             }
@@ -56,7 +55,7 @@ public static class ConfigureServices
             o.UseInMemoryDatabase("app");
         });
 
-        // delegate the IDbContext to the EmeraldDbContext;
+        // delegate the IDbContext to the AppDbContext;
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 
         services.AddHealthChecks()
@@ -73,6 +72,7 @@ public static class ConfigureServices
         services.AddQuartz(config =>
         {
             var jobKey = new JobKey("ProcessOutboxMessagesJob");
+
             config
                 .AddJob<ProcessOutboxMessagesBackgroundJob>(jobKey)
                 .AddTrigger(trigger => trigger

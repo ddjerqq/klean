@@ -27,13 +27,13 @@ public static class Jwt
         },
     };
 
-    internal static readonly TimeSpan Expiration = TimeSpan.FromMinutes(int.Parse("JWT__EXPIRATION".GetFromEnvironment("1")));
+    internal static readonly TimeSpan Expiration = TimeSpan.FromMinutes(int.Parse("JWT__EXPIRATION".FromEnv("60")));
 
-    internal static readonly string ClaimsIssuer = "JWT__ISSUER".GetFromEnvironment();
+    internal static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnv("localhost");
 
-    internal static readonly string ClaimsAudience = "JWT__AUDIENCE".GetFromEnvironment();
+    internal static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("localhost");
 
-    internal static readonly string Key = "JWT__KEY".GetFromEnvironment();
+    internal static readonly string Key = "JWT__KEY".FromEnv() ?? throw new Exception("JWT__KEY is not set");
 
     internal static readonly SymmetricSecurityKey SecurityKey = new(Encoding.UTF8.GetBytes(Key));
 
