@@ -21,7 +21,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="dotenv.net" Version="3.1.3"/>
+        <PackageReference Include="BCrypt-Official" Version="0.1.109"/>
+        <Using Include="BCrypt.Net.BCrypt" Alias="BC" />
         <PackageReference Include="MediatR" Version="12.2.0"/>
     </ItemGroup>
 </Project>

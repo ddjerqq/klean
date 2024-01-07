@@ -22,6 +22,19 @@ public sealed class User : AggregateRootBase
     public string Email { get; init; } = default!;
 
     /// <summary>
+    /// BCrypt password hash passed through 12+ rounds
+    /// </summary>
+    public string PasswordHash { get; private set; } = default!;
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    public void ChangePassword(string newPassword)
+    {
+        PasswordHash = BC.HashPassword(newPassword);
+    }
+
+    /// <summary>
     /// Gets the user's username.
     /// </summary>
     public Wallet Wallet { get; init; } = default!;

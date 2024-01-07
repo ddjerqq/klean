@@ -5,19 +5,19 @@ namespace Domain.Abstractions;
 /// <summary>
 /// Represents an inventory of items.
 /// </summary>
-public sealed class Inventory : Dictionary<Guid, Item>
+public sealed class Inventory : List<Item>
 {
     /// <summary>
     /// Gets the items in the inventory.
     /// </summary>
-    public IEnumerable<Item> Items => this.Values;
+    public IEnumerable<Item> Items => this.AsEnumerable();
 
     /// <summary>
     /// Checks if the inventory contains an item with the specified id.
     /// </summary>
     /// <param name="id">The id to check for</param>
     /// <returns>True if the inventory contains an item with the specified id, false otherwise</returns>
-    public bool HasItemWithId(Guid id) => this.ContainsKey(id);
+    public bool HasItemWithId(Guid id) => this.Any(item => item.Id == id);
 
     /// <summary>
     /// Adds an item to the inventory.
@@ -26,7 +26,7 @@ public sealed class Inventory : Dictionary<Guid, Item>
     public void AddItem(Item item)
     {
         ArgumentNullException.ThrowIfNull(item.Owner);
-        this.Add(item.Id, item);
+        this.Add(item);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public sealed class Inventory : Dictionary<Guid, Item>
     public bool TryRemoveItem(Item item)
     {
         item.Owner = null!;
-        return this.Remove(item.Id);
+        return this.Remove(item);
     }
 
     /// <summary>
