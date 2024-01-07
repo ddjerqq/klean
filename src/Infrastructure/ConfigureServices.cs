@@ -1,14 +1,17 @@
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Application.Common.Interfaces;
+using Infrastructure.Auth;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.Idempotency;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.RateLimiting;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -36,9 +39,7 @@ public static class ConfigureServices
     /// <summary>
     /// Adds the persistence services to the service collection.
     /// </summary>
-    public static IServiceCollection AddPersistenceServices(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
     {
         services.AddSingleton<EntitySaveChangesInterceptor>();
         services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
@@ -52,16 +53,7 @@ public static class ConfigureServices
                 o.EnableSensitiveDataLogging();
             }
 
-            // TODO change this so its only InMemory database
-            if (TryLoadConnectionString(out var pgConnectionString))
-            {
-                // o.UseNpgsql(pgConnectionString);
-            }
-            else
-            {
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-                // o.UseSqlite(connectionString);
-            }
+            o.UseInMemoryDatabase("app");
         });
 
         // delegate the IDbContext to the EmeraldDbContext;
@@ -139,35 +131,27 @@ public static class ConfigureServices
         return services;
     }
 
-    private static bool TryLoadConnectionString(out string connectionString)
+    /// <summary>
+    /// Adds the authentication and authorization services to the service collection
+    /// </summary>
+    public static IServiceCollection AddAuthServices(this IServiceCollection services)
     {
-        connectionString = string.Empty;
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.Events = Jwt.Events;
+                options.Audience = Jwt.ClaimsAudience;
+                options.ClaimsIssuer = Jwt.ClaimsIssuer;
+                options.TokenValidationParameters = Jwt.TokenValidationParameters;
+            });
 
-        var dbHost = GetEnv("POSTGRES_HOST", "localhost");
-        var port = GetEnv("POSTGRES_PORT", "5432");
-        var db = GetEnv("POSTGRES_DB", "postgres");
-        var user = GetEnv("POSTGRES_USER", "postgres");
+        services.AddAuthorizationBuilder()
+            .AddDefaultPolicy("default", policy => policy.RequireAuthenticatedUser())
+            .AddPolicy("is_elon", policy => policy.RequireClaim(ClaimTypes.NameIdentifier, "elon"));
 
-        var password = GetEnv("POSTGRES_PASSWORD");
-        if (string.IsNullOrEmpty(password))
-            return false;
-
-        var inDevelopment = GetEnv("DOTNET_ENVIRONMENT") == "Development"
-                            || GetEnv("ASPNETCORE_ENVIRONMENT") == "Development";
-
-        connectionString =
-            $"Host={dbHost};" +
-            $"Port={port};" +
-            $"Database={db};" +
-            $"Username={user};" +
-            $"Password={password};" +
-            $"Include Error Detail={inDevelopment}";
-
-        return true;
-
-        string GetEnv(string key, string? @default = null)
-        {
-            return Environment.GetEnvironmentVariable(key) ?? @default!;
-        }
+        return services;
     }
 }
