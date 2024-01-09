@@ -27,8 +27,6 @@ public static class Jwt
         },
     };
 
-    internal static readonly TimeSpan Expiration = TimeSpan.FromMinutes(int.Parse("JWT__EXPIRATION".FromEnv("60")));
-
     internal static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnv("localhost");
 
     internal static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("localhost");
@@ -55,15 +53,19 @@ public static class Jwt
     /// Generates a JWT token from the claims
     /// </summary>
     /// <param name="claims">The claims to include in the JWT token</param>
+    /// <param name="expiration">How long the token will be valid for</param>
     /// <param name="dateTimeProvider">The date time provider</param>
     /// <returns>The generated JWT token</returns>
-    public static string GenerateToken(IEnumerable<Claim> claims, IDateTimeProvider dateTimeProvider)
+    public static string GenerateToken(
+        IEnumerable<Claim> claims,
+        TimeSpan expiration,
+        IDateTimeProvider dateTimeProvider)
     {
         var token = new JwtSecurityToken(
             ClaimsIssuer,
             ClaimsAudience,
             claims,
-            expires: dateTimeProvider.UtcNow.Add(Expiration),
+            expires: dateTimeProvider.UtcNow.Add(expiration),
             signingCredentials: SigningCredentials);
 
         return Handler.WriteToken(token);

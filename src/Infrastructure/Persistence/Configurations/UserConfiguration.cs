@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using Domain.Abstractions;
 using Domain.Aggregates;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -20,12 +19,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
                 wallet => wallet.Balance,
                 balance => new Wallet(balance));
 
-        builder.Property(e => e.Inventory)
-            .HasConversion(
-                inventory => inventory.Items,
-                items => (Inventory)items.ToDictionary(i => i.Id, i => i));
-
-        builder.HasMany(e => e.Inventory.Items)
-            .WithOne(x => x.Owner);
+        builder.HasMany(e => e.Inventory)
+            .WithOne(i => i.Owner);
     }
 }

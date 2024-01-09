@@ -1,10 +1,11 @@
 using Application.Common.Interfaces;
 using Domain.Aggregates;
+using Domain.Events;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Auth;
+namespace Application.Auth.Commands;
 
 /// <summary>
 /// User login command
@@ -29,7 +30,9 @@ internal sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
     }
 }
 
-internal sealed class UserLoginHandler(IAppDbContext dbContext)
+internal sealed class UserLoginHandler(
+    IAppDbContext dbContext,
+    IDateTimeProvider dateTimeProvider)
     : IRequestHandler<UserLoginCommand, User?>
 {
     public async Task<User?> Handle(UserLoginCommand command, CancellationToken ct)
@@ -42,6 +45,8 @@ internal sealed class UserLoginHandler(IAppDbContext dbContext)
 
         if (!BC.Verify(command.Password, user.PasswordHash))
             return null;
+
+        user.AddDomainEvent(new LoginEvent(user.Id, dateTimeProvider.UtcNow));
 
         return user;
     }

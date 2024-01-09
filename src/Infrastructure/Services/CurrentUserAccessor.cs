@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using Application.Common.Interfaces;
 using Domain.Aggregates;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Infrastructure.Services;
 
@@ -15,10 +15,11 @@ public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor
     {
         get
         {
-            var claimsPrincipal = httpContextAccessor.HttpContext?.User;
-            var stringId = claimsPrincipal?
+            var stringId = httpContextAccessor
+                .HttpContext?
+                .User
                 .Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
+                .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?
                 .Value;
 
             return Guid.TryParse(stringId, out var id) ? id : null;

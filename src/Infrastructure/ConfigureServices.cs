@@ -26,6 +26,7 @@ public static class ConfigureServices
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
+        services.AddScoped<IDateTimeProvider, UtcDateTimeProvider>();
         services.AddIdempotency();
         services.AddMemoryCache();
         return services;

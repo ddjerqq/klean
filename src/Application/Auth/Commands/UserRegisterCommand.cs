@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Application.Auth;
+namespace Application.Auth.Commands;
 
 /// <summary>
 /// User register command
