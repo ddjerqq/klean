@@ -115,6 +115,60 @@ public static class ConfigureServices
     }
 
     /// <summary>
+    /// Adds Swagger services to the service collection
+    /// </summary>
+    private static void AddSwagger(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
+        {
+            c.SupportNonNullableReferenceTypes();
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Klean",
+                Version = "v1",
+                Description = "Klean architecture web api",
+                Contact = new OpenApiContact
+                {
+                    Name = "Klean",
+                    Email = "ddjerqq@gmail.com",
+                    Url = new Uri("https://github.com/ddjerqq/klean"),
+                },
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme.",
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer",
+                        },
+                    },
+                    []
+                },
+            });
+
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+            c.OperationFilter<IdempotencyKeyOperationFilter>();
+        });
+    }
+
+    /// <summary>
     /// Applies all pending migrations
     /// </summary>
     public static WebApplication MigrateDatabase(this WebApplication app)
@@ -169,59 +223,5 @@ public static class ConfigureServices
         app.MapFallbackToFile("index.html");
 
         return app;
-    }
-
-    /// <summary>
-    /// Adds Swagger services to the service collection
-    /// </summary>
-    private static void AddSwagger(this IServiceCollection services)
-    {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
-        {
-            c.SupportNonNullableReferenceTypes();
-            c.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "Klean",
-                Version = "v1",
-                Description = "Klean architecture web api",
-                Contact = new OpenApiContact
-                {
-                    Name = "Klean",
-                    Email = "ddjerqq@gmail.com",
-                    Url = new Uri("https://github.com/ddjerqq"),
-                },
-            });
-
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "JWT Authorization header using the Bearer scheme.",
-            });
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer",
-                        },
-                    },
-                    []
-                },
-            });
-
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
-            c.OperationFilter<IdempotencyKeyOperationFilter>();
-        });
     }
 }
