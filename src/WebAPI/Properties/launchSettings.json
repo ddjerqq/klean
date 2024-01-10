@@ -7,13 +7,13 @@
       "hotReloadEnabled": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "applicationUrl": "http://0.0.0.0:7000;https://0.0.0.0:7001",
       "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
         "JWT__ISSUER": "localhost",
         "JWT__AUDIENCE": "localhost",
-        "JWT__EXPIRATION": "60",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "JWT__EXPIRATION": "60"
       }
     }
   }
