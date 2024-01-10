@@ -74,8 +74,6 @@ public static class Jwt
     /// <summary>
     /// Verifies the validity of the token
     /// </summary>
-    /// <param name="token"></param>
-    /// <returns></returns>
     public static bool ValidateToken(string token)
     {
         try

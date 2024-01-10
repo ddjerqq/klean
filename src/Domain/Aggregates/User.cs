@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Domain.Abstractions;
 using Domain.Common.Interfaces;
 using Domain.ValueObjects;
@@ -24,12 +25,13 @@ public sealed class User : AggregateRootBase
     /// <summary>
     /// BCrypt password hash passed through 12+ rounds
     /// </summary>
+    [JsonIgnore]
     public string PasswordHash { get; private set; } = default!;
 
     /// <summary>
     /// Changes the user's password.
     /// </summary>
-    public void ChangePassword(string newPassword)
+    public void SetPassword(string newPassword)
     {
         PasswordHash = BC.HashPassword(newPassword);
     }

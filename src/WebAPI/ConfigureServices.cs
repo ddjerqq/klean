@@ -74,7 +74,7 @@ public static class ConfigureServices
             })
             .ConfigureApiBehaviorOptions(options => { options.SuppressMapClientErrors = true; });
 
-        services.AddSignalR(o => { o.EnableDetailedErrors = env.IsDevelopment(); });
+        // services.AddSignalR(o => { o.EnableDetailedErrors = env.IsDevelopment(); });
 
         services.AddValidatorsFromAssembly(DomainAssembly.Assembly);
         services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);

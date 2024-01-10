@@ -1,10 +1,10 @@
 using Application.Common.Interfaces;
 using Domain.Aggregates;
 using Domain.Events;
+using Domain.ValueObjects;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Application.Auth.Commands;
 
@@ -14,18 +14,27 @@ namespace Application.Auth.Commands;
 public sealed record UserRegisterCommand(string Username, string Email, string Password)
     : IRequest<bool>
 {
-    private readonly Guid _id = Guid.NewGuid();
+    private User? _user;
 
     /// <summary>
     /// The created user
     /// </summary>
-    [JsonIgnore]
-    public User User => new()
+    public User CreateUser()
     {
-        Id = _id,
-        Username = Username,
-        Email = Email,
-    };
+        if (_user is not null)
+            return _user;
+
+        _user = new User
+        {
+            Username = Username,
+            Email = Email,
+            Wallet = new Wallet(),
+            Inventory = [],
+        };
+        
+        _user.SetPassword(Password);
+        return _user;
+    }
 }
 
 internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
@@ -36,14 +45,16 @@ internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterComm
 
         RuleFor(x => x.Username)
             .NotEmpty()
-            .Matches(@"^[a-zA-Z0-9._]{3,16}$")
+            .Matches(@"^[a-zA-Z0-9._]{3,32}$")
             .WithMessage(
-                "Username must be between 3 and 16 characters long and contain only alphanumeric characters, underscores and dots.");
+                "Username must be between 3 and 32 characters long and contain only letters, underscores and dots.");
 
         RuleFor(x => x.Email)
             .NotEmpty()
             .Matches(@"^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$")
             .WithMessage("Email must be a valid email address.");
+
+        // TODO test async rules
 
         RuleFor(x => x.Password)
             .NotEmpty()
@@ -58,7 +69,7 @@ internal sealed class UserRegisterHandler(IAppDbContext dbContext)
 {
     public async Task<bool> Handle(UserRegisterCommand command, CancellationToken ct)
     {
-        var user = command.User;
+        var user = command.CreateUser();
 
         var exists = await dbContext.Set<User>()
             .AnyAsync(x => x.Username == command.Username || x.Email == command.Email, ct);

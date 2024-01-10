@@ -40,4 +40,14 @@ public sealed record Wallet(decimal Balance = default) : IValueObject
 
         return true;
     }
+
+    /// <summary>
+    /// Extract the decimal value to convert the wallet to a decimal value
+    /// </summary>
+    public static implicit operator decimal(Wallet wallet) => wallet.Balance;
+
+    /// <summary>
+    /// Create a wallet from a decimal value
+    /// </summary>
+    public static implicit operator Wallet(decimal balance) => new(balance);
 }

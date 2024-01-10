@@ -10,13 +10,19 @@ using WebAPI.Common.Abstractions;
 
 namespace WebAPI.Controllers;
 
-internal sealed class AuthController : ApiController
+/// <summary>
+/// controller for authentication
+/// </summary>
+public sealed class AuthController : ApiController
 {
+    /// <summary>
+    /// registers a new user
+    /// </summary>
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody, BindRequired] UserRegisterCommand command, CancellationToken ct)
     {
-        var user = command.User;
+        var user = command.CreateUser();
 
         var success = await Mediator.Send(command, ct);
 
@@ -29,6 +35,9 @@ internal sealed class AuthController : ApiController
         return Ok(token);
     }
 
+    /// <summary>
+    /// logs in a user
+    /// </summary>
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody, BindRequired] UserLoginCommand command, CancellationToken ct)
@@ -38,14 +47,16 @@ internal sealed class AuthController : ApiController
         if (user is null)
             return BadRequest("bad credentials");
 
-        var token = user.GetToken(
-            command.RememberMe ? TimeSpan.FromDays(7) : TimeSpan.FromHours(2),
-            DateTimeProvider);
+        var expiration = command.RememberMe ? TimeSpan.FromDays(7) : TimeSpan.FromHours(2);
+        var token = user.GetToken(expiration, DateTimeProvider);
         Response.Cookies.Append("authorization", token, Cookie.Options);
 
         return Ok(token);
     }
 
+    /// <summary>
+    /// Gets the user's information
+    /// </summary>
     [Authorize]
     [HttpGet("user")]
     public async Task<IActionResult> GetUser(CancellationToken ct)
@@ -60,11 +71,12 @@ internal sealed class AuthController : ApiController
             .ThenInclude(x => x.ItemType)
             .FirstOrDefaultAsync(x => x.Id == currentUserId, ct);
 
-        user?.ChangePassword("not the password");
-
         return Ok(user);
     }
 
+    /// <summary>
+    /// Gets the user's claims
+    /// </summary>
     [Authorize]
     [HttpGet("user_claims")]
     public IActionResult GetUserClaims()
