@@ -3,14 +3,18 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <Company>Klean</Company>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0"/>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0"/>
+        <PackageReference Include="Blazored.FluentValidation" Version="2.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -20,8 +24,30 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+    </ItemGroup>
+
+    <Target Name="BuildCSS" BeforeTargets="Compile">
+        <Exec EnvironmentVariables="NODE_ENV=Development"
+              Command="tailwindcss -i ./wwwroot/app.css -o ./wwwroot/app.min.css" 
+              Condition=" '$(Configuration)' == 'Debug' "
+              ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+        </Exec>
+        <Error Condition="'$(ExitCode)' != '0'" Text="Error building CSS file"/>
+        
+        <Exec EnvironmentVariables="NODE_ENV=Production"
+              Command="tailwindcss -i ./wwwroot/app.css -o ./wwwroot/app.min.css --minify" 
+              Condition=" '$(Configuration)' == 'Release' "
+              ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+        </Exec>
+        <Error Condition="'$(ExitCode)' != '0'" Text="Error building CSS file"/>
+    </Target>
 
 </Project>
