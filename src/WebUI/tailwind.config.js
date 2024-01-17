@@ -4,7 +4,8 @@ const colors = require('tailwindcss/colors');
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './**/*.{razor,html,css,cshtml}'
+    './**/*.{razor,css}',
+    './wwwroot/index.html'
   ],
   darkMode: 'class',
   theme: {

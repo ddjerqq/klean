@@ -1,9 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "https": {
+    "watch": {
+      "commandName": "Executable",
+      "workingDirectory": "$(ProjectDir)",
+      "executablePath": "/home/ddjerqq/.dotnet/dotnet",
+      "commandLineArgs": "watch run debug --launch-profile development"
+    },
+    "development": {
       "commandName": "Project",
       "dotnetRunMessages": true,
+      "jsWebView2Debugging": true,
       "hotReloadEnabled": true,
       "launchBrowser": false,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",

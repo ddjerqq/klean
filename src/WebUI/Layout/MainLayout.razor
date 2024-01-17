@@ -1,3 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<main class="flex flex-row h-full w-full">
+    <Sidebar />
+
+    <article class="flex justify-center align-middle w-full h-full bg-red-600">
+        @Body
+    </article>
+</main>
