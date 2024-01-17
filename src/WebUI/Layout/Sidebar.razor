@@ -1,59 +1,73 @@
 <nav class="flex flex-col w-full sm:min-w-48 sm:max-w-56 h-auto sm:h-full bg-gray-900 sm:overflow-y-scroll justify-between p-2 gap-3 sm:gap-10 border-b-2 border-gray-700">
-    <div class="flex flex-row sm:flex-col gap-3 text-white font-semibold p-2">
-        <a href="/" class="hidden sm:flex gap-2">
+    <div class="flex flex-row sm:flex-col gap-3 text-white font-semibold pt-2">
+        <a href="/" class="hidden sm:flex gap-2 mb-3">
             <Heroicon Name="@HeroiconName.Bolt" Type="@HeroiconType.Outline" class="w-8 h-8"/>
             <h1 class="text-3xl">Klean</h1>
         </a>
 
-        <button class="block flex-grow sm:hidden"
-                @onclick="@(() => Expanded = !Expanded)">
-            <Heroicon Name="@HeroiconName.Bars3" type="@HeroiconType.Outline" class="w-8 h-8"/>
-        </button>
-
-        <div class="flex flex-row justify-center align-middle h-full gap-2">
-            <input type="text" class="bg-gray-800 text-white rounded-md p-2 w-full" placeholder="Search..."/>
-            <button class="bg-gray-800 text-white rounded-md p-2">
-                <Heroicon Name="@HeroiconName.MagnifyingGlass" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+        <div class="flex items-center flex-grow sm:hidden">
+            <button @onclick="@(() => Expanded = !Expanded)">
+                <Heroicon Name="@HeroiconName.Bars3" type="@HeroiconType.Outline" class="w-8 h-8"/>
             </button>
-            @* <ThemeToggle /> *@
+        </div>
+
+        <div class="flex flex-row align-middle">
+            <label class="relative block">
+                <span class="sr-only">Search for actions</span>
+
+                <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-black">
+                    <Heroicon Name="@HeroiconName.MagnifyingGlass" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+                </span>
+
+                <input name="search"
+                       type="text"
+                       placeholder="Search for anything..."
+                       class="block bg-white w-full border border-slate-300
+                              rounded-md py-2 pl-9 pr-3 shadow-sm
+                              focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1
+                              sm:text-sm placeholder:italic placeholder:text-slate-400"/>
+            </label>
         </div>
     </div>
 
-    <div class="@(Expanded ? "flex" : "hidden") sm:flex flex-col flex-grow gap-3">
-        <NavLink href="/dashboard" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+    <div class="@(Expanded ? "flex" : "hidden") sm:flex flex-col flex-grow gap-3 pb-2 sm:pb-0">
+        <NavLink href="/dashboard" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.Home" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Dashboard
         </NavLink>
 
-        <NavLink href="/team" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/team" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.UserGroup" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Team
         </NavLink>
 
-        <NavLink href="/projects" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/projects" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.Folder" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Projects
         </NavLink>
 
-        <NavLink href="/calendar" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/calendar" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.Calendar" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Calendar
         </NavLink>
 
-        <NavLink href="/documents" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/documents" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.Document" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Documents
         </NavLink>
 
-        <NavLink href="/reports" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/reports" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.ChartPie" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Reports
         </NavLink>
 
-        <NavLink href="/settings" class="flex flex-row mt-auto gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.Cog6Tooth" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Settings
-        </NavLink>
+        <div class="flex flex-row gap-3 font-semibold mt-auto">
+            <NavLink href="/settings" class="bg-gray-800 hover:bg-gray-200 active:bg-gray-200 text-white hover:text-black active:text-black rounded-md p-3">
+                <Heroicon Name="@HeroiconName.Cog6Tooth" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            </NavLink>
+
+            <ThemeToggle/>
+        </div>
     </div>
 </nav>
 

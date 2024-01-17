@@ -3,7 +3,8 @@
 @inject IJSRuntime Js
 
 <div class="flex justify-center items-center">
-    <button class="bg-gray-800 text-white rounded-md p-2" @onclick="@ToggleTheme">
+    <button class="bg-gray-800 hover:bg-gray-200 active:bg-gray-200 text-white hover:text-black active:text-black rounded-md p-3"
+            @onclick="@ToggleTheme">
         <Heroicon Name="@HeroiconName.Moon" Type="@HeroiconType.Outline" class="block dark:hidden w-6 h-6"/>
         <Heroicon Name="@HeroiconName.Sun" Type="@HeroiconType.Outline" class="hidden dark:block w-6 h-6"/>
     </button>
