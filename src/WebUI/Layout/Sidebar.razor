@@ -1,10 +1,25 @@
-<nav class="min-w-56 max-w-64 bg-gray-900 h-full overflow-y-scroll flex flex-col justify-between p-2 gap-10">
-    <a href="/" class="flex flex-row gap-3 align-middle items-center font-semibold p-3 text-white">
-        <Heroicon Name="@HeroiconName.Bolt" Type="@HeroiconType.Outline" class="w-8 h-8"/>
-        <h1 class="text-3xl">Klean</h1>
-    </a>
+<nav class="flex flex-col w-full sm:min-w-48 sm:max-w-56 h-auto sm:h-full bg-gray-900 sm:overflow-y-scroll justify-between p-2 gap-3 sm:gap-10 border-b-2 border-gray-700">
+    <div class="flex flex-row sm:flex-col gap-3 text-white font-semibold p-2">
+        <a href="/" class="hidden sm:flex gap-2">
+            <Heroicon Name="@HeroiconName.Bolt" Type="@HeroiconType.Outline" class="w-8 h-8"/>
+            <h1 class="text-3xl">Klean</h1>
+        </a>
 
-    <div class="flex flex-col flex-grow gap-3">
+        <button class="block flex-grow sm:hidden"
+                @onclick="@(() => Expanded = !Expanded)">
+            <Heroicon Name="@HeroiconName.Bars3" type="@HeroiconType.Outline" class="w-8 h-8"/>
+        </button>
+
+        <div class="flex flex-row justify-center align-middle h-full gap-2">
+            <input type="text" class="bg-gray-800 text-white rounded-md p-2 w-full" placeholder="Search..."/>
+            <button class="bg-gray-800 text-white rounded-md p-2">
+                <Heroicon Name="@HeroiconName.MagnifyingGlass" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            </button>
+            @* <ThemeToggle /> *@
+        </div>
+    </div>
+
+    <div class="@(Expanded ? "flex" : "hidden") sm:flex flex-col flex-grow gap-3">
         <NavLink href="/dashboard" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.Home" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Dashboard
@@ -34,10 +49,17 @@
             <Heroicon Name="@HeroiconName.ChartPie" Type="@HeroiconType.Outline" class="w-6 h-6"/>
             Reports
         </NavLink>
-    </div>
 
-    <NavLink href="/settings" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
-        <Heroicon Name="@HeroiconName.Cog6Tooth" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-        Settings
-    </NavLink>
+        <NavLink href="/settings" class="flex flex-row mt-auto gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black hover:bg-gray-200 active:bg-gray-200 p-3">
+            <Heroicon Name="@HeroiconName.Cog6Tooth" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            Settings
+        </NavLink>
+    </div>
 </nav>
+
+
+@code {
+
+    private bool Expanded { get; set; }
+
+}
