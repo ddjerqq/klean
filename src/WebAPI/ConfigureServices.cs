@@ -2,9 +2,9 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
-using Domain;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure;
 using Infrastructure.Idempotency;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.HttpLogging;
@@ -76,7 +76,7 @@ public static class ConfigureServices
 
         // services.AddSignalR(o => { o.EnableDetailedErrors = env.IsDevelopment(); });
 
-        services.AddValidatorsFromAssembly(DomainAssembly.Assembly);
+        services.AddValidatorsFromAssembly(WebApiAssembly.Assembly);
         services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);
 
         services.AddFluentValidationAutoValidation()
@@ -89,19 +89,22 @@ public static class ConfigureServices
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
 
+        services.AddAutoMapper(_ => { },
+            [WebApiAssembly.Assembly, ApplicationAssembly.Assembly, InfrastructureAssembly.Assembly, WebApiAssembly.Assembly]);
+
         if (env.IsDevelopment())
             services.AddSwagger();
 
-        services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(policy =>
-            {
-                policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
-                policy.AllowAnyHeader();
-                policy.AllowAnyMethod();
-                policy.AllowCredentials();
-            });
-        });
+        // services.AddCors(options =>
+        // {
+        //     options.AddDefaultPolicy(policy =>
+        //     {
+        //         policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
+        //         policy.AllowAnyHeader();
+        //         policy.AllowAnyMethod();
+        //         policy.AllowCredentials();
+        //     });
+        // });
 
         services.AddResponseCaching();
         services.AddResponseCompression(o =>
@@ -131,7 +134,7 @@ public static class ConfigureServices
                 Contact = new OpenApiContact
                 {
                     Name = "Klean",
-                    Email = "ddjerqq@gmail.com",
+                    Email = "g@ddjerqq.xyz",
                     Url = new Uri("https://github.com/ddjerqq/klean"),
                 },
             });

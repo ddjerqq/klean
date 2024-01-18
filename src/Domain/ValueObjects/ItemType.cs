@@ -11,7 +11,13 @@ namespace Domain.ValueObjects;
 /// <param name="Price">Price of item type</param>
 /// <param name="MinRarity">Minimum rarity for this type of item</param>
 /// <param name="MaxRarity">Maximum rarity for this type of item</param>
-public sealed record ItemType(string Id, string Name, decimal Price, float MinRarity, float MaxRarity)
+public sealed record ItemType(
+    string Id,
+    string Name,
+    decimal Price,
+    float MinRarity,
+    float MaxRarity,
+    string? DisplayUrl = null)
     : IValueObject
 {
     /// <summary>
@@ -28,5 +34,5 @@ public sealed record ItemType(string Id, string Name, decimal Price, float MinRa
     }
 
     private static float RandBetween(float min, float max) =>
-        ((float)Random.Shared.NextDouble() * (max - min)) + min;
+        (float)Random.Shared.NextDouble() * (max - min) + min;
 }

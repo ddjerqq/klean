@@ -8,11 +8,6 @@ namespace Domain.Abstractions;
 public sealed class Inventory : List<Item>
 {
     /// <summary>
-    /// Gets the items in the inventory.
-    /// </summary>
-    public IEnumerable<Item> Items => this.AsEnumerable();
-
-    /// <summary>
     /// Checks if the inventory contains an item with the specified id.
     /// </summary>
     /// <param name="id">The id to check for</param>

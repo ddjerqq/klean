@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Domain.Abstractions;
 using Domain.Common.Interfaces;
 using Domain.ValueObjects;
@@ -21,21 +20,17 @@ public sealed class User : AggregateRootBase
     /// Gets the user's email.
     /// </summary>
     public string Email { get; init; } = default!;
-
+    
     /// <summary>
-    /// BCrypt password hash passed through 12+ rounds
+    /// Gets the BCrypt password hash passed through 12+ rounds
     /// </summary>
-    [JsonIgnore]
     public string PasswordHash { get; private set; } = default!;
 
     /// <summary>
-    /// Changes the user's password.
+    /// Gets or sets the profile picture URL.
     /// </summary>
-    public void SetPassword(string newPassword)
-    {
-        PasswordHash = BC.HashPassword(newPassword);
-    }
-
+    public string? ProfilePictureUrl { get; set; }
+    
     /// <summary>
     /// Gets the user's username.
     /// </summary>
@@ -45,4 +40,12 @@ public sealed class User : AggregateRootBase
     /// Gets the user's inventory.
     /// </summary>
     public Inventory Inventory { get; init; } = default!;
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    public void SetPassword(string newPassword)
+    {
+        PasswordHash = BC.HashPassword(newPassword);
+    }
 }
