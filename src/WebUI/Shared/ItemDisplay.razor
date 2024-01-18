@@ -1,19 +1,19 @@
 @using Domain.Dto
 
 <div class="flex flex-col w-72 border-gray-300 bg-white text-black shadow-md shadow-gray-300 rounded-md">
-    <div class="flex flex-row justify-between gap-5 p-4">
+    <div class="flex flex-row gap-5 p-4">
         <div class="flex flex-col flex-grow justify-between items-start">
-            <a href="/user/@User.Id" class="text-blue-900 underline text-xl font-extrabold capitalize">
-                @User.Username
+            <a href="/user/@Item.Id" class="text-blue-900 underline text-xl font-extrabold capitalize">
+                @Item.ItemType.Name
             </a>
 
             <span class="text-md text-gray-500">
-                @User.Email
+                @Item.ItemType.Price
             </span>
         </div>
 
         <div class="w-12 h-12">
-            <img src="@User.ProfilePictureUrl" alt class="rounded-full"/>
+            <img src="@Item.ItemType.DisplayUrl" alt class="rounded-full"/>
         </div>
     </div>
 
@@ -21,7 +21,7 @@
         <button class="flex flex-row justify-start align-middle gap-3 w-full h-full p-2">
             <Heroicon Name="@HeroiconName.CurrencyDollar" Type="HeroiconType.Outline" class="w-6 h-6"/>
             <span class="text-green-700 font-extrabold">
-                @User.Balance.ToString("N2")
+                @Item.ItemType.MinRarity
             </span>
         </button>
 
@@ -30,7 +30,7 @@
         <button class="flex flex-row justify-start align-middle gap-3 w-full h-full p-2">
             <Heroicon Name="@HeroiconName.Briefcase" Type="HeroiconType.Outline" class="w-6 h-6"/>
             <span class="text-blue-700 font-extrabold">
-                @User.Inventory.Count().ToString("N0")
+                @Item.ItemType.MaxRarity
             </span>
         </button>
     </div>
@@ -39,6 +39,6 @@
 @code {
 
     [Parameter, EditorRequired]
-    public UserDto User { get; set; } = default!;
+    public ItemDto Item { get; set; } = default!;
 
 }

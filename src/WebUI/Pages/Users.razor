@@ -4,20 +4,20 @@
 
 <PageTitle>Users</PageTitle>
 
-<div class="flex flex-col h-full w-full gap-3 text-center p-5 text-black dark:text-white">
+<div class="flex flex-col h-full w-full gap-5 text-center p-5 text-black dark:text-white">
     <h1 class="text-3xl sm:text-6xl font-extrabold">Users</h1>
 
     <div class="flex flex-wrap justify-between gap-3">
         @foreach (var userDto in UserDtos)
         {
-            <UserDisplay UserDto="userDto"/>
+            <UserDisplay User="userDto"/>
         }
     </div>
 </div>
 
 @code {
 
-    private const int Count = 10;
+    private const int Count = 9;
 
     private static IEnumerable<ItemDto> ItemDtos => Enumerable.Range(0, Random.Shared.Next(0, 1_000))
         .Select(i => new ItemDto(
