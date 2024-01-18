@@ -1,7 +1,37 @@
 @page "/users"
+@using Domain.Dto
+@using Domain.ValueObjects
 
 <PageTitle>Users</PageTitle>
 
-<div class="flex flex-col gap-3 text-center p-5 text-black dark:text-white">
+<div class="flex flex-col h-full w-full gap-3 text-center p-5 text-black dark:text-white">
     <h1 class="text-3xl sm:text-6xl font-extrabold">Users</h1>
+
+    <div class="flex flex-wrap justify-between gap-3">
+        @foreach (var userDto in UserDtos)
+        {
+            <UserDisplay UserDto="userDto"/>
+        }
+    </div>
 </div>
+
+@code {
+
+    private const int Count = 10;
+
+    private static IEnumerable<ItemDto> ItemDtos => Enumerable.Range(0, Random.Shared.Next(0, 1_000))
+        .Select(i => new ItemDto(
+            Guid.NewGuid(),
+            Random.Shared.NextSingle(),
+            new ItemType("ITEM", "item", 10, 0, 1)));
+
+    private static IEnumerable<UserDto> UserDtos => Enumerable.Range(0, Count)
+        .Select(i => new UserDto(
+            Guid.NewGuid(),
+            $"user-{i}",
+            $"user-{i}@ddjerqq.xyz",
+            $"https://via.placeholder.com/64?text={i}",
+            (decimal)Random.Shared.Next(0, 100_000_00) / 10,
+            ItemDtos));
+
+}
