@@ -18,19 +18,17 @@
     </div>
 
     <div class="flex flex-row border-t-2 justify-between border-gray-300">
-        <button class="flex flex-row justify-start align-middle gap-3 w-full h-full p-2">
-            <Heroicon Name="@HeroiconName.CurrencyDollar" Type="HeroiconType.Outline" class="w-6 h-6"/>
-            <span class="text-green-700 font-extrabold">
-                @User.Balance.ToString("N2")
+        <button class="flex flex-row justify-center text-green-700 align-middle gap-3 w-full h-full p-2">
+            <span class="font-extrabold">
+                $@User.Balance.ToString("N2")
             </span>
         </button>
 
         <div class="h-full border border-gray-300"></div>
 
-        <button class="flex flex-row justify-start align-middle gap-3 w-full h-full p-2">
-            <Heroicon Name="@HeroiconName.Briefcase" Type="HeroiconType.Outline" class="w-6 h-6"/>
-            <span class="text-blue-700 font-extrabold">
-                @User.Inventory.Count().ToString("N0")
+        <button class="flex flex-row justify-center text-blue-700 align-middle gap-3 w-full h-full p-2">
+            <span class="font-extrabold">
+                @User.Inventory.Count().ToString("N0") Items
             </span>
         </button>
     </div>
