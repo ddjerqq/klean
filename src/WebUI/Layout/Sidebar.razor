@@ -23,7 +23,7 @@
                        type="text"
                        placeholder="Search for anything..."
                        class="block bg-white w-full border border-slate-300
-                              rounded-md py-2 pl-9 pr-3 shadow-sm
+                              rounded-md py-2 pl-9 pr-3 shadow-sm text-black
                               focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1
                               sm:text-sm placeholder:italic placeholder:text-slate-400"/>
             </label>
@@ -31,34 +31,29 @@
     </div>
 
     <div class="@(Expanded ? "flex" : "hidden") sm:flex flex-col flex-grow gap-3 pb-2 sm:pb-0">
-        <NavLink href="/dashboard" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.Home" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Dashboard
+        <NavLink href="/counter" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
+            <Heroicon Name="@HeroiconName.PlusCircle" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            Counter
         </NavLink>
 
-        <NavLink href="/team" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
+        <NavLink href="/users" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
             <Heroicon Name="@HeroiconName.UserGroup" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Team
+            Users
         </NavLink>
 
-        <NavLink href="/projects" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.Folder" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Projects
+        <NavLink href="/items" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
+            <Heroicon Name="@HeroiconName.ArchiveBox" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            Items
         </NavLink>
 
-        <NavLink href="/calendar" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.Calendar" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Calendar
+        <NavLink href="/shop" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
+            <Heroicon Name="@HeroiconName.ShoppingCart" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            Shop
         </NavLink>
 
-        <NavLink href="/documents" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.Document" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Documents
-        </NavLink>
-
-        <NavLink href="/reports" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
-            <Heroicon Name="@HeroiconName.ChartPie" Type="@HeroiconType.Outline" class="w-6 h-6"/>
-            Reports
+        <NavLink href="/games" class="flex flex-row gap-3 font-semibold rounded-md text-gray-300 hover:text-black active:text-black bg-gray-800 hover:bg-gray-200 active:bg-gray-200 p-3">
+            <Heroicon Name="@HeroiconName.GlobeAmericas" Type="@HeroiconType.Outline" class="w-6 h-6"/>
+            Games
         </NavLink>
 
         <div class="flex flex-row gap-3 font-semibold mt-auto">
