@@ -31,8 +31,8 @@ public static class ConfigureServices
     {
         services.AddHttpContextAccessor();
 
-        services.AddHealthChecks()
-            .AddCheck("db", () => HealthCheckResult.Healthy("good"));
+        services.AddHealthChecks();
+            // .AddCheck("db", () => HealthCheckResult.Healthy("good"));
 
         services.AddHttpLogging(logging =>
         {
@@ -95,16 +95,16 @@ public static class ConfigureServices
         if (env.IsDevelopment())
             services.AddSwagger();
 
-        // services.AddCors(options =>
-        // {
-        //     options.AddDefaultPolicy(policy =>
-        //     {
-        //         policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
-        //         policy.AllowAnyHeader();
-        //         policy.AllowAnyMethod();
-        //         policy.AllowCredentials();
-        //     });
-        // });
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+                policy.AllowCredentials();
+            });
+        });
 
         services.AddResponseCaching();
         services.AddResponseCompression(o =>
@@ -195,35 +195,38 @@ public static class ConfigureServices
     {
         app.UseHttpLogging();
         app.MapHealthChecks("/health");
-        app.UseExceptionHandler("/error");
 
         if (app.Environment.IsDevelopment())
         {
+            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
         if (app.Environment.IsProduction())
         {
+            app.UseExceptionHandler("/error");
             app.UseHsts();
-            app.UseResponseCompression();
-            app.UseResponseCaching();
+            app.UseAntiforgery();
             app.UseHttpsRedirection();
         }
 
-        // for front-end
-        app.UseBlazorFrameworkFiles();
-        app.UseStaticFiles();
+        app.UseRouting();
+        // app.UseRequestLocalization();
+        app.UseCors();
 
         app.UseAuthentication();
-        app.UseRouting();
-        app.UseCors();
         app.UseAuthorization();
         app.UseIdempotency();
 
-        // for front-end
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseResponseCompression();
+            app.UseResponseCaching();
+        }
+
         app.MapControllers();
-        app.MapFallbackToFile("index.html");
+        app.MapDefaultControllerRoute();
 
         return app;
     }

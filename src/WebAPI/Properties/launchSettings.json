@@ -1,7 +1,13 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "https": {
+    "watch": {
+      "commandName": "Executable",
+      "workingDirectory": "$(ProjectDir)",
+      "executablePath": "/home/ddjerqq/.dotnet/dotnet",
+      "commandLineArgs": "watch run debug --launch-profile development"
+    },
+    "development": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "hotReloadEnabled": true,

@@ -10,10 +10,10 @@ public static class Cookie
     /// <summary>
     /// The default cookie options
     /// </summary>
-    public static readonly CookieOptions Options = new CookieOptions
+    public static readonly CookieOptions Options = new()
     {
         Domain = "localhost",
-        MaxAge = TimeSpan.FromDays(28),
+        MaxAge = TimeSpan.FromDays(1),
         Secure = true,
         HttpOnly = true,
         IsEssential = true,

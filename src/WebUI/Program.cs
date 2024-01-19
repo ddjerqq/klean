@@ -22,7 +22,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStatePr
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped<HttpClient>(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<HttpClient>(_ => new HttpClient { BaseAddress = new Uri("https://localhost:7001") });
 
 builder.Services.AddBlazoredLocalStorageAsSingleton(o =>
 {

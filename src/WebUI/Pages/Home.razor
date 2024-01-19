@@ -1,8 +1,37 @@
 ﻿@page "/"
+@using WebUI.Services
+@using Application.Auth.Commands
+@inject HttpClient Http
+@inject JwtAuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Home</PageTitle>
 
 <div class="flex flex-col gap-3 text-center p-5 text-black dark:text-white">
     <h1 class="text-3xl sm:text-6xl font-extrabold">Welcome to your new app</h1>
     <p class="text-xl sm:text-2xl">Explore the counter app, and user components</p>
+
+    <button @onclick="@Login"
+            class="flex flex-row justify-center rounded-md w-full py-2 px-4
+                       bg-gradient-to-br from-blue-400 to-green-500
+                       border-2 border-blue-300 active:border-blue-700
+                       active:translate-y-0.5
+                       shadow-blue-300 shadow-lg">
+        <p class="text-2xl font-extrabold">login</p>
+    </button>
+
+    <AuthorizeView>
+        @foreach (var claim in context.User.Claims)
+        {
+            <p>@claim.Type: @claim.Value</p>
+        }
+    </AuthorizeView>
 </div>
+
+@code {
+
+    async Task Login()
+    {
+        await AuthenticationStateProvider.LoginAsync(new UserLoginCommand("string", "string", true));
+    }
+
+}
