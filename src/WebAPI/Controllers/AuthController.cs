@@ -1,6 +1,9 @@
 using Application.Auth.Commands;
 using Application.Common.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Aggregates;
+using Domain.Dto;
 using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +16,8 @@ namespace WebAPI.Controllers;
 /// <summary>
 /// controller for authentication
 /// </summary>
-public sealed class AuthController : ApiController
+public sealed class AuthController(IMapper mapper)
+    : ApiController
 {
     /// <summary>
     /// registers a new user
@@ -69,6 +73,7 @@ public sealed class AuthController : ApiController
             .AsNoTracking()
             .Include(x => x.Inventory)
             .ThenInclude(x => x.ItemType)
+            .ProjectTo<UserDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == currentUserId, ct);
 
         return Ok(user);

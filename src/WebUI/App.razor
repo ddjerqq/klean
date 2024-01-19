@@ -1,30 +1,26 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <div class="flex flex-col gap-3 text-center p-5 text-black dark:text-white">
+                        <h1 class="text-3xl sm:text-6xl font-extrabold">Loading...</h1>
+                    </div>
+                </Authorizing>
 
-        @* <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"> *@
-        @*     <Authorizing> *@
-        @*         <div class="h-full flex flex-col justify-center text-center"> *@
-        @*             <div> *@
-        @*                 <div class="text-cyan-500" role="status"></div> *@
-        @*                 <span class="ms-3 text-xl">Loading...</span> *@
-        @*             </div> *@
-        @*         </div> *@
-        @*     </Authorizing> *@
-        @* *@
-        @*     <NotAuthorized> *@
-        @*         <RedirectToLogin /> *@
-        @*     </NotAuthorized> *@
-        @* </AuthorizeRouteView> *@
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <div class="text-center p-5 text-black dark:text-white">
-                <h1 class="text-3xl sm:text-6xl font-extrabold">404 - Not found</h1>
-                <p class="text-xl sm:text-2xl font-light mt-5">The page you are looking for does not exist.</p>
-            </div>
-        </LayoutView>
-    </NotFound>
-</Router>
+                <NotAuthorized>
+                    <RedirectToLogin/>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="flex flex-col gap-3 text-center p-5 text-black dark:text-white">
+                    <h1 class="text-3xl sm:text-6xl font-extrabold">404 - Not found</h1>
+                    <p class="text-xl sm:text-2xl font-light mt-5">The page you are looking for does not exist.</p>
+                </div>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

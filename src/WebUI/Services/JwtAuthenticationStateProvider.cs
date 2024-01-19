@@ -19,18 +19,28 @@ public sealed class JwtAuthenticationStateProvider(HttpClient http)
         var result = await http.PostAsJsonAsync("api/auth/login", command, ct);
         result.EnsureSuccessStatusCode();
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        // TODO handle authentication here. set the user dto in localstorage
     }
 
-    public async Task<ClaimsPrincipal> GetUserStateAsync(CancellationToken ct = default)
+    public async Task RegisterAsync(UserRegisterCommand command, CancellationToken ct = default)
+    {
+        var result = await http.PostAsJsonAsync("api/auth/register", command, ct);
+        result.EnsureSuccessStatusCode();
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
+
+    private static ClaimsPrincipal EmptyPrincipal => new(new ClaimsIdentity());
+
+    private async Task<ClaimsPrincipal> GetUserStateAsync(CancellationToken ct = default)
     {
         var resp = await http.GetAsync("api/auth/user_claims", ct);
         if (!resp.IsSuccessStatusCode)
-            return new ClaimsPrincipal(new ClaimsIdentity());
+            return EmptyPrincipal;
 
         var body = await resp.Content.ReadFromJsonAsync<Dictionary<string, string>>(ct);
 
         if (body is not { Count: > 0 })
-            return new ClaimsPrincipal(new ClaimsIdentity());
+            return EmptyPrincipal;
 
         var claims = body
             .Select(kv => new Claim(kv.Key, kv.Value))
