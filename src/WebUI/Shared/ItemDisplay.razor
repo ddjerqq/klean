@@ -8,12 +8,12 @@
             </a>
 
             <span class="text-md text-gray-500">
-                $@Item.ItemType.Price
+                $@Item.ItemType.Price.ToString("N2")
             </span>
         </div>
 
         <div class="w-12 h-12">
-            <img src="@Item.ItemType.DisplayUrl" alt class="rounded-full"/>
+            <img src="@Item.ItemType.DisplayUrl" alt class="rounded-md"/>
         </div>
     </div>
 

@@ -33,7 +33,7 @@
             var min = Math.Min(x, y);
             var max = Math.Max(x, y);
 
-            var type = new ItemType(id, name, price, min, max, $"https://via.placeholder.com/64?text={i}");
+            var type = new ItemType(id, name, price, min, max, $"https://loremflickr.com/200/200/cat?random={Guid.NewGuid():N}");
             var item = type.NewItem();
 
             return new ItemDto(item.Id, item.Rarity, type);
