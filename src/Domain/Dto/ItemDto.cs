@@ -1,5 +1,4 @@
-using System.ComponentModel;
-using AutoMapper;
+using System.Linq.Expressions;
 using Domain.Entities;
 using Domain.ValueObjects;
 
@@ -9,13 +8,17 @@ namespace Domain.Dto;
 public sealed record ItemDto(
     Guid Id,
     float Rarity,
-    ItemType ItemType);
-
-[EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ItemDtoMappingProfile : Profile
+    ItemType ItemType)
 {
-    public ItemDtoMappingProfile()
-    {
-        CreateMap<Item, ItemDto>();
-    }
+    /// <summary>
+    /// Implicit conversion from <see cref="Item"/> to <see cref="ItemDto"/>.
+    /// </summary>
+    public static implicit operator ItemDto(Item item) =>
+        new(item.Id, item.Rarity, item.ItemType);
+
+    /// <summary>
+    /// Projection from <see cref="Item"/> to <see cref="ItemDto"/>.
+    /// </summary>
+    public static readonly Expression<Func<Item, ItemDto>> ProjectFrom = item =>
+        new ItemDto(item.Id, item.Rarity, item.ItemType);
 }

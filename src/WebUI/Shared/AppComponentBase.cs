@@ -2,7 +2,7 @@ namespace WebUI.Shared;
 
 using Microsoft.AspNetCore.Components;
 
-public abstract class CancellableComponent : ComponentBase, IDisposable
+public abstract class AppComponentBase : ComponentBase, IDisposable
 {
     private CancellationTokenSource? _cancellationTokenSource;
 
