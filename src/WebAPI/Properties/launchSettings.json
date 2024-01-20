@@ -15,6 +15,7 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://0.0.0.0:7000;https://0.0.0.0:7001",
       "environmentVariables": {
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;WebAPI",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
         "JWT__ISSUER": "localhost",

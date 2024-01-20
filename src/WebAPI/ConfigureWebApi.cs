@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Application;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
@@ -18,8 +19,7 @@ namespace WebAPI;
 
 /// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ConfigureWebApi(IHostEnvironment env)
-    : IHostingStartup
+public class ConfigureWebApi : IHostingStartup
 {
     private static readonly string[] CompressionTypes = ["application/octet-stream"];
 
@@ -29,6 +29,9 @@ public class ConfigureWebApi(IHostEnvironment env)
         // general api services
         builder.ConfigureServices(services =>
         {
+            services.AddHealthChecks()
+                .AddDbContextCheck<AppDbContext>("db");
+
             services.AddHttpContextAccessor();
 
             services.AddHttpLogging(logging =>
@@ -77,6 +80,7 @@ public class ConfigureWebApi(IHostEnvironment env)
             {
                 options.AddDefaultPolicy(policy =>
                 {
+                    // TODO get url dynamically
                     policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
@@ -115,8 +119,9 @@ public class ConfigureWebApi(IHostEnvironment env)
         });
 
         // swagger
-        if (env.IsDevelopment())
-            builder.ConfigureServices(services =>
+        builder.ConfigureServices((context, services) =>
+        {
+            if (context.HostingEnvironment.IsDevelopment())
             {
                 services.AddEndpointsApiExplorer();
                 services.AddSwaggerGen(c =>
@@ -165,6 +170,7 @@ public class ConfigureWebApi(IHostEnvironment env)
                     c.IncludeXmlComments(xmlPath);
                     c.OperationFilter<IdempotencyKeyOperationFilter>();
                 });
-            });
+            }
+        });
     }
 }

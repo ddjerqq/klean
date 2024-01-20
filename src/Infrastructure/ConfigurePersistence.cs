@@ -1,11 +1,11 @@
 using Application.Common.Interfaces;
-using Domain.Common.Extensions;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 [assembly: HostingStartup(typeof(ConfigurePersistence))]
 
@@ -17,14 +17,14 @@ public class ConfigurePersistence : IHostingStartup
     /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(services =>
+        builder.ConfigureServices((context, services) =>
         {
             services.AddSingleton<EntitySaveChangesInterceptor>();
             services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
             services.AddDbContext<AppDbContext>(o =>
             {
-                if ("ASPNETCORE_ENVIRONMENT".FromEnv() is "Development")
+                if (context.HostingEnvironment.IsDevelopment())
                 {
                     o.EnableDetailedErrors();
                     o.EnableSensitiveDataLogging();
