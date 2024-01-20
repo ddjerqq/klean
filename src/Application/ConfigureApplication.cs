@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using Application;
 using Application.Common.Behaviours;
-using Domain;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,9 +18,6 @@ public class ConfigureApplication : IHostingStartup
     {
         builder.ConfigureServices(services =>
         {
-            services.AddValidatorsFromAssembly(DomainAssembly.Assembly);
-            services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);
-
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(ApplicationAssembly.Assembly);

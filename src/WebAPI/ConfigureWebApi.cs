@@ -3,14 +3,19 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
+using Blazored.LocalStorage;
+using Domain;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using WebAPI;
 using WebAPI.Filters;
+using WebAPI.Services;
 using ZymLabs.NSwag.FluentValidation;
 
 [assembly: HostingStartup(typeof(ConfigureWebApi))]
@@ -76,6 +81,36 @@ public class ConfigureWebApi : IHostingStartup
 
             // services.AddSignalR(o => { o.EnableDetailedErrors = env.IsDevelopment(); });
 
+            services.AddResponseCaching();
+            services.AddResponseCompression(o =>
+            {
+                o.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(CompressionTypes);
+                o.Providers.Add<GzipCompressionProvider>();
+                o.Providers.Add<BrotliCompressionProvider>();
+            });
+        });
+
+        // front-end services
+        builder.ConfigureServices(services =>
+        {
+            services.AddRazorComponents()
+                .AddInteractiveServerComponents()
+                .AddInteractiveWebAssemblyComponents();
+
+            services.AddCascadingAuthenticationState();
+
+            services.AddScoped<JwtAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>(sp =>
+                sp.GetRequiredService<JwtAuthenticationStateProvider>());
+
+            services.AddScoped<HttpClient>(_ => new HttpClient { BaseAddress = new Uri("https://localhost:7001") });
+
+            services.AddBlazoredLocalStorage(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -87,25 +122,15 @@ public class ConfigureWebApi : IHostingStartup
                     policy.AllowCredentials();
                 });
             });
-
-            services.AddResponseCaching();
-            services.AddResponseCompression(o =>
-            {
-                o.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(CompressionTypes);
-                o.Providers.Add<GzipCompressionProvider>();
-                o.Providers.Add<BrotliCompressionProvider>();
-            });
-
-            services.AddRazorComponents()
-                .AddInteractiveServerComponents()
-                .AddInteractiveWebAssemblyComponents();
         });
 
         // validation
         builder.ConfigureServices(services =>
         {
-            services.AddValidatorsFromAssembly(WebApiAssembly.Assembly);
+            services.AddValidatorsFromAssembly(DomainAssembly.Assembly);
             services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);
+            services.AddValidatorsFromAssembly(InfrastructureAssembly.Assembly);
+            services.AddValidatorsFromAssembly(WebApiAssembly.Assembly);
 
             services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();

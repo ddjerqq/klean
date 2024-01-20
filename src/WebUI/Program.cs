@@ -1,34 +1,14 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WebUI;
-using WebUI.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddAuthorizationCore(options =>
-{
-    options.AddPolicy("default", policy => policy
-        .RequireAuthenticatedUser());
-});
+Console.WriteLine("I AM BEING RUN");
 
-builder.Services.AddScoped<JwtAuthenticationStateProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticationStateProvider>(sp =>
-    sp.GetRequiredService<JwtAuthenticationStateProvider>());
-
+builder.Services.AddAuthorizationCore();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
-builder.Services.AddScoped<HttpClient>(_ => new HttpClient { BaseAddress = new Uri("https://localhost:7001") });
-
-builder.Services.AddBlazoredLocalStorageAsSingleton(o =>
-{
-    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
-    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
 
 var app = builder.Build();
 
