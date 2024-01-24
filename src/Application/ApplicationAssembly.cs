@@ -1,5 +1,4 @@
 using System.Reflection;
-using Domain;
 
 namespace Application;
 
@@ -11,5 +10,5 @@ public static class ApplicationAssembly
     /// <summary>
     /// Gets the assembly.
     /// </summary>
-    public static Assembly Assembly => typeof(DomainAssembly).Assembly;
+    public static Assembly Assembly => typeof(ApplicationAssembly).Assembly;
 }

@@ -1,0 +1,45 @@
+@implements IAsyncDisposable
+@rendermode RenderMode.InteractiveAuto
+@inject ILocalStorageService LocalStorage
+@inject IJSRuntime Js
+
+<div class="flex justify-center items-center">
+    <button class="bg-gray-800 hover:bg-gray-200 active:bg-gray-200 text-white hover:text-black active:text-black rounded-md p-3"
+            @onclick="@ToggleTheme">
+        <Heroicon Name="@HeroiconName.Moon" Type="@HeroiconType.Outline" class="block dark:hidden w-6 h-6"/>
+        <Heroicon Name="@HeroiconName.Sun" Type="@HeroiconType.Outline" class="hidden dark:block w-6 h-6"/>
+    </button>
+</div>
+
+@code {
+
+    private bool _darkMode;
+    private IJSObjectReference _module = default!;
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await Js.InvokeAsync<IJSObjectReference>("import", "./Layout/ThemeToggle.razor.js");
+            var theme = await LocalStorage.GetItemAsStringAsync("theme");
+            _darkMode = theme == "dark";
+            await _module.InvokeVoidAsync("setTheme", theme);
+        }
+    }
+
+    private async Task ToggleTheme()
+    {
+        _darkMode = !_darkMode;
+        var theme = _darkMode ? "dark" : "light";
+        await _module.InvokeVoidAsync("setTheme", theme);
+        await LocalStorage.SetItemAsStringAsync("theme", theme);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _module.DisposeAsync();
+        GC.SuppressFinalize(this);
+    }
+
+}
