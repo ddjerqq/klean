@@ -39,7 +39,7 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
 
 internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
 {
-    public UserRegisterValidator()
+    public UserRegisterValidator(IAppDbContext dbContext)
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
@@ -52,9 +52,15 @@ internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterComm
         RuleFor(x => x.Email)
             .NotEmpty()
             .Matches(@"^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$")
-            .WithMessage("Email must be a valid email address.");
+            .WithMessage("Email must be a valid email address.")
+            .MustAsync(async (command, email, ct) =>
+            {
+                var any = await dbContext.Set<User>()
+                    .AnyAsync(u => u.Email == email, ct);
 
-        // TODO test async rules
+                return !any;
+            })
+            .WithMessage("Email is already in use.");
 
         RuleFor(x => x.Password)
             .NotEmpty()

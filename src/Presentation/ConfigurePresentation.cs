@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
 using Domain;
+using Domain.Common.Extensions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure;
@@ -96,8 +97,7 @@ public class ConfigurePresentation : IHostingStartup
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    // TODO get url dynamically
-                    policy.WithOrigins("http://localhost:5000", "https://localhost:5001");
+                    policy.WithOrigins("WEB_APP__DOMAIN".FromEnv() ?? throw new Exception("WEB_APP__DOMAIN is not set in the environment"));
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
                     policy.AllowCredentials();

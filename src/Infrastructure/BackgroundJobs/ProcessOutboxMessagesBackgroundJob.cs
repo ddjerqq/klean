@@ -34,8 +34,6 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
     /// </summary>
     public async Task Execute(IJobExecutionContext context)
     {
-        // TODO make this configurable
-        // 20 oldest messages
         var messages = await dbContext
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOnUtc == null)
