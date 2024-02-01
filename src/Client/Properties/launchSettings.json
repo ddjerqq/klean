@@ -4,7 +4,7 @@
     "watch": {
       "commandName": "Executable",
       "workingDirectory": "$(ProjectDir)",
-      "executablePath": "/home/ddjerqq/.dotnet/dotnet",
+      "executablePath": "dotnet",
       "commandLineArgs": "watch run debug --launch-profile development"
     },
     "development": {
