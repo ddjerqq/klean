@@ -1,4 +1,5 @@
-using Application.Common.Interfaces;
+using System.ComponentModel;
+using Application.Abstractions;
 using Domain.ValueObjects;
 using FluentValidation;
 using MediatR;
@@ -19,6 +20,7 @@ public sealed record CreateItemTypeCommand(string Id, string Name, decimal Price
     public ItemType ItemType => new(Id, Name, Price, MinRarity, MaxRarity);
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class CreateItemTypeValidator : AbstractValidator<CreateItemTypeCommand>
 {
     public CreateItemTypeValidator(IAppDbContext dbContext)
@@ -54,6 +56,7 @@ internal sealed class CreateItemTypeValidator : AbstractValidator<CreateItemType
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class CreateItemTypeCommandHandler(IAppDbContext dbContext)
     : IRequestHandler<CreateItemTypeCommand, ItemType?>
 {

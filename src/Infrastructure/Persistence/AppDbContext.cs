@@ -1,5 +1,5 @@
+using Application.Abstractions;
 using Application.Common;
-using Application.Common.Interfaces;
 using Domain.Aggregates;
 using Domain.Common.Extensions;
 using Domain.Entities;

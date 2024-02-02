@@ -1,5 +1,6 @@
+using System.ComponentModel;
+using Application.Abstractions;
 using Application.Common.Extensions;
-using Application.Common.Interfaces;
 using Domain.Aggregates;
 using FluentValidation;
 using MediatR;
@@ -11,6 +12,7 @@ namespace Application.Economy.Commands;
 /// </summary>
 public sealed record BalanceTransactionCommand(User Sender, User Receiver, decimal Amount) : IRequest<bool>;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class BalanceTransactionValidator : AbstractValidator<BalanceTransactionCommand>
 {
     public BalanceTransactionValidator()
@@ -26,6 +28,7 @@ internal sealed class BalanceTransactionValidator : AbstractValidator<BalanceTra
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class BalanceTransactionHandler(IAppDbContext dbContext)
     : IRequestHandler<BalanceTransactionCommand, bool>
 {

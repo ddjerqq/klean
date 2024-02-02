@@ -1,4 +1,4 @@
-using Application.Common.Interfaces;
+using Application.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

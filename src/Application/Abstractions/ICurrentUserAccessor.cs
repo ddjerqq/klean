@@ -1,6 +1,6 @@
 using Domain.Aggregates;
 
-namespace Application.Common.Interfaces;
+namespace Application.Abstractions;
 
 /// <summary>
 /// The <see cref="ICurrentUserAccessor" /> interface.

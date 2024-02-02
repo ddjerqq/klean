@@ -1,5 +1,6 @@
+using System.ComponentModel;
+using Application.Abstractions;
 using Application.Common.Extensions;
-using Application.Common.Interfaces;
 using Domain.Aggregates;
 using Domain.Entities;
 using FluentValidation;
@@ -12,6 +13,7 @@ namespace Application.Inventory.Commands;
 /// </summary>
 public sealed record ItemTransactionCommand(User Sender, User Receiver, Item Item) : IRequest<bool>;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class ItemTransactionValidator : AbstractValidator<ItemTransactionCommand>
 {
     public ItemTransactionValidator()
@@ -24,6 +26,7 @@ internal sealed class ItemTransactionValidator : AbstractValidator<ItemTransacti
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class ItemTransactionHandler(IAppDbContext dbContext)
     : IRequestHandler<ItemTransactionCommand, bool>
 {

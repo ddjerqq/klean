@@ -1,4 +1,4 @@
-using Application.Common.Interfaces;
+using Application.Abstractions;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;

@@ -1,4 +1,6 @@
-using Application.Common.Interfaces;
+using System.ComponentModel;
+using System.Diagnostics;
+using Application.Abstractions;
 using Domain.Aggregates;
 using Domain.Events;
 using Domain.ValueObjects;
@@ -31,12 +33,13 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
             Wallet = new Wallet(),
             Inventory = [],
         };
-        
+
         _user.SetPassword(Password);
         return _user;
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
 {
     public UserRegisterValidator(IAppDbContext dbContext)
@@ -51,38 +54,35 @@ internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterComm
 
         RuleFor(x => x.Email)
             .NotEmpty()
-            .Matches(@"^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$")
-            .WithMessage("Email must be a valid email address.")
-            .MustAsync(async (command, email, ct) =>
-            {
-                var any = await dbContext.Set<User>()
-                    .AnyAsync(u => u.Email == email, ct);
+            .EmailAddress();
 
-                return !any;
-            })
-            .WithMessage("Email is already in use.");
+        RuleSet("async", () =>
+        {
+            RuleFor(x => x.Email)
+                .MustAsync(async (command, email, ct) =>
+                {
+                    var any = await dbContext.Set<User>()
+                        .AnyAsync(u => u.Email == email, ct);
+
+                    return !any;
+                })
+                .WithMessage("Email is already in use.");
+        });
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$")
-            .WithMessage(
-                "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.");
+            .Matches(@"^.{8,256}$")
+            .WithMessage("Password must be at least 8 characters long");
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class UserRegisterHandler(IAppDbContext dbContext)
     : IRequestHandler<UserRegisterCommand, bool>
 {
     public async Task<bool> Handle(UserRegisterCommand command, CancellationToken ct)
     {
         var user = command.CreateUser();
-
-        var exists = await dbContext.Set<User>()
-            .AnyAsync(x => x.Username == command.Username || x.Email == command.Email, ct);
-
-        if (exists)
-            return false;
-
         user.AddDomainEvent(new UserCreatedEvent(user.Id));
 
         await dbContext

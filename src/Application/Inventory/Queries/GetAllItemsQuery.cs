@@ -1,4 +1,5 @@
-using Application.Common.Interfaces;
+using System.ComponentModel;
+using Application.Abstractions;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -12,6 +13,7 @@ namespace Application.Inventory.Queries;
 public sealed record GetAllItemsQuery(int Start, int Count)
     : IRequest<IEnumerable<Item>>;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class GetAllItemsValidator : AbstractValidator<GetAllItemsQuery>
 {
     public GetAllItemsValidator()
@@ -24,6 +26,7 @@ internal sealed class GetAllItemsValidator : AbstractValidator<GetAllItemsQuery>
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class GetAllItemsQueryHandler(IAppDbContext dbContext)
     : IRequestHandler<GetAllItemsQuery, IEnumerable<Item>>
 {

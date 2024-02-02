@@ -1,4 +1,4 @@
-using Application.Common.Interfaces;
+using Application.Abstractions;
 using Domain.Aggregates;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

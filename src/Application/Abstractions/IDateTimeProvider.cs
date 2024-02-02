@@ -1,4 +1,4 @@
-namespace Application.Common.Interfaces;
+namespace Application.Abstractions;
 
 /// <summary>
 /// An interface for getting the current date and time.

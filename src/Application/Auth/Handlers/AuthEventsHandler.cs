@@ -1,8 +1,10 @@
+using System.ComponentModel;
 using Domain.Events;
 using MediatR;
 
 namespace Application.Auth.Handlers;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class AuthEventsHandler
     : INotificationHandler<UserCreatedEvent>,
         INotificationHandler<LoginEvent>

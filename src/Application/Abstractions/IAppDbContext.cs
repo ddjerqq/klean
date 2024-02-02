@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Application.Common.Interfaces;
+namespace Application.Abstractions;
 
 /// <summary>
 /// The <see cref="IAppDbContext" /> interface.

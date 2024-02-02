@@ -1,4 +1,5 @@
-using Application.Common.Interfaces;
+using System.ComponentModel;
+using Application.Abstractions;
 using Domain.Aggregates;
 using Domain.Events;
 using FluentValidation;
@@ -13,6 +14,7 @@ namespace Application.Auth.Commands;
 public sealed record UserLoginCommand(string Username, string Password, bool RememberMe)
     : IRequest<User?>;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
 {
     public UserLoginValidator()
@@ -30,6 +32,7 @@ internal sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
     }
 }
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 internal sealed class UserLoginHandler(
     IAppDbContext dbContext,
     IDateTimeProvider dateTimeProvider)

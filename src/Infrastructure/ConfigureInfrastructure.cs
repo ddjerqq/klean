@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using Application.Common.Interfaces;
+using Application.Abstractions;
 using Infrastructure;
 using Infrastructure.Idempotency;
 using Infrastructure.Services;

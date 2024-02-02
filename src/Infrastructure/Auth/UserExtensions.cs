@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Application.Common.Interfaces;
+using Application.Abstractions;
 using Domain.Aggregates;
 using Microsoft.IdentityModel.JsonWebTokens;
 

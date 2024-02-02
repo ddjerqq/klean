@@ -108,10 +108,10 @@ public class ConfigurePresentation : IHostingStartup
         // validation
         builder.ConfigureServices(services =>
         {
-            services.AddValidatorsFromAssembly(DomainAssembly.Assembly);
-            services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);
-            services.AddValidatorsFromAssembly(InfrastructureAssembly.Assembly);
-            services.AddValidatorsFromAssembly(PresentationAssembly.Assembly);
+            services.AddValidatorsFromAssembly(DomainAssembly.Assembly, includeInternalTypes: true);
+            services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly, includeInternalTypes: true);
+            services.AddValidatorsFromAssembly(InfrastructureAssembly.Assembly, includeInternalTypes: true);
+            services.AddValidatorsFromAssembly(PresentationAssembly.Assembly, includeInternalTypes: true);
 
             services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();

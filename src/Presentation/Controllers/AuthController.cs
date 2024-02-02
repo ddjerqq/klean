@@ -1,5 +1,5 @@
+using Application.Abstractions;
 using Application.Auth.Commands;
-using Application.Common.Interfaces;
 using Domain.Aggregates;
 using Domain.Dto;
 using Infrastructure.Auth;
