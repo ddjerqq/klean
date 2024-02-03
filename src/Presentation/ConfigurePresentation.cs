@@ -93,11 +93,14 @@ public class ConfigurePresentation : IHostingStartup
         {
             services.AddAntiforgery();
 
+            var webAppDomain = "WEB_APP__DOMAIN".FromEnv()
+                               ?? throw new Exception("WEB_APP__DOMAIN is not set in the environment");
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("WEB_APP__DOMAIN".FromEnv() ?? throw new Exception("WEB_APP__DOMAIN is not set in the environment"));
+                    policy.WithOrigins($"https://{webAppDomain}");
                     policy.AllowAnyHeader();
                     policy.AllowAnyMethod();
                     policy.AllowCredentials();

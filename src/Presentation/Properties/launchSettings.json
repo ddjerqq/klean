@@ -15,12 +15,12 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://0.0.0.0:7000;https://0.0.0.0:7001",
       "environmentVariables": {
-        "WEB_APP__DOMAIN": "https://localhost:5001",
+        "WEB_APP__DOMAIN": "localhost",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;Presentation",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
-        "JWT__ISSUER": "localhost",
-        "JWT__AUDIENCE": "localhost",
+        "JWT__ISSUER": "ddjerqq",
+        "JWT__AUDIENCE": "ddjerqq",
         "JWT__EXPIRATION": "60"
       }
     }

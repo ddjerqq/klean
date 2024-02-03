@@ -11,7 +11,7 @@ namespace Application.Auth.Commands;
 /// <summary>
 /// User login command
 /// </summary>
-public sealed record UserLoginCommand(string Username, string Password, bool RememberMe)
+public sealed record UserLoginCommand(string Username, string Password, bool RememberMe = false)
     : IRequest<User?>;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
