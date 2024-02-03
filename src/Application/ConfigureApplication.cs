@@ -28,5 +28,13 @@ public class ConfigureApplication : IHostingStartup
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
             });
         });
+
+        builder.ConfigureServices(services =>
+        {
+            services.AddAutoMapper(mapper =>
+            {
+                mapper.AddMaps(ApplicationAssembly.Assembly);
+            });
+        });
     }
 }

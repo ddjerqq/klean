@@ -1,6 +1,6 @@
 @page "/items"
-@using Domain.Dto
 @using Domain.ValueObjects
+@using Application.Dtos
 
 <PageTitle>Items</PageTitle>
 
@@ -36,7 +36,12 @@
             var type = new ItemType(id, name, price, min, max, $"https://api.qrserver.com/v1/create-qr-code/?color=0ea5e9&qzone=1&data={id}");
             var item = type.NewItem();
 
-            return new ItemDto(item.Id, item.Rarity, type);
+            return new ItemDto
+            {
+                Id = item.Id,
+                Rarity = item.Rarity,
+                ItemType = type,
+            };
         });
 
 }

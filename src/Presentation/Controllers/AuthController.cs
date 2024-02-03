@@ -1,7 +1,8 @@
 using Application.Abstractions;
 using Application.Auth.Commands;
+using Application.Dtos;
+using AutoMapper.QueryableExtensions;
 using Domain.Aggregates;
-using Domain.Dto;
 using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +71,7 @@ public sealed class AuthController : ApiController
             .AsNoTracking()
             .Include(x => x.Inventory)
             .ThenInclude(x => x.ItemType)
-            .Select(UserDto.ProjectFrom)
+            .ProjectTo<UserDto>(Mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == currentUserId, ct);
 
         return Ok(user);

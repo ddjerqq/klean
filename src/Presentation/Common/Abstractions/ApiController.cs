@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,4 +33,9 @@ public abstract class ApiController : ControllerBase
     /// Gets the DateTimeProvider
     /// </summary>
     protected IDateTimeProvider DateTimeProvider => GetService<IDateTimeProvider>();
+
+    /// <summary>
+    /// Gets the Automapper instance
+    /// </summary>
+    protected IMapper Mapper => GetService<IMapper>();
 }

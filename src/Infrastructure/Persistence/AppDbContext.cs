@@ -41,14 +41,6 @@ public sealed class AppDbContext(
     // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
-    /// <summary>
-    /// Seeds the test data, such as the default user, and some items.
-    /// </summary>
-    public void SeedTestData()
-    {
-
-    }
-
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {

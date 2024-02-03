@@ -32,7 +32,7 @@ public sealed class User : AggregateRootBase
     public string? ProfilePictureUrl { get; set; }
     
     /// <summary>
-    /// Gets the user's username.
+    /// Gets the user's wallet.
     /// </summary>
     public Wallet Wallet { get; init; } = default!;
 

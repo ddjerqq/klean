@@ -1,6 +1,6 @@
 @page "/users"
-@using Domain.Dto
 @using Domain.ValueObjects
+@using Application.Dtos
 
 <PageTitle>Users</PageTitle>
 
@@ -20,18 +20,22 @@
     private const int Count = 9;
 
     private static IEnumerable<ItemDto> ItemDtos => Enumerable.Range(0, Random.Shared.Next(0, 1_000))
-        .Select(i => new ItemDto(
-            Guid.NewGuid(),
-            Random.Shared.NextSingle(),
-            new ItemType("ITEM", "item", 10, 0, 1)));
+        .Select(i => new ItemDto
+        {
+            Id = Guid.NewGuid(),
+            Rarity = Random.Shared.NextSingle(),
+            ItemType = new ItemType("ITEM", "item", 10, 0, 1),
+        });
 
     private static IEnumerable<UserDto> UserDtos => Enumerable.Range(0, Count)
-        .Select(i => new UserDto(
-            Guid.NewGuid(),
-            $"user-{i}",
-            $"user-{i}@ddjerqq.xyz",
-            $"https://i.pravatar.cc/64?u={i:x}",
-            (decimal)Random.Shared.Next(0, 100_000_00) / 10,
-            ItemDtos));
+        .Select(i => new UserDto
+        {
+            Id = Guid.NewGuid(),
+            Username = $"user-{i}",
+            Email = $"user-{i}@ddjerqq.xyz",
+            ProfilePictureUrl = $"https://i.pravatar.cc/64?u={i:x}",
+            Balance = (decimal)Random.Shared.Next(0, 100_000_00) / 10,
+            Inventory = ItemDtos,
+        });
 
 }
