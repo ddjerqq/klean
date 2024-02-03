@@ -20,22 +20,34 @@ public sealed class AppDbContext(
     /// <summary>
     /// Gets the user repository
     /// </summary>
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<User> Users => Set<User>();
 
     /// <summary>
     /// Gets the item repository
     /// </summary>
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<Item> Items => Set<Item>();
 
     /// <summary>
     /// Gets the item type repository
     /// </summary>
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<ItemType> ItemTypes => Set<ItemType>();
 
     /// <summary>
     /// Gets the outbox message repository
     /// </summary>
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+
+    /// <summary>
+    /// Seeds the test data, such as the default user, and some items.
+    /// </summary>
+    public void SeedTestData()
+    {
+
+    }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)

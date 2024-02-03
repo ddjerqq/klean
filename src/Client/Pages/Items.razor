@@ -33,7 +33,7 @@
             var min = Math.Min(x, y);
             var max = Math.Max(x, y);
 
-            var type = new ItemType(id, name, price, min, max, $"https://loremflickr.com/200/200/cat?random={Guid.NewGuid():N}");
+            var type = new ItemType(id, name, price, min, max, $"https://api.qrserver.com/v1/create-qr-code/?color=0ea5e9&qzone=1&data={id}");
             var item = type.NewItem();
 
             return new ItemDto(item.Id, item.Rarity, type);

@@ -15,6 +15,11 @@ using (var scope = app.Services.CreateScope())
 
     if (!dbContext.Database.IsInMemory() && dbContext.Database.GetPendingMigrations().Any())
         dbContext.Database.Migrate();
+
+    if (builder.Environment.IsDevelopment())
+    {
+        dbContext.SeedTestData();
+    }
 }
 
 app.UseHttpLogging();
