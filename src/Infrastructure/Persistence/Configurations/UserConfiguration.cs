@@ -4,6 +4,7 @@ using Domain.Common.Extensions;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -20,7 +21,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
                 wallet => wallet.Balance,
                 balance => new Wallet(balance));
 
-        if ("ASPNETCORE_ENVIRONMENT".FromEnv() == "Development")
+        if ("ASPNETCORE_ENVIRONMENT".FromEnv() == Environments.Development)
             SeedData(builder);
     }
 

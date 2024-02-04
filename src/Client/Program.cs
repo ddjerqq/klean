@@ -15,9 +15,10 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddAuthorizationCore();
 
-var webAppDomain = "WEB_APP__DOMAIN".FromEnv()
-                   ?? throw new Exception("WEB_APP__DOMAIN is not set in the environment");
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(webAppDomain) });
+var webAppDomain = builder.Configuration["WEB_APP__DOMAIN"]
+                   ?? throw new Exception("WEB_APP__DOMAIN is not set in wwwroot/appsettings.json");
+
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri($"https://{webAppDomain}") });
 
 builder.Services.AddScoped<JwtAuthManager>();
 builder.Services.AddScoped<IAuthService, JwtAuthManager>(sp => sp.GetRequiredService<JwtAuthManager>());

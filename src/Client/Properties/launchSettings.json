@@ -5,7 +5,10 @@
       "commandName": "Executable",
       "workingDirectory": "$(ProjectDir)",
       "executablePath": "dotnet",
-      "commandLineArgs": "watch run debug --launch-profile development"
+      "commandLineArgs": "watch run debug --launch-profile development --non-interactive",
+      "environmentVariables": {
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "1"
+      }
     },
     "development": {
       "commandName": "Project",
@@ -16,7 +19,8 @@
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "http://0.0.0.0:5000;https://0.0.0.0:5001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "WEB_APP__DOMAIN": "localhost"
       }
     }
   }

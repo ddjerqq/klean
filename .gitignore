@@ -4,3 +4,4 @@
 **/obj/*
 **/*.min.*
 **/package-lock.json
+**/.env

@@ -1,0 +1,35 @@
+﻿version: "3.4"
+
+services:
+#  postgres:
+#    image: postgres:latest
+#    container_name: postgres
+#    ports:
+#      - "5432:5432"
+#    env_file:
+#      - .env
+#    volumes:
+#      - ./.postgres:/var/lib/postgresql/data
+#    restart: always
+
+  server:
+    build:
+      context: ./Presentation/
+      dockerfile: Dockerfile
+    container_name: server
+#    depends_on:
+#      - postgres
+    ports:
+      - "80:3000"
+      - "443:3001"
+    env_file:
+      - .env
+    environment:
+        # Development, Staging, Production
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=Domain;Application;Infrastructure;Presentation
+      - ASPNETCORE_URLS=http://0.0.0.0:3000;https://0.0.0.0:3001
+    volumes:
+      - ./.temp-keys:/root/.aspnet/DataProtection-Keys
+      - ./.aspnet/https:/https/:ro
+    restart: always
