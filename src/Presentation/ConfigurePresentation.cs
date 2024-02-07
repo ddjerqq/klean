@@ -144,7 +144,7 @@ public class ConfigurePresentation : IHostingStartup
                         Contact = new OpenApiContact
                         {
                             Name = "Klean",
-                            Email = "g@ddjerqq.xyz",
+                            Email = "ddjerqq@gmail.com",
                             Url = new Uri("https://github.com/ddjerqq/klean"),
                         },
                     });

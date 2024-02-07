@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Client;
 using Client.Services;
 using Client.Services.Interfaces;
-using Domain.Common.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -15,10 +14,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddAuthorizationCore();
 
-var webAppDomain = builder.Configuration["WEB_APP__DOMAIN"]
-                   ?? throw new Exception("WEB_APP__DOMAIN is not set in wwwroot/appsettings.json");
-
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri($"https://{webAppDomain}") });
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<JwtAuthManager>();
 builder.Services.AddScoped<IAuthService, JwtAuthManager>(sp => sp.GetRequiredService<JwtAuthManager>());

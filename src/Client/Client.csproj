@@ -21,26 +21,18 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
         <PackageReference Include="Blazor.Heroicons" Version="2.1.2"/>
         <PackageReference Include="Blazored.LocalStorage" Version="4.4.0"/>
     </ItemGroup>
 
+    <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
+    </ItemGroup>
+
     <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
         
         <Content Update="Layout\ThemeToggle.razor.js">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        
-        <Content Update="wwwroot\appsettings.Development.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        
-        <Content Update="wwwroot\appsettings.Production.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         
         <Content Update="wwwroot\appsettings.json">
@@ -53,8 +45,8 @@
         <ProjectReference Include="..\Domain\Domain.csproj"/>
     </ItemGroup>
 
-    <Target Name="BuildCSS" BeforeTargets="Compile">
-        <Exec Command="npm run build"
+    <Target Name="BuildCSS" BeforeTargets="Compile" Condition=" '$(Configuration)' == 'Debug' ">
+        <Exec Command="tailwindcss -i ./wwwroot/app.css -o ./wwwroot/app.min.css --minify"
               ContinueOnError="true">
             <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
         </Exec>

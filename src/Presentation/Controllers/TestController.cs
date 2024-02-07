@@ -12,12 +12,12 @@ namespace Presentation.Controllers;
 /// <summary>
 /// controller for authentication
 /// </summary>
-public sealed class HomeController : ApiController
+public sealed class TestController : ApiController
 {
     /// <summary>
     /// Get all users
     /// </summary>
-    [HttpGet("/users")]
+    [HttpGet("users")]
     public async Task<IActionResult> Users(CancellationToken ct)
     {
         var users = await DbContext.Set<User>()
@@ -30,7 +30,7 @@ public sealed class HomeController : ApiController
     /// <summary>
     /// Get all items
     /// </summary>
-    [HttpGet("/items")]
+    [HttpGet("items")]
     public async Task<IActionResult> Items(CancellationToken ct)
     {
         var users = await DbContext.Set<Item>()
@@ -42,7 +42,7 @@ public sealed class HomeController : ApiController
     /// <summary>
     /// Get all item types
     /// </summary>
-    [HttpGet("/item-types")]
+    [HttpGet("item-types")]
     public async Task<IActionResult> ItemTypes(CancellationToken ct)
     {
         var users = await DbContext.Set<ItemType>()

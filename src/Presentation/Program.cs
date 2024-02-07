@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseStaticWebAssets();
 
 var app = builder.Build();
 
@@ -18,7 +19,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpLogging();
-app.MapHealthChecks("/health");
 
 if (app.Environment.IsDevelopment())
 {
@@ -27,8 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-if (app.Environment.IsProduction())
+else
 {
     app.UseExceptionHandler("/error", createScopeForErrors: true);
     app.UseHsts();
@@ -37,22 +36,29 @@ if (app.Environment.IsProduction())
 
 app.UseRouting();
 app.UseRequestLocalization();
-app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAntiforgery();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseResponseCompression();
-    app.UseResponseCaching();
-}
+app.UseBlazorFrameworkFiles();
+
+// compress, then cache, then serve the static files
+app.UseResponseCompression();
+app.UseResponseCaching();
+app.UseStaticFiles();
 
 app.UseIdempotency();
 
-app.MapControllers();
-app.MapDefaultControllerRoute();
+#pragma warning disable ASP0014
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapSwagger();
+    endpoints.MapHealthChecks("/health");
+    endpoints.MapControllers();
+    endpoints.MapDefaultControllerRoute();
+    endpoints.MapFallbackToFile("index.html");
+});
 
 app.Run();
