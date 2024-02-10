@@ -26,11 +26,10 @@
     </ItemGroup>
 
     <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all"/>
     </ItemGroup>
 
     <ItemGroup>
-        
         <Content Update="Layout\ThemeToggle.razor.js">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>

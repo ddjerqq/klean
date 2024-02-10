@@ -1,0 +1,14 @@
+﻿@page "/me"
+
+<AuthorizeView>
+    <Authorized>
+        <PageTitle>@context.User.Identity?.Name's profile</PageTitle>
+
+        <div class="flex flex-col gap-3 text-center p-5 text-black dark:text-white">
+            @foreach (var claim in context.User.Claims)
+            {
+                <p>@claim.Type: @claim.Value</p>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>

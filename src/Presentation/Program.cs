@@ -18,14 +18,14 @@ using (var scope = app.Services.CreateScope())
         dbContext.Database.Migrate();
 }
 
-app.UseHttpLogging();
-
 if (app.Environment.IsDevelopment())
 {
+    app.UseHttpLogging();
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseWebAssemblyDebugging();
 }
 else
 {

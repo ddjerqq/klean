@@ -27,9 +27,9 @@ public static class Jwt
         },
     };
 
-    internal static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnv("ddjerqq");
+    internal static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnv("klean");
 
-    internal static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("ddjerqq");
+    internal static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("klean");
 
     internal static readonly string Key = "JWT__KEY".FromEnv() ?? throw new Exception("JWT__KEY is not set");
 

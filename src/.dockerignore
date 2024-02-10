@@ -1,0 +1,7 @@
+**/.idea/*
+**/node_modules/*
+**/bin/*
+**/obj/*
+**/*.min.*
+**/package-lock.json
+**/.env
