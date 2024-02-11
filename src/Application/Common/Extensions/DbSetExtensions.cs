@@ -11,9 +11,7 @@ internal static class DbSetExtensions
         try
         {
             if (entity is not null)
-            {
                 return dbSet.Update(entity);
-            }
         }
         catch (InvalidOperationException)
         {

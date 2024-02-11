@@ -7,10 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Inventory.Commands;
 
-
-/// <summary>
-/// Command for creating an item type.
-/// </summary>
 public sealed record CreateItemTypeCommand(string Id, string Name, decimal Price, float MinRarity, float MaxRarity)
     : IRequest<ItemType?>
 {
@@ -21,7 +17,7 @@ public sealed record CreateItemTypeCommand(string Id, string Name, decimal Price
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class CreateItemTypeValidator : AbstractValidator<CreateItemTypeCommand>
+public sealed class CreateItemTypeValidator : AbstractValidator<CreateItemTypeCommand>
 {
     public CreateItemTypeValidator(IAppDbContext dbContext)
     {

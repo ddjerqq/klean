@@ -9,17 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Auth.Commands;
 
-/// <summary>
-/// User register command
-/// </summary>
 public sealed record UserRegisterCommand(string Username, string Email, string Password)
     : IRequest<bool>
 {
     private User? _user;
 
-    /// <summary>
-    /// The created user
-    /// </summary>
     public User CreateUser()
     {
         if (_user is not null)
@@ -39,7 +33,7 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
+public sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
 {
     public UserRegisterValidator(IAppDbContext dbContext)
     {

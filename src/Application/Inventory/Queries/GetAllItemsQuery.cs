@@ -7,14 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Inventory.Queries;
 
-/// <summary>
-/// The query to get all items with pagination
-/// </summary>
 public sealed record GetAllItemsQuery(int Start, int Count)
     : IRequest<IEnumerable<Item>>;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class GetAllItemsValidator : AbstractValidator<GetAllItemsQuery>
+public sealed class GetAllItemsValidator : AbstractValidator<GetAllItemsQuery>
 {
     public GetAllItemsValidator()
     {

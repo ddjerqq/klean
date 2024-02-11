@@ -11,15 +11,6 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DebugType>full</DebugType>
-        <DocumentationFile>bin\Debug\Application.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\Application.xml</DocumentationFile>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

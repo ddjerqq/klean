@@ -8,14 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Auth.Commands;
 
-/// <summary>
-/// User login command
-/// </summary>
-public sealed record UserLoginCommand(string Username, string Password, bool RememberMe = false)
-    : IRequest<User?>;
+public sealed record UserLoginCommand(string Username, string Password, bool RememberMe = false) : IRequest<User?>
+{
+    public string Username { get; set; } = Username;
+
+    public string Password { get; set; } = Password;
+
+    public bool RememberMe { get; set; } = RememberMe;
+}
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
+public sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
 {
     public UserLoginValidator()
     {
@@ -33,9 +36,7 @@ internal sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class UserLoginHandler(
-    IAppDbContext dbContext,
-    IDateTimeProvider dateTimeProvider)
+internal sealed class UserLoginHandler(IAppDbContext dbContext, IDateTimeProvider dateTimeProvider)
     : IRequestHandler<UserLoginCommand, User?>
 {
     public async Task<User?> Handle(UserLoginCommand command, CancellationToken ct)

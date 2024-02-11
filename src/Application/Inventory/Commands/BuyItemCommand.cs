@@ -8,13 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Inventory.Commands;
 
-/// <summary>
-/// Command for buying an item.
-/// </summary>
 public sealed record BuyItemCommand(string ItemTypeId) : IRequest<Item?>;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class BuyItemValidator : AbstractValidator<BuyItemCommand>
+public sealed class BuyItemValidator : AbstractValidator<BuyItemCommand>
 {
     public BuyItemValidator(IAppDbContext dbContext, ICurrentUserAccessor currentUserAccessor)
     {

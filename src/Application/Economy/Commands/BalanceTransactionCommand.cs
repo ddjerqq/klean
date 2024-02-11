@@ -7,13 +7,10 @@ using MediatR;
 
 namespace Application.Economy.Commands;
 
-/// <summary>
-/// Base balance transaction command.
-/// </summary>
 public sealed record BalanceTransactionCommand(User Sender, User Receiver, decimal Amount) : IRequest<bool>;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class BalanceTransactionValidator : AbstractValidator<BalanceTransactionCommand>
+public sealed class BalanceTransactionValidator : AbstractValidator<BalanceTransactionCommand>
 {
     public BalanceTransactionValidator()
     {

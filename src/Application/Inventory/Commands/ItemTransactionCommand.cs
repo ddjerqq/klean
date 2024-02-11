@@ -8,13 +8,10 @@ using MediatR;
 
 namespace Application.Inventory.Commands;
 
-/// <summary>
-/// The base item transaction command.
-/// </summary>
 public sealed record ItemTransactionCommand(User Sender, User Receiver, Item Item) : IRequest<bool>;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ItemTransactionValidator : AbstractValidator<ItemTransactionCommand>
+public sealed class ItemTransactionValidator : AbstractValidator<ItemTransactionCommand>
 {
     public ItemTransactionValidator()
     {

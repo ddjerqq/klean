@@ -10,11 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 
-/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigureApplication : IHostingStartup
 {
-    /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
