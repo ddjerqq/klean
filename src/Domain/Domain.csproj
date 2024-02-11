@@ -11,15 +11,6 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DebugType>full</DebugType>
-        <DocumentationFile>bin\Debug\Domain.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\Domain.xml</DocumentationFile>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="BCrypt-Official" Version="0.1.109"/>
         <Using Include="BCrypt.Net.BCrypt" Alias="BC" />

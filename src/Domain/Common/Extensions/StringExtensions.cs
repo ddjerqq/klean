@@ -2,14 +2,8 @@ using System.Text;
 
 namespace Domain.Common.Extensions;
 
-/// <summary>
-/// This is an example of how to implement extensions in the codebase
-/// </summary>
 public static class StringExtensions
 {
-    /// <summary>
-    /// Converts a string to snake case.
-    /// </summary>
     public static string ToSnakeCase(this string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -37,15 +31,9 @@ public static class StringExtensions
         return sb.ToString();
     }
 
-    /// <summary>
-    /// Gets a value from the environment.
-    /// </summary>
     public static string? FromEnv(this string key) =>
         Environment.GetEnvironmentVariable(key);
 
-    /// <summary>
-    /// Gets a value from the environment. If the value is not found, the default value is returned.
-    /// </summary>
     public static string FromEnv(this string key, string value) =>
         Environment.GetEnvironmentVariable(key) ?? value;
 

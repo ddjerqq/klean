@@ -3,15 +3,9 @@ using Domain.Entities;
 
 namespace Domain.Events;
 
-/// <summary>
-/// Event for when an item is sold.
-/// </summary>
 public sealed record ItemSoldEvent
     : IDomainEvent
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ItemSoldEvent"/> class.
-    /// </summary>
     public ItemSoldEvent(Item item)
     {
         Item = new Item
@@ -27,13 +21,7 @@ public sealed record ItemSoldEvent
         };
     }
 
-    /// <summary>
-    /// Gets the time the item was sold.
-    /// </summary>
     public DateTime SoldAt { get; set; }
 
-    /// <summary>
-    /// Gets the item that was sold.
-    /// </summary>
     public Item Item { get; init; }
 }
