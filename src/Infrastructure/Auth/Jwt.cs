@@ -8,9 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Auth;
 
-/// <summary>
-/// Jwt helper class, used to generate, validate and configure JWT tokens
-/// </summary>
 public static class Jwt
 {
     internal static readonly JwtSecurityTokenHandler Handler = new();
@@ -49,13 +46,6 @@ public static class Jwt
         ValidAlgorithms = [SecurityAlgorithms.HmacSha256],
     };
 
-    /// <summary>
-    /// Generates a JWT token from the claims
-    /// </summary>
-    /// <param name="claims">The claims to include in the JWT token</param>
-    /// <param name="expiration">How long the token will be valid for</param>
-    /// <param name="dateTimeProvider">The date time provider</param>
-    /// <returns>The generated JWT token</returns>
     public static string GenerateToken(
         IEnumerable<Claim> claims,
         TimeSpan expiration,
@@ -71,9 +61,6 @@ public static class Jwt
         return Handler.WriteToken(token);
     }
 
-    /// <summary>
-    /// Verifies the validity of the token
-    /// </summary>
     public static bool ValidateToken(string token)
     {
         try

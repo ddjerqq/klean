@@ -8,11 +8,9 @@ using Quartz;
 
 namespace Infrastructure;
 
-/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigureBackgroundJobs : IHostingStartup
 {
-    /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>

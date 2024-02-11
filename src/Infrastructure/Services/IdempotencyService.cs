@@ -2,16 +2,13 @@ using Infrastructure.Services.Interfaces;
 
 namespace Infrastructure.Services;
 
-/// <inheritdoc />
 public sealed class IdempotencyService : IIdempotencyService
 {
     private static readonly TimeSpan InvalidationTime = TimeSpan.FromMinutes(10);
     private readonly HashSet<Guid> _keys = [];
 
-    /// <inheritdoc />
     public bool ContainsKey(Guid key) => _keys.Contains(key);
 
-    /// <inheritdoc />
     public void AddKey(Guid key)
     {
         _keys.Add(key);

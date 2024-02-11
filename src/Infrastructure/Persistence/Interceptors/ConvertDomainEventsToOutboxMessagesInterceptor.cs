@@ -7,10 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Infrastructure.Persistence.Interceptors;
 
-/// <inheritdoc />
 public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
 {
-    /// <inheritdoc />
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,

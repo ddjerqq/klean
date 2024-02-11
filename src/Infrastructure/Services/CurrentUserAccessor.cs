@@ -6,11 +6,9 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Infrastructure.Services;
 
-/// <inheritdoc />
 public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IAppDbContext dbContext)
     : ICurrentUserAccessor
 {
-    /// <inheritdoc />
     public Guid? CurrentUserId
     {
         get
@@ -26,7 +24,6 @@ public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor
         }
     }
 
-    /// <inheritdoc />
     public async Task<User?> GetCurrentUserAsync(CancellationToken ct = default)
     {
         var id = CurrentUserId;

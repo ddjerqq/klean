@@ -11,10 +11,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure;
 
-/// <inheritdoc />
 public class ConfigurePersistence : IHostingStartup
 {
-    /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
         builder.ConfigureServices((context, services) =>

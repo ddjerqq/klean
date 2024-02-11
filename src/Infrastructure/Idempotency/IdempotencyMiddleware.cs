@@ -6,13 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Idempotency;
 
-/// <summary>
-/// The <see cref="IdempotencyMiddleware" /> class.
-/// Ensures that requests with the same idempotency key are not processed more than once.
-/// </summary>
 public sealed class IdempotencyMiddleware(IIdempotencyService idempotencyService) : IMiddleware
 {
-    /// <inheritdoc />
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         var endpoint = context.GetEndpoint();
@@ -51,14 +46,8 @@ public sealed class IdempotencyMiddleware(IIdempotencyService idempotencyService
     }
 }
 
-/// <summary>
-/// The <see cref="IdempotencyMiddlewareExtensions" /> class.
-/// </summary>
 public static class IdempotencyMiddlewareExtensions
 {
-    /// <summary>
-    /// Adds the idempotency services to the service collection.
-    /// </summary>
     public static IServiceCollection AddIdempotency(this IServiceCollection services)
     {
         services.AddScoped<IdempotencyMiddleware>();
@@ -67,9 +56,6 @@ public static class IdempotencyMiddlewareExtensions
         return services;
     }
 
-    /// <summary>
-    /// Adds the idempotency middleware to the application pipeline.
-    /// </summary>
     public static IApplicationBuilder UseIdempotency(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<IdempotencyMiddleware>();

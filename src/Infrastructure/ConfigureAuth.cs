@@ -10,11 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigureAuth : IHostingStartup
 {
-    /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>

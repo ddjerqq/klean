@@ -7,10 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Infrastructure.Persistence.Interceptors;
 
-/// <inheritdoc />
 public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
 {
-    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
@@ -19,7 +17,6 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         return base.SavingChanges(eventData, result);
     }
 
-    /// <inheritdoc />
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,

@@ -9,9 +9,6 @@ using Quartz;
 
 namespace Infrastructure.BackgroundJobs;
 
-/// <summary>
-/// The <see cref="ProcessOutboxMessagesBackgroundJob" /> class.
-/// </summary>
 [DisallowConcurrentExecution]
 public sealed class ProcessOutboxMessagesBackgroundJob(
     IPublisher publisher,
@@ -29,9 +26,6 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
         },
     };
 
-    /// <summary>
-    /// Executes the job.
-    /// </summary>
     public async Task Execute(IJobExecutionContext context)
     {
         var messages = await dbContext

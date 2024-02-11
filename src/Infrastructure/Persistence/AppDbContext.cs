@@ -10,38 +10,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-/// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext"/>
+// ReSharper disable ReturnTypeCanBeEnumerable.Global
 public sealed class AppDbContext(
     DbContextOptions<AppDbContext> options,
     EntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor,
     ConvertDomainEventsToOutboxMessagesInterceptor convertDomainEventsToOutboxMessagesInterceptor)
     : DbContext(options), IAppDbContext
 {
-    /// <summary>
-    /// Gets the user repository
-    /// </summary>
-    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<User> Users => Set<User>();
 
-    /// <summary>
-    /// Gets the item repository
-    /// </summary>
-    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<Item> Items => Set<Item>();
 
-    /// <summary>
-    /// Gets the item type repository
-    /// </summary>
-    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<ItemType> ItemTypes => Set<ItemType>();
 
-    /// <summary>
-    /// Gets the outbox message repository
-    /// </summary>
-    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
-    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
@@ -49,7 +32,6 @@ public sealed class AppDbContext(
         SnakeCaseRename(builder);
     }
 
-    /// <inheritdoc />
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(auditableEntitySaveChangesInterceptor);
@@ -57,7 +39,6 @@ public sealed class AppDbContext(
         base.OnConfiguring(optionsBuilder);
     }
 
-    /// <inheritdoc />
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
         builder
