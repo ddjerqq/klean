@@ -1,0 +1,41 @@
+﻿@page "/auth"
+
+<div class="flex flex-col justify-center">
+    @switch (State)
+    {
+        case AuthModalState.Login:
+            <Login ChangeAuthState="ChangeAuthState"/>
+            break;
+
+        case AuthModalState.Register:
+            <Register ChangeAuthState="ChangeAuthState"/>
+            break;
+
+        case AuthModalState.Recover:
+            <Recover ChangeAuthState="ChangeAuthState"/>
+            break;
+
+        case AuthModalState.TwoFactor:
+            <h1>2fa</h1>
+            break;
+
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+</div>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public AuthModalState State { get; set; } = AuthModalState.Login;
+
+    [Parameter, EditorRequired]
+    public EventCallback<AuthModalState> OnStateChange { get; set; }
+
+    public async Task ChangeAuthState(AuthModalState state)
+    {
+        State = state;
+        await OnStateChange.InvokeAsync(state);
+    }
+}
+

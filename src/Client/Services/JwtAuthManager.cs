@@ -6,20 +6,16 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Client.Services;
 
-/// <inheritdoc cref="Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider" />
-public sealed class JwtAuthManager(HttpClient http)
-    : AuthenticationStateProvider, IAuthService
+public sealed class JwtAuthManager(HttpClient http) : AuthenticationStateProvider, IAuthService
 {
     private static ClaimsPrincipal EmptyPrincipal => new(new ClaimsIdentity());
 
-    /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var claimsPrincipal = await GetUserClaimsAsync();
         return new AuthenticationState(claimsPrincipal);
     }
 
-    /// <inheritdoc />
     public async Task LoginAsync(UserLoginCommand command, CancellationToken ct = default)
     {
         var resp = await http.PostAsJsonAsync("api/auth/login", command, ct);
@@ -27,7 +23,6 @@ public sealed class JwtAuthManager(HttpClient http)
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
-    /// <inheritdoc />
     public async Task RegisterAsync(UserRegisterCommand command, CancellationToken ct = default)
     {
         var resp = await http.PostAsJsonAsync("api/auth/register", command, ct);
@@ -35,7 +30,6 @@ public sealed class JwtAuthManager(HttpClient http)
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
-    /// <inheritdoc />
     public async Task LogoutAsync(CancellationToken ct = default)
     {
         var resp = await http.PostAsync("api/auth/logout", null, ct);
