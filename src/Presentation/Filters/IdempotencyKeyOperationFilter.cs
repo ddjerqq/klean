@@ -5,12 +5,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Presentation.Filters;
 
-/// <summary>
-/// Adds the X-Idempotency-Key header to the swagger documentation
-/// </summary>
 public sealed class IdempotencyKeyOperationFilter : IOperationFilter
 {
-    /// <inheritdoc />
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         operation.Parameters ??= new List<OpenApiParameter>();

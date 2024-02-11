@@ -20,13 +20,11 @@ using ZymLabs.NSwag.FluentValidation;
 
 namespace Presentation;
 
-/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigurePresentation : IHostingStartup
 {
     private static readonly string[] CompressionTypes = ["application/octet-stream"];
 
-    /// <inheritdoc />
     public void Configure(IWebHostBuilder builder)
     {
         // general api services

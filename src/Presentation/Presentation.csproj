@@ -9,15 +9,6 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DebugType>full</DebugType>
-        <DocumentationFile>bin\Debug\Presentation.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\Presentation.xml</DocumentationFile>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="BCrypt-Official" Version="0.1.109"/>
         <Using Include="BCrypt.Net.BCrypt" Alias="BC"/>

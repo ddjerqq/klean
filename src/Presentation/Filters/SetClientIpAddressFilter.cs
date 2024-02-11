@@ -5,12 +5,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Presentation.Filters;
 
-/// <summary>
-/// A filter that sets the X-Client-IP to the request
-/// </summary>
 public sealed class SetClientIpAddressFilter : IActionFilter
 {
-    /// <inheritdoc />
     [SuppressMessage("Usage", "ASP0019", Justification = "This is a filter, not a controller action")]
     public void OnActionExecuting(ActionExecutingContext context)
     {
@@ -23,7 +19,6 @@ public sealed class SetClientIpAddressFilter : IActionFilter
             context.HttpContext.Request.Headers.Add("X-Client-IP", ipAddress.ToString());
     }
 
-    /// <inheritdoc />
     public void OnActionExecuted(ActionExecutedContext context)
     {
     }
