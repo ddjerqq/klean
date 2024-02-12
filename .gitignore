@@ -5,3 +5,5 @@
 **/*.min.*
 **/package-lock.json
 **/.env
+**/.aspnet/*
+**/.temp-keys/*

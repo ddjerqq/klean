@@ -2,12 +2,28 @@
 @inject IAuthService AuthService
 
 <div class="flex flex-row justify-around gap-4 p-4 border-2 rounded-md backdrop-blur-[2px] text-black dark:text-white">
-    <EditForm Model="Command" OnValidSubmit="LoginAsync" novalidate
+    <EditForm Model="Command" OnValidSubmit="RegisterAsync" novalidate
               class="flex flex-col justify-between">
         <DataAnnotationsValidator/>
         <FluentValidationValidator/>
 
         <div class="flex flex-col gap-2">
+            <div class="flex flex-col w-80 text-start">
+                <label for="email" class="font-semibold">
+                    Email
+                </label>
+
+                <InputText
+                    @bind-Value="Command.Email"
+                    class="peer bg-transparent rounded-md border-2 border-gray-300 dark:border-white p-1"
+                    id="email"
+                    type="email"
+                    autocomplete="email"
+                    required autofocus/>
+                <ValidationMessage For="@(() => Command.Email)"
+                                   class="hidden peer-[.invalid]:block text-xs text-red-700 dark:text-red-300 font-bold"/>
+            </div>
+
             <div class="flex flex-col w-80 text-start">
                 <label for="username" class="font-semibold">
                     Username
@@ -41,24 +57,24 @@
             </div>
 
             <button type="submit" class="p-2 border-2 text-green-500 border-green-500 w-full rounded-md hover:bg-gray-300 dark:hover:bg-gray-700">
-                Login
+                Register
             </button>
         </div>
 
         <div class="col-auto px-0 mt-1" aria-label="register">
-            Don't have an account?
-            <a class="underline text-blue-500 cursor-pointer" @onclick="@ChangeAuthStateToRegisterAsync">
-                Register
+            Already have an account?
+            <a class="underline text-blue-500 cursor-pointer" @onclick="@ChangeAuthStateToLoginAsync">
+                Login
             </a>
         </div>
     </EditForm>
 
     <div class="col-4 d-none d-lg-flex m-1">
         <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?qzone=1&data=https://youtu.be/dQw4w9WgXcQ"
-                 alt="scan to login"
-                 width="200"
-                 height="200"
+            <img src="https://via.placeholder.com/250?text=Klean"
+                 alt="klean"
+                 width="250"
+                 height="250"
                  class="rounded-md border-2 border-gray-300"/>
         </div>
     </div>
@@ -69,15 +85,15 @@
     [Parameter]
     public EventCallback<AuthModalState> ChangeAuthState { get; set; }
 
-    public UserLoginCommand Command { get; } = new(string.Empty, string.Empty);
+    public UserRegisterCommand Command { get; } = new(string.Empty, string.Empty, string.Empty);
 
-    private async Task ChangeAuthStateToRegisterAsync()
+    private async Task ChangeAuthStateToLoginAsync()
     {
-        await ChangeAuthState.InvokeAsync(AuthModalState.Register);
+        await ChangeAuthState.InvokeAsync(AuthModalState.Login);
     }
 
-    private async Task LoginAsync()
+    private async Task RegisterAsync()
     {
-        await AuthService.LoginAsync(Command, CancellationToken);
+        await AuthService.RegisterAsync(Command, CancellationToken);
     }
 }

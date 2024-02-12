@@ -14,6 +14,12 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
 {
     private User? _user;
 
+    public string Username { get; set; } = default!;
+
+    public string Email { get; set; } = default!;
+
+    public string Password { get; set; } = default!;
+
     public User CreateUser()
     {
         if (_user is not null)
