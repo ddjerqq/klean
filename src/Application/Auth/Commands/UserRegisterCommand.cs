@@ -9,16 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Auth.Commands;
 
-public sealed record UserRegisterCommand(string Username, string Email, string Password)
-    : IRequest<bool>
+public sealed record UserRegisterCommand(string Username, string Email, string Password) : IRequest<bool>
 {
     private User? _user;
 
-    public string Username { get; set; } = default!;
+    public string Username { get; set; } = Username;
 
-    public string Email { get; set; } = default!;
+    public string Email { get; set; } = Email;
 
-    public string Password { get; set; } = default!;
+    public string Password { get; set; } = Password;
 
     public User CreateUser()
     {
@@ -41,7 +40,7 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
 [EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class UserRegisterValidator : AbstractValidator<UserRegisterCommand>
 {
-    public UserRegisterValidator(IAppDbContext dbContext)
+    public UserRegisterValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 
@@ -55,6 +54,14 @@ public sealed class UserRegisterValidator : AbstractValidator<UserRegisterComman
             .NotEmpty()
             .EmailAddress();
 
+        RuleFor(x => x.Password)
+            .NotEmpty()
+            .Matches(@"^.{8,256}$")
+            .WithMessage("Password must be at least 8 characters long");
+    }
+
+    public UserRegisterValidator(IAppDbContext dbContext)
+    {
         RuleSet("async", () =>
         {
             RuleFor(x => x.Email)
@@ -68,10 +75,6 @@ public sealed class UserRegisterValidator : AbstractValidator<UserRegisterComman
                 .WithMessage("Email is already in use.");
         });
 
-        RuleFor(x => x.Password)
-            .NotEmpty()
-            .Matches(@"^.{8,256}$")
-            .WithMessage("Password must be at least 8 characters long");
     }
 }
 

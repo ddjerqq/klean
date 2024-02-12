@@ -14,17 +14,26 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "hotReloadEnabled": true,
-      "useSSL": true,
-      "httpPort": 80,
-      "sslPort": 443,
-      "launchUrl": "https://localhost",
-      "launchBrowser": false,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "http://0.0.0.0:80;https://0.0.0.0:443",
       "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "WEB_APP__DOMAIN": "localhost",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;Presentation",
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
+        "JWT__ISSUER": "ddjerqq",
+        "JWT__AUDIENCE": "ddjerqq",
+        "JWT__EXPIRATION": "60"
+      }
+    },
+    "production": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://0.0.0.0:80;https://0.0.0.0:443",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "WEB_APP__DOMAIN": "localhost",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;Presentation",
         "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
         "JWT__ISSUER": "ddjerqq",
         "JWT__AUDIENCE": "ddjerqq",
