@@ -1,5 +1,7 @@
 # ASP.NET Clean Architecture Template
 
+## See the front-end in action [here](https://ddjerqq.github.io/klean)
+
 A ready-to-use template for ASP.NET Core with Domain Driven Design - clean architecture, 
 CQRS pattern, Blazor WASM with TailwindCSS front-end, and much more freebies.
 
