@@ -8,7 +8,7 @@ env:
   NETCORE_VERSION: "8.0.x"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  SRC: "/home/runner/work/klean/src"
+  SRC: "/home/runner/work/klean/klean/src"
 
 jobs:
   build-and-deploy:
@@ -25,8 +25,6 @@ jobs:
         run: |
           wget https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 -O /usr/local/bin/tailwindcss
           chmod +x /usr/local/bin/tailwindcss
-          pwd
-          ls -l ${{ env.SRC }}
           cd ${{ env.SRC }}/Client
           tailwindcss --input ./wwwroot/app.css --output ./wwwroot/app.min.css --minify
 
