@@ -40,10 +40,15 @@ jobs:
       - name: Publish 📦
         run: dotnet publish ${{ env.SRC }}/Presentation --configuration Release --output dist
 
+      # https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
       # Folders starting with _ are handled as jekyll. This file will prevent that.
       # Because blazor framework uses _framework folder, we need to prevent jekyll from processing it.
       - name: Create .nojekyll file 📁
         run: touch dist/wwwroot/.nojekyll
+
+      - name: Copy index.html to 404.html 📄
+        run: |
+          cp dist/wwwroot/index.html dist/wwwroot/404.html  
 
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
