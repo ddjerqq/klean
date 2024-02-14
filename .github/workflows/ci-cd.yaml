@@ -5,9 +5,10 @@ on:
     branches: [ "master" ]
 
 env:
-  NETCORE_VERSION: '8.0.x'
+  NETCORE_VERSION: "8.0.x"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  SRC: "/home/runner/work/klean/src"
 
 jobs:
   build-and-deploy:
@@ -24,16 +25,13 @@ jobs:
         run: |
           wget https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 -O /usr/local/bin/tailwindcss
           chmod +x /usr/local/bin/tailwindcss
-          cd ${{ env.WEBAPP_PATH }}
-          ls -al
-          ls -al work
-          pwd
-          tailwindcss --input ./src/Client/wwwroot/app.css --output ./src/Client/wwwroot/app.min.css --minify
+          cd ${{ env.SRC }}/Client
+          tailwindcss --input ./wwwroot/app.css --output ./wwwroot/app.min.css --minify
 
       - name: Change base href in App.razor to match gh repo name 🏷️
         run: |
           REPO_NAME=$(echo "${{ github.repository }}" | awk -F '/' '{print $NF}')
-          sed -i 's/<base href="\/" \/>/<base href="\/'$REPO_NAME'\/" \/>/g' ./src/Client/wwwroot/index.html
+          sed -i 's/<base href="\/" \/>/<base href="\/'$REPO_NAME'\/" \/>/g' ${{ env.SRC }}/Client/wwwroot/index.html
 
       - name: Restore packages 📦
         run: dotnet restore
