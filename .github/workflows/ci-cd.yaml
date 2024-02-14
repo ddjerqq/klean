@@ -26,6 +26,7 @@ jobs:
           chmod +x /usr/local/bin/tailwindcss
           cd ${{ env.WEBAPP_PATH }}
           ls -al
+          ls -al work
           pwd
           tailwindcss --input ./src/Client/wwwroot/app.css --output ./src/Client/wwwroot/app.min.css --minify
 
