@@ -1,0 +1,26 @@
+﻿name: Build and Test PR
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  NETCORE_VERSION: '8.0.x'
+
+jobs:
+  build:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Restore packages 📦
+        run: dotnet restore
+
+      - name: Build 🏗️
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test 🧪
+        run: dotnet test --no-restore --no-build --verbosity normal

@@ -3,7 +3,9 @@
 **/bin/*
 **/obj/*
 **/*.min.*
-**/package-lock.json
-**/.env
 **/.aspnet/*
 **/.temp-keys/*
+**/dist/*
+**/.env
+**/*.nupkg
+**/package-lock.json
