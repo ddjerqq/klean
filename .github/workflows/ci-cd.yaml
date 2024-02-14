@@ -43,7 +43,7 @@ jobs:
         run: dotnet test --no-restore --no-build --verbosity normal
 
       - name: Publish 📦
-        run: dotnet publish ./src/Presentation --configuration Release --no-build --no-restore --output dist
+        run: dotnet publish ${{ env.SRC }}/Presentation --configuration Release --output dist
 
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
