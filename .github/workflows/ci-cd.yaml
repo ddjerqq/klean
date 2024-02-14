@@ -40,13 +40,13 @@ jobs:
       - name: Publish 📦
         run: dotnet publish ${{ env.SRC }}/Presentation --configuration Release --output dist
 
+      # Folders starting with _ are handled as jekyll. This file will prevent that.
+      # Because blazor framework uses _framework folder, we need to prevent jekyll from processing it.
+      - name: Create .nojekyll file 📁
+        run: touch dist/.nojekyll
+
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist/wwwroot
-
-      # Folders starting with _ are handled as jekyll. This file will prevent that.
-      # Because blazor framework uses _framework folder, we need to prevent jekyll from processing it.
-      - name: Create .nojekyll file 📁
-        run: touch dist/.nojekyll
