@@ -51,4 +51,3 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/wwwroot
-          single_commit: true
