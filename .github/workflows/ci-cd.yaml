@@ -32,7 +32,7 @@ jobs:
         run: |
           cd ${{ env.SRC }}/Client
           REPO_NAME=$(echo "${{ github.repository }}" | awk -F '/' '{print $NF}')
-          sed -i 's/<base href="\/" \/>/<base href="\/'$REPO_NAME'\/" \/>/g' ./wwwroot/index.html
+          sed -i 's/<base href="\/"[[:blank:]]*\/>/<base href="\/'$REPO_NAME'\/" \/>/g' ./wwwroot/index.html
 
       - name: Restore packages 📦
         run: dotnet restore
@@ -44,7 +44,7 @@ jobs:
         run: dotnet test --no-restore --no-build --verbosity normal
 
       - name: Publish 📦
-        run: dotnet publish ${{ env.SRC }}/Presentation --configuration Release --output dist
+        run: dotnet publish ${{ env.SRC }}/Presentation --configuration Release --no-restore --output dist
 
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
