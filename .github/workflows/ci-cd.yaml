@@ -30,8 +30,9 @@ jobs:
 
       - name: Change base href in App.razor to match gh repo name 🏷️
         run: |
+          cd ${{ env.SRC }}/Client
           REPO_NAME=$(echo "${{ github.repository }}" | awk -F '/' '{print $NF}')
-          sed -i 's/<base href="\/" \/>/<base href="\/'$REPO_NAME'\/" \/>/g' ${{ env.SRC }}/Client/wwwroot/index.html
+          sed -i 's/<base href="\/" \/>/<base href="\/'$REPO_NAME'\/" \/>/g' ./wwwroot/index.html
 
       - name: Restore packages 📦
         run: dotnet restore
@@ -48,7 +49,6 @@ jobs:
       - name: Deploy to gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          base_branch: master
           branch: gh-pages
           folder: dist/wwwroot
           single_commit: true
