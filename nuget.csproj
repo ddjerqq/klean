@@ -28,9 +28,9 @@
         </Description>
         <Company>ddjerqq</Company>
         <Authors>ddjerqq &lt;ddjerqq@gmail.com&gt;</Authors>
-        <Copyright>ddjerqq © 2017-2023</Copyright>
+        <Copyright>ddjerqq © 2024-2030</Copyright>
         <PackageTags>c#;asp.net;core;template;web;clean architecture;ddd</PackageTags>
-        <PackageCopyright>ddjerqq © 2017-2023</PackageCopyright>
+        <PackageCopyright>ddjerqq © 2024-2030</PackageCopyright>
         <PackageProjectUrl>https://github.com/ddjerqq/klean</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>

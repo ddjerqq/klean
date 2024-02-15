@@ -1,0 +1,26 @@
+﻿name: Release to NuGet
+
+on:
+  release:
+    types: [published]
+
+env:
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+jobs:
+  build:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Test 🧪
+        run: dotnet test --verbosity normal
+
+      - name: Pack 📦
+        run: dotnet pack --configuration Release --output .
+
+      - name: Push to NuGet 🚀
+        run: dotnet nuget push "*.nupkg" --api-key ${{ env.nuget_api_key }} --source https://api.nuget.org/v3/index.json
