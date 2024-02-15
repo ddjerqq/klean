@@ -1,9 +1,14 @@
 # ASP.NET Clean Architecture Template
 
-## See the front-end in action [here](https://ddjerqq.github.io/klean)
+[![NuGet](https://github.com/ddjerqq/klean/actions/workflows/publish-to-nuget-on-release.yaml/badge.svg)](https://github.com/ddjerqq/klean/actions/workflows/publish-to-nuget-on-release.yaml)
+[![GitHub Pages](https://github.com/ddjerqq/klean/actions/workflows/deploy-to-gh-pages.yaml/badge.svg)](https://github.com/ddjerqq/klean/actions/workflows/deploy-to-gh-pages.yaml)
 
-A ready-to-use template for ASP.NET Core with Domain Driven Design - clean architecture, 
-CQRS pattern, Blazor WASM with TailwindCSS front-end, and much more freebies.
+### See the front-end of the template 👉[here](https://ddjerqq.github.io/klean)👈
+
+---
+
+A ready-to-use template for ASP.NET Core with Domain Driven Design - Clean Architecture, 
+CQRS pattern, Blazor WASM with TailwindCSS front-end, and much much more.
 
 ## Authors
 
@@ -13,11 +18,11 @@ CQRS pattern, Blazor WASM with TailwindCSS front-end, and much more freebies.
 
 You can install this template using [NuGet](https://www.nuget.org/packages/klean):
 
-```powershell
+```shell
 dotnet new -i Klean
 ```
 
-```powershell
+```shell
 dotnet new Klean
 ```
 
@@ -28,3 +33,7 @@ If you are having problems, please let us know by [raising a new issue](https://
 ## License
 
 This project is licensed with the [MIT license](LICENSE).
+
+## Future plans:
+- [ ] [PostgreSQL database support](https://github.com/ddjerqq/klean/issues/3)
+- [ ] [Rate limiting](https://github.com/ddjerqq/klean/issues/4)
