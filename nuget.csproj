@@ -19,7 +19,8 @@
 
     <PropertyGroup>
         <PackageType>Template</PackageType>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
+        <TargetFramework>net8.0</TargetFramework>
         <PackageId>Klean</PackageId>
         <Title>Klean Architecture</Title>
         <Description>
