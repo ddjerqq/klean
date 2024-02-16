@@ -1,0 +1,40 @@
+﻿.card {
+  z-index: 1;
+}
+
+.card::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, #9432ff, #3235ff, #00ff87, #9432ff);
+  filter: blur(30px);
+  border-radius: inherit;
+  background-size: 400%;
+  animation: steam 10s linear infinite;
+}
+
+.card::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: inherit;
+  animation: steam 20s linear infinite;
+}
+
+@keyframes steam {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 400% 0;
+  }
+}
