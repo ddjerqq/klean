@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Client",
   "resources": {
-    "hash": "sha256-EipU2AsZcZ/J/mcDFy0Vy1UF3nhjg6kmfuUzHywrxoU=",
+    "hash": "sha256-4FhX1RJ8LV5h+gDapyZZRGJoMsovFX0Iv1nt4gxdZPk=",
     "jsModuleNative": {
       "dotnet.native.8.0.1.ahpp78valh.js": "sha256-SGOlISx+3G4kkvpC9Uq3qoPGsnjxGmW61QBev0lyI5U="
     },
@@ -12,15 +12,15 @@
       "dotnet.native.wasm": "sha256-dqpunZywlYy86b4O6ZjONasmG+4FH0P17FZ0OIf/lIg="
     },
     "assembly": {
-      "Application.wasm": "sha256-IQiU0RjneMz4/0VMfy7cFN/jdkknX6mkmIUlC/lWg8w=",
+      "Application.wasm": "sha256-XkyYET/9heCRURSLENL6O+rQ2yx/8gUjWzpUEN+ozrM=",
       "AutoMapper.Extensions.Microsoft.DependencyInjection.wasm": "sha256-OE3feYoXLxAl9zUCJvpxyLpJ0bM0xRb+AOA1r+qX/aA=",
       "AutoMapper.wasm": "sha256-ZQSB98bRoMRi9VGnS4rbVaTRPwmPIYrY1BBPbc2h38g=",
       "BCrypt.Net.wasm": "sha256-snt4d1tYbLZ/V4ztRAtMlYTxe8e8orlojQEvJ1TZvHE=",
       "Blazor.Heroicons.wasm": "sha256-bSMLNSO+Mb1efATmd22AJO7k9k+Fn7WVtJAPyjkS2rw=",
       "Blazored.FluentValidation.wasm": "sha256-OtU6u7NaCwy6gwYUqOysIpk7uVBoBQ2pbCXqCO2VvQ0=",
       "Blazored.LocalStorage.wasm": "sha256-xHBGFCMjDjvvTwtMvgaMBNmQk9JdVhGmws2/GMZlxrI=",
-      "Client.wasm": "sha256-QDBs5Vs0INre119Yv9hOTdTTVS/0Phf8hy6IDwXTqls=",
-      "Domain.wasm": "sha256-SrCbPMUJNwpSxvIrWfegIqbYUurNWu44OYF5DoYnqrw=",
+      "Client.wasm": "sha256-pJHTWYfeQdqLhsMoky8btMyL2ho+lR29jG6/TFtB/lE=",
+      "Domain.wasm": "sha256-I94dGPTdY4i4ubIWvDYhfFBhtDx1MQYaSk1lrBPaflI=",
       "FluentValidation.DependencyInjectionExtensions.wasm": "sha256-Op0rOaEe1Mqy+amRifbgm6EM7eisEb6eRAgpBJwHBb0=",
       "FluentValidation.wasm": "sha256-r9LyU/ai1EklmxBpjZXuv8cdAf8HD8fJyC6gTkgAx14=",
       "MediatR.Contracts.wasm": "sha256-/db+nahzjeSd5EhxUqFrpFzJ998Up6Vgs1PHrV3jqkU=",
