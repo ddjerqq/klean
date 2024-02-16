@@ -1,0 +1,12 @@
+﻿<div class="group relative flex flex-col border-2 border-gray-100 rounded-md">
+    <img class="rounded-t-[4px]" src="https://via.placeholder.com/200x100?text=operator" alt="@Name cover" width="200px" height="100px"/>
+    <div class="hidden group-hover:block absolute w-full top-[76px] bg-gray-600 opacity-45">description</div>
+    <span class="bg-gray-800 py-1 uppercase font-extrabold text-lg rounded-b-md">@Name</span>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Name { get; set; } = string.Empty;
+
+}
