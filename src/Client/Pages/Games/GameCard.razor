@@ -4,6 +4,16 @@
     <span class="bg-gray-800 py-1 uppercase font-extrabold text-lg rounded-b-md">@Name</span>
 </div>
 
+<div data-hello="hello" class="p-4 [&[data-hello='hello']]:bg-red-500"></div>
+
+<ul class="group">
+    @* everything except the element being hovered *@
+    <li class="relative before:absolute before:top-0 before:bottom-0 before:left-[10px] before:right-[-10px]
+               [&:not(:hover),&:not(:first),&:not(:last)]:group-hover:bg-red-500">
+
+    </li>
+</ul>
+
 @code {
 
     [Parameter, EditorRequired]
