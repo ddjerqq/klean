@@ -4,7 +4,13 @@ using Domain.ValueObjects;
 
 namespace Domain.Aggregates;
 
-public sealed class User(Guid id) : AggregateRoot<Guid>(id)
+public readonly record struct UserId(Guid Value)
+{
+    public static UserId Empty => new(Guid.Empty);
+    public static UserId NewUserId() => new(Guid.NewGuid());
+}
+
+public sealed class User(UserId id) : AggregateRoot<UserId>(id)
 {
     public string Username { get; init; } = default!;
 

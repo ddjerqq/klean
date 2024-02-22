@@ -27,7 +27,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
 
     private static void SeedData(EntityTypeBuilder<User> builder)
     {
-        var user = new User(Guid.NewGuid())
+        var user = new User(UserId.NewUserId())
         {
             Username = "username",
             Email = "default@example.com",

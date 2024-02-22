@@ -14,7 +14,7 @@ public sealed record ItemType(
 {
     public Item NewItem()
     {
-        return new Item(Guid.NewGuid())
+        return new Item(ItemId.NewItemId())
         {
             Rarity = RandBetween(MinRarity, MaxRarity),
             ItemType = this,

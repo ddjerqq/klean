@@ -7,7 +7,7 @@ namespace Application.Dtos;
 [AutoMap(typeof(Item))]
 public sealed record ItemDto
 {
-    public Guid Id { get; init; }
+    public ItemId Id { get; init; }
 
     public float Rarity { get; init; }
 

@@ -1,5 +1,6 @@
 using Application.Abstractions;
 using Domain.Aggregates;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -26,10 +27,12 @@ public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor
 
     public async Task<User?> GetCurrentUserAsync(CancellationToken ct = default)
     {
-        var id = CurrentUserId;
+        var currentUserId = CurrentUserId;
 
-        if (id is null)
+        if (currentUserId is null)
             return null;
+
+        var id = new UserId(currentUserId.Value);
 
         return await dbContext.Set<User>().FirstOrDefaultAsync(u => u.Id == id, ct);
     }

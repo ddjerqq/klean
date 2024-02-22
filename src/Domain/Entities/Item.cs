@@ -4,7 +4,13 @@ using Domain.ValueObjects;
 
 namespace Domain.Entities;
 
-public sealed class Item(Guid id) : Entity<Guid>(id)
+public readonly record struct ItemId(Guid Value)
+{
+    public static ItemId Empty => new(Guid.Empty);
+    public static ItemId NewItemId() => new(Guid.NewGuid());
+}
+
+public sealed class Item(ItemId id) : Entity<ItemId>(id)
 {
     public float Rarity { get; init; }
 

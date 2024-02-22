@@ -22,7 +22,7 @@
     private static IEnumerable<ItemDto> ItemDtos => Enumerable.Range(0, Random.Shared.Next(0, 1_000))
         .Select(i => new ItemDto
         {
-            Id = Guid.NewGuid(),
+            Id = ItemId.NewItemId(),
             Rarity = Random.Shared.NextSingle(),
             ItemType = new ItemType("ITEM", "item", 10, 0, 1),
         });

@@ -4,7 +4,7 @@ namespace Domain.Abstractions;
 
 public sealed class Inventory : List<Item>
 {
-    public bool HasItemWithId(Guid id) => this.Any(item => item.Id == id);
+    public bool HasItemWithId(ItemId id) => this.Any(item => item.Id == id);
 
     public void AddItem(Item item)
     {

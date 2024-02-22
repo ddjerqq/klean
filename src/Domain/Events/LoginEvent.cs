@@ -1,6 +1,7 @@
+using Domain.Aggregates;
 using Domain.Common.Interfaces;
 
 namespace Domain.Events;
 
-public sealed record LoginEvent(Guid UserId, DateTime LoginTime)
+public sealed record LoginEvent(UserId UserId, DateTime LoginTime)
     : IDomainEvent;
