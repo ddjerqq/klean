@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 
 namespace Domain.Entities;
 
-public sealed class Item : EntityBase
+public sealed class Item(Guid id) : Entity<Guid>(id)
 {
     public float Rarity { get; init; }
 

@@ -21,8 +21,12 @@ public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterce
 
         var dateTimeProvider = dbContext.GetService<IDateTimeProvider>();
 
-        var outboxMessages = dbContext.ChangeTracker
-            .Entries<IAggregateRoot>()
+        var aggregateRoot = typeof(AggregateRoot<>);
+
+        var outboxMessages = dbContext
+            .ChangeTracker
+            .Entries<AggregateRoot<Guid>>()
+            .Where(entity => aggregateRoot.IsInstanceOfType(entity.Entity))
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {

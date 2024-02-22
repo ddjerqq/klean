@@ -12,7 +12,7 @@ public static class Cookie
         Secure = true,
         HttpOnly = true,
         IsEssential = true,
-        SameSite = SameSiteMode.Strict,
+        SameSite = SameSiteMode.None,
         Path = "/",
     };
 }

@@ -49,7 +49,10 @@ public sealed class AuthController : ApiController
         if (user is null)
             return BadRequest("bad credentials");
 
-        var expiration = command.RememberMe ? TimeSpan.FromDays(7) : TimeSpan.FromHours(2);
+        var expiration = command.RememberMe
+            ? TimeSpan.FromDays(7)
+            : TimeSpan.FromHours(2);
+
         var token = user.GetToken(expiration, DateTimeProvider);
         Response.Cookies.Append("authorization", token, Cookie.Options);
 

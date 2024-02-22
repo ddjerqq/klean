@@ -4,7 +4,7 @@ using Domain.ValueObjects;
 
 namespace Domain.Aggregates;
 
-public sealed class User : AggregateRootBase
+public sealed class User(Guid id) : AggregateRoot<Guid>(id)
 {
     public string Username { get; init; } = default!;
 

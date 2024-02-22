@@ -8,9 +8,8 @@ public sealed record ItemSoldEvent
 {
     public ItemSoldEvent(Item item)
     {
-        Item = new Item
+        Item = new Item(item.Id)
         {
-            Id = item.Id,
             Rarity = item.Rarity,
 
             // clone                 vvvvvvvv

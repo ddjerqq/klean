@@ -24,7 +24,7 @@ public sealed record UserRegisterCommand(string Username, string Email, string P
         if (_user is not null)
             return _user;
 
-        _user = new User
+        _user = new User(Guid.NewGuid())
         {
             Username = Username,
             Email = Email,
