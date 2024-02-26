@@ -38,7 +38,7 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         var dateTime = dateTimeProvider.UtcNow;
 
         context.ChangeTracker
-            .Entries<Entity<Guid>>()
+            .Entries<EntityBase>()
             .ToList()
             .ForEach(entry =>
             {

@@ -10,7 +10,7 @@ public readonly record struct UserId(Guid Value)
     public static UserId NewUserId() => new(Guid.NewGuid());
 }
 
-public sealed class User(UserId id) : AggregateRoot<UserId>(id)
+public sealed class User(UserId id) : AggregateRootBase<UserId>(id)
 {
     public string Username { get; init; } = default!;
 

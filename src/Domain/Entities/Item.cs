@@ -10,7 +10,7 @@ public readonly record struct ItemId(Guid Value)
     public static ItemId NewItemId() => new(Guid.NewGuid());
 }
 
-public sealed class Item(ItemId id) : Entity<ItemId>(id)
+public sealed class Item(ItemId id) : EntityBase<ItemId>(id)
 {
     public float Rarity { get; init; }
 

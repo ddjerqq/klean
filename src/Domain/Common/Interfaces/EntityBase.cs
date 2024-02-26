@@ -1,10 +1,7 @@
 namespace Domain.Common.Interfaces;
 
-public abstract class Entity<TId>(TId id)
-    where TId : IEquatable<TId>
+public abstract class EntityBase
 {
-    public TId Id { get; private set; } = id;
-
     public DateTime? Created { get; set; }
 
     public string? CreatedBy { get; set; }
@@ -12,9 +9,15 @@ public abstract class Entity<TId>(TId id)
     public DateTime? LastModified { get; set; }
 
     public string? LastModifiedBy { get; set; }
+}
 
-    public static IEqualityComparer<Entity<TId>> IdEqualityComparer =>
-        EqualityComparer<Entity<TId>>.Create((x, y) =>
+public abstract class EntityBase<TId>(TId id) : EntityBase
+    where TId : IEquatable<TId>
+{
+    public TId Id { get; init; } = id;
+
+    public static IEqualityComparer<EntityBase<TId>> IdEqualityComparer =>
+        EqualityComparer<EntityBase<TId>>.Create((x, y) =>
             x is null ? y is null
                 : y is not null && x.GetType() == y.GetType() && x.Id.Equals(y.Id));
 }

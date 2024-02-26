@@ -23,4 +23,19 @@ public sealed record ItemType(
 
     private static float RandBetween(float min, float max) =>
         (float)Random.Shared.NextDouble() * (max - min) + min;
+
+    public bool Equals(IValueObject? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other.GetType() != GetType()) return false;
+
+        var otherItemType = (ItemType)other;
+        return Id == otherItemType.Id
+               && Name == otherItemType.Name
+               && Price == otherItemType.Price
+               && MinRarity.Equals(otherItemType.MinRarity)
+               && MaxRarity.Equals(otherItemType.MaxRarity)
+               && DisplayUrl == otherItemType.DisplayUrl;
+    }
 }

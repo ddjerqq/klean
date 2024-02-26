@@ -25,4 +25,14 @@ public sealed record Wallet(decimal Balance = default) : IValueObject
     public static implicit operator decimal(Wallet wallet) => wallet.Balance;
 
     public static implicit operator Wallet(decimal balance) => new(balance);
+
+    public bool Equals(IValueObject? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        if (other.GetType() != GetType()) return false;
+
+        var otherWallet = (Wallet)other;
+        return Balance == otherWallet.Balance;
+    }
 }

@@ -3,7 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Common.Interfaces;
 
-public abstract class AggregateRoot<TId>(TId id) : Entity<TId>(id)
+public interface IAggregateRoot
+{
+    public IEnumerable<IDomainEvent> DomainEvents { get; }
+
+    public void AddDomainEvent(IDomainEvent domainEvent);
+
+    public void ClearDomainEvents();
+}
+
+public abstract class AggregateRootBase<TId>(TId id)
+    : EntityBase<TId>(id), IAggregateRoot
     where TId : IEquatable<TId>
 {
     [NotMapped]
