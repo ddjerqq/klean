@@ -17,21 +17,14 @@ public class ConfigureApplication : IHostingStartup
     {
         builder.ConfigureServices(services =>
         {
-            services.AddValidatorsFromAssembly(ApplicationAssembly.Assembly);
+            services.AddAutoMapper(Application.Assembly);
+            services.AddValidatorsFromAssembly(Application.Assembly);
 
             services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssembly(ApplicationAssembly.Assembly);
+                cfg.RegisterServicesFromAssembly(Application.Assembly);
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
-            });
-        });
-
-        builder.ConfigureServices(services =>
-        {
-            services.AddAutoMapper(mapper =>
-            {
-                mapper.AddMaps(ApplicationAssembly.Assembly);
             });
         });
     }

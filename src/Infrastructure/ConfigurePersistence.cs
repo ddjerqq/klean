@@ -1,4 +1,5 @@
-using Application.Abstractions;
+using Application.Services;
+using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;

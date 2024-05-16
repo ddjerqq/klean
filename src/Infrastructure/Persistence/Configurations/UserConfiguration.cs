@@ -20,22 +20,5 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(
                 wallet => wallet.Balance,
                 balance => new Wallet(balance));
-
-        if ("ASPNETCORE_ENVIRONMENT".FromEnv() == Environments.Development)
-            SeedData(builder);
-    }
-
-    private static void SeedData(EntityTypeBuilder<User> builder)
-    {
-        var user = new User(UserId.NewUserId())
-        {
-            Username = "username",
-            Email = "default@example.com",
-            Wallet = new Wallet(100),
-            Inventory = [],
-        };
-        user.SetPassword("password");
-
-        builder.HasData(user);
     }
 }

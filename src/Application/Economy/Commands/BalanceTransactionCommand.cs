@@ -1,6 +1,5 @@
 using System.ComponentModel;
-using Application.Abstractions;
-using Application.Common.Extensions;
+using Application.Services.Interfaces;
 using Domain.Aggregates;
 using FluentValidation;
 using MediatR;
@@ -37,8 +36,8 @@ internal sealed class BalanceTransactionHandler(IAppDbContext dbContext)
         if (!command.Sender.Wallet.TryTransfer(command.Receiver.Wallet, command.Amount))
             return false;
 
-        dbContext.Set<User>().TryUpdateIfNotNull(command.Sender);
-        dbContext.Set<User>().TryUpdateIfNotNull(command.Receiver);
+        dbContext.Set<User>().Update(command.Sender);
+        dbContext.Set<User>().Update(command.Receiver);
         await dbContext.SaveChangesAsync(ct);
 
         return true;

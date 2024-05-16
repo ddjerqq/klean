@@ -1,7 +1,8 @@
 using System.ComponentModel;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
-using Application.Abstractions;
+using Application.Services;
+using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Idempotency;
 using Infrastructure.RateLimiting;

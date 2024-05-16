@@ -1,5 +1,6 @@
 using System.Diagnostics;
-using Application.Abstractions;
+using Application.Services;
+using Application.Services.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -26,15 +27,13 @@ internal sealed class LoggingBehaviour<TRequest, TResponse>(
         var result = await next();
         stopwatch.Stop();
 
-        var end = stopwatch.ElapsedMilliseconds;
-
         logger.LogInformation(
-            "{@UserId} {@UserName} finished request {@RequestName} {@Request} in {@Duration}ms",
+            "{@UserId} {@UserName} finished request {@RequestName} {@Request} in {@Duration:c}",
             user?.Id,
             user?.Username,
             typeof(TRequest).Name,
             request,
-            end);
+            stopwatch.Elapsed);
 
         return result;
     }
