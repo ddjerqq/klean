@@ -10,8 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure.RateLimiting;
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class CooldownAttribute(int rate, double perSeconds) 
-    : ActionFilterAttribute
+public sealed class CooldownAttribute(int rate, double perSeconds) : ActionFilterAttribute
 {
     public TimeSpan Per { get; set; } = TimeSpan.FromSeconds(perSeconds);
 

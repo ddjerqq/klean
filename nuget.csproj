@@ -8,7 +8,6 @@
         <NoDefaultExcludes>true</NoDefaultExcludes>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageOutputPath>.</PackageOutputPath>
-        <RootNamespace>nuget</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +18,7 @@
 
     <PropertyGroup>
         <PackageType>Template</PackageType>
-        <Version>1.0.6</Version>
+        <Version>1.0.7</Version>
         <TargetFramework>net8.0</TargetFramework>
         <PackageId>Klean</PackageId>
         <Title>Klean Architecture</Title>

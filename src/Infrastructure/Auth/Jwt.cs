@@ -60,17 +60,4 @@ public static class Jwt
 
         return Handler.WriteToken(token);
     }
-
-    public static bool ValidateToken(string token)
-    {
-        try
-        {
-            Handler.ValidateToken(token, TokenValidationParameters, out _);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 }

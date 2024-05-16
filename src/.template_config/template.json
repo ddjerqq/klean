@@ -23,7 +23,15 @@
     {
       "modifiers": [
         {
-          "exclude": [ "src/.vs/**", "src/.idea/**", ".template_config/**" ]
+          "exclude": [
+            "**/.vs/**",
+            "**/.idea/**",
+            "**/.env",
+            "**/*.pfx",
+            "**/node_modules/**",
+            "**.min.**",
+            ".template_config/**"
+          ]
         }
       ]
     }

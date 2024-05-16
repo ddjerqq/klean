@@ -22,10 +22,10 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddSingleton(builder.HostEnvironment);
-
 builder.Services.AddScoped<JwtAuthManager>();
 builder.Services.AddScoped<IAuthService, JwtAuthManager>(sp => sp.GetRequiredService<JwtAuthManager>());
 builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthManager>(sp => sp.GetRequiredService<JwtAuthManager>());
+
 
 builder.Services.AddBlazoredLocalStorage(o =>
 {
