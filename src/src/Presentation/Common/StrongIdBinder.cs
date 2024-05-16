@@ -12,6 +12,7 @@ namespace Presentation.Common;
 /// </example>
 public sealed class StrongIdBinder : IModelBinder
 {
+    /// <inheritdoc />
     public Task BindModelAsync(ModelBindingContext context)
     {
         var modelName = context.ModelName;
@@ -22,7 +23,7 @@ public sealed class StrongIdBinder : IModelBinder
         if (valueProviderResult == ValueProviderResult.None)
             return Task.CompletedTask;
 
-        object? id = TryParse(modelType, valueProviderResult.FirstValue);
+        var id = TryParse(modelType, valueProviderResult.FirstValue);
         StoreResult(context, modelName, id);
 
         return Task.CompletedTask;

@@ -1,12 +1,16 @@
-﻿using Application;
+﻿using System.ComponentModel;
+using Application;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using ZymLabs.NSwag.FluentValidation;
 
 namespace Presentation;
 
-internal sealed class ConfigureValidation : ConfigurationBase
+/// <inheritdoc />
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed class ConfigureValidation : ConfigurationBase
 {
+    /// <inheritdoc />
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Domain.Domain.Assembly, includeInternalTypes: true);

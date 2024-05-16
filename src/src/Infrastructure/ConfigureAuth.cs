@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Infrastructure;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ConfigureAuth : ConfigurationBase
+public sealed class ConfigureAuth : ConfigurationBase
 {
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {

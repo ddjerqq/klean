@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Reflection;
 using Application;
 using Microsoft.OpenApi.Models;
@@ -5,8 +6,11 @@ using Presentation.Swagger;
 
 namespace Presentation;
 
-public class ConfigureSwagger : ConfigurationBase
+/// <inheritdoc />
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed class ConfigureSwagger : ConfigurationBase
 {
+    /// <inheritdoc />
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         if (!context.HostingEnvironment.IsDevelopment())

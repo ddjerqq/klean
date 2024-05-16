@@ -25,8 +25,7 @@ public sealed class BalanceTransactionValidator : AbstractValidator<BalanceTrans
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class BalanceTransactionHandler(IAppDbContext dbContext)
-    : IRequestHandler<BalanceTransactionCommand, bool>
+internal sealed class BalanceTransactionHandler(IAppDbContext dbContext) : IRequestHandler<BalanceTransactionCommand, bool>
 {
     public async Task<bool> Handle(BalanceTransactionCommand command, CancellationToken ct)
     {

@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation;
 
+/// <inheritdoc />
 public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHandlerMiddleware> logger) : IMiddleware
 {
+    /// <inheritdoc />
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
         try

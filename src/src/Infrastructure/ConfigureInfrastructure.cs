@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Application;
 using Application.Services;
 using Infrastructure.Idempotency;
@@ -7,7 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-internal sealed class ConfigureInfrastructure : ConfigurationBase
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed class ConfigureInfrastructure : ConfigurationBase
 {
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {

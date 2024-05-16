@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Application;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ConfigureApplication : ConfigurationBase
+public sealed class ConfigureApplication : ConfigurationBase
 {
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {

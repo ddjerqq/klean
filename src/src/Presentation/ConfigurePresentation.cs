@@ -9,11 +9,13 @@ using Presentation.Filters;
 
 namespace Presentation;
 
+/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ConfigurePresentation : ConfigurationBase
+public sealed class ConfigurePresentation : ConfigurationBase
 {
     private static readonly string[] CompressionTypes = ["application/octet-stream"];
 
+    /// <inheritdoc />
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddAntiforgery();
@@ -21,6 +23,7 @@ internal sealed class ConfigurePresentation : ConfigurationBase
         services.AddHealthChecks()
             .AddDbContextCheck<AppDbContext>("db");
 
+        services.AddScoped<GlobalExceptionHandlerMiddleware>();
         services.AddHttpContextAccessor();
 
         services.Configure<RouteOptions>(x =>

@@ -16,7 +16,7 @@ public sealed class OutboxMessage
         },
     };
 
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Ulid Id { get; init; } = Ulid.NewUlid();
 
     [StringLength(128)]
     public string Type { get; init; } = default!;
@@ -35,7 +35,7 @@ public sealed class OutboxMessage
     {
         return new OutboxMessage
         {
-            Id = Guid.NewGuid(),
+            Id = Ulid.NewUlid(),
             Type = domainEvent.GetType().Name,
             Content = JsonConvert.SerializeObject(domainEvent, JsonSerializerSettings),
             OccuredOnUtc = dateTimeProvider.UtcNow,

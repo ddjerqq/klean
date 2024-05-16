@@ -11,6 +11,10 @@ public readonly record struct UserId(Ulid Value)
     public static UserId NewUserId() => new(Ulid.NewUlid());
     public override string ToString() => StrongIdHelper<UserId, Ulid>.Serialize(Value);
     public static UserId? TryParse(string? value) => StrongIdHelper<UserId, Ulid>.Deserialize(value, null);
+
+    public static UserId Parse(string value) =>
+        StrongIdHelper<UserId, Ulid>.Deserialize(value, null)
+        ?? throw new FormatException("Input string was not in the correct format");
 }
 
 public sealed class User(UserId id) : AggregateRoot<UserId>(id)

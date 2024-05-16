@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using Application;
 using Presentation.Filters;
@@ -6,8 +7,11 @@ using Serilog.Events;
 
 namespace Presentation;
 
-internal sealed class ConfigureLogging : ConfigurationBase
+/// <inheritdoc />
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed class ConfigureLogging : ConfigurationBase
 {
+    /// <inheritdoc />
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         Log.Logger = new LoggerConfiguration()

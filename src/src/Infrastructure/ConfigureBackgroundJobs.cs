@@ -10,7 +10,7 @@ using Quartz;
 namespace Infrastructure;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class ConfigureBackgroundJobs : ConfigurationBase
+public sealed class ConfigureBackgroundJobs : ConfigurationBase
 {
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {

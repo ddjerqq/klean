@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Threading.RateLimiting;
 using Application;
 using Application.Services;
@@ -10,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-internal sealed class ConfigureRateLimiting : ConfigurationBase
+[EditorBrowsable(EditorBrowsableState.Never)]
+public sealed class ConfigureRateLimiting : ConfigurationBase
 {
     private static readonly PartitionedRateLimiter<HttpContext> GlobalRateLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
         context =>

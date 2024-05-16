@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using Application;
 using Application.Services;
+using Domain.Common;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigurePersistence : ConfigurationBase
 {
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
@@ -25,7 +28,8 @@ public class ConfigurePersistence : ConfigurationBase
                 builder.EnableSensitiveDataLogging();
             }
 
-            builder.UseInMemoryDatabase("app");
+            var dbPath = "DB__PATH".FromEnv();
+            builder.UseSqlite($"Data Source={dbPath}");
         });
 
         services.AddDatabaseDeveloperPageExceptionFilter();

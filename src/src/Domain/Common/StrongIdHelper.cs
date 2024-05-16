@@ -2,6 +2,7 @@
 
 namespace Domain.Common;
 
+// TODO needs improvement, the generic should not
 public sealed class StrongIdHelper<TId, TValue> where TId : struct
 {
     public static string Serialize(TValue value) =>

@@ -1,0 +1,98 @@
+name: API
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "master" ]
+
+env:
+  NETCORE_VERSION: "8.0.x"
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet 🏢
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.NETCORE_VERSION }}
+
+      - name: Load cache 🔃
+        id: nuget-cache
+        uses: actions/cache@v4
+        with:
+          path: "~/.nuget/packages"
+          key: "${{ runner.os }}-nuget-api-${{ hashFiles('**/*.csproj') }}"
+          restore-keys: "${{ runner.os }}-nuget-api-"
+
+      - name: Cache status ✅
+        run: |
+          echo "Cache hit: ${{ steps.nuget-cache.outputs.cache-hit }}"
+
+      - name: Restore packages 📦
+        run: dotnet restore --verbosity minimal
+
+      - name: Test 🧪
+        run: dotnet test --no-restore --verbosity minimal
+
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Copy the source to the server 🔁
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "~/src"
+          overwrite: true
+          strip_components: 1
+
+#      - name: Build 🛠️
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY }}
+#          script: |
+#            cd src
+#            docker build -t yourimage:latest --platform=arm64 .
+#
+#      - name: Upload config files ⬆️
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY }}
+#          script: |
+#            mv -f ./src/docker-compose.yaml .
+#            mv -f ./src/nginx/conf.d/* ./nginx/conf.d/
+#            rm -rf src
+#
+#      - name: Deploy 🟣
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY }}
+#          script: |
+#            mv -f ./src/docker-compose.yaml .
+#            mv -f ./src/nginx/conf.d/* nginx/conf.d/
+#            rm -rf src
+#            docker compose down
+#            docker compose up -d

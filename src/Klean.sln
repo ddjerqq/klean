@@ -1,5 +1,20 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E8B8FE68-1F3A-48B7-8C0D-71107F3239F6}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
+		.env = .env
+		.env.example = .env.example
+		.gitignore = .gitignore
+		StyleCop.ruleset = StyleCop.ruleset
+	EndProjectSection
+EndProject
+
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{832736C8-41A3-487B-8BD2-426E16BFF811}"
+EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{1A30C672-122A-4BA5-BE32-7DE05737F1C4}"
 EndProject
 
@@ -14,16 +29,19 @@ EndProject
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "src\Client\Client.csproj", "{7455D6B9-84F4-4309-B74A-B430C8C68A55}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{832736C8-41A3-487B-8BD2-426E16BFF811}"
-EndProject
+
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D9BF3FF5-F846-47DF-A6A9-CE40CF366813}"
 EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Application", "test\Test.Application\Test.Application.csproj", "{8C27B0D4-3EE2-41CD-8169-A9F84FD6F988}"
 EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Domain", "test\Test.Domain\Test.Domain.csproj", "{C0869B8D-A397-4820-898B-912FB58803EC}"
 EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Architecture", "test\Test.Architecture\Test.Architecture.csproj", "{ED27132E-D9AF-4011-B3F1-71305DCDEA5F}"
 EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Infrastructure", "test\Test.Infrastructure\Test.Infrastructure.csproj", "{35A8D6F2-C605-478D-8CCA-F4B2A434182B}"
 EndProject
 

@@ -13,8 +13,8 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.Property(e => e.Id)
             .HasConversion(
-                id => id.Value,
-                value => new UserId(value));
+                id => id.ToString(),
+                value => UserId.Parse(value));
 
         builder.HasIndex(e => e.Username)
             .IsUnique();
