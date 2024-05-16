@@ -7,6 +7,8 @@ namespace Presentation.Filters;
 
 public sealed class SetClientIpAddressFilter : IActionFilter
 {
+    public const string ClientIpItemName = "client_ip_address";
+
     [SuppressMessage("Usage", "ASP0019", Justification = "This is a filter, not a controller action")]
     public void OnActionExecuting(ActionExecutingContext context)
     {
@@ -15,8 +17,10 @@ public sealed class SetClientIpAddressFilter : IActionFilter
             ?? ExtractFromForwardedForHeader(context.HttpContext)
             ?? context.HttpContext.Connection.RemoteIpAddress;
 
-        if (ipAddress is not null)
-            context.HttpContext.Request.Headers.Add("X-Client-IP", ipAddress.ToString());
+        if (ipAddress is null) return;
+
+        context.HttpContext.Request.Headers.TryAdd("X-Real-IP", ipAddress.ToString());
+        context.HttpContext.Items[ClientIpItemName] = ipAddress.ToString();
     }
 
     public void OnActionExecuted(ActionExecutedContext context)
@@ -25,7 +29,7 @@ public sealed class SetClientIpAddressFilter : IActionFilter
 
     private static IPAddress? ExtractFromForwardedForHeader(HttpContext httpContext)
     {
-        if (!httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var xForwardedFor) || string.IsNullOrEmpty(xForwardedFor))
+        if (!httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var xForwardedFor) || string.IsNullOrWhiteSpace(xForwardedFor))
             return null;
 
         return xForwardedFor

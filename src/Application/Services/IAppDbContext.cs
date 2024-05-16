@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Application.Services.Interfaces;
+namespace Application.Services;
 
 public interface IAppDbContext : IDisposable
 {

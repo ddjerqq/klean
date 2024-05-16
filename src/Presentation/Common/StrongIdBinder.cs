@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Infrastructure;
+namespace Presentation.Common;
 
 /// <summary>
 /// Strong id model binder for ASP.NET and DDD

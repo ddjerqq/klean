@@ -1,14 +1,15 @@
 using Application;
-using Application.Services.Interfaces;
+using Application.Services;
 using Infrastructure.Idempotency;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-public class ConfigureInfrastructure : ServiceConfigurationBase
+internal sealed class ConfigureInfrastructure : ConfigurationBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddHttpContextAccessor();
         services.AddIdempotency();

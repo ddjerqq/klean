@@ -1,6 +1,6 @@
 using Domain.Aggregates;
 
-namespace Application.Services.Interfaces;
+namespace Application.Services;
 
 public interface ICurrentUserAccessor
 {

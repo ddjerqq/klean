@@ -1,9 +1,9 @@
-using Infrastructure.Idempotency;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Presentation.Filters;
+namespace Presentation.Swagger;
 
 public sealed class IdempotencyKeyOperationFilter : IOperationFilter
 {
@@ -16,7 +16,7 @@ public sealed class IdempotencyKeyOperationFilter : IOperationFilter
             .ApiDescription
             .ActionDescriptor
             .EndpointMetadata
-            .OfType<RequireIdempotencyAttribute>()
+            .OfType<HttpPostAttribute>()
             .Any();
 
         if (hasRequireIdempotency)

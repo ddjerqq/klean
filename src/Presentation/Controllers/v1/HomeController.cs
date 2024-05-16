@@ -5,14 +5,14 @@ using Domain.Entities;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Presentation.Common.Abstractions;
+using Presentation.Common;
 
-namespace Presentation.Controllers;
+namespace Presentation.Controllers.v1;
 
 /// <summary>
 /// controller for authentication
 /// </summary>
-public sealed class TestController : ApiController
+public sealed class HomeController : ApiController
 {
     /// <summary>
     /// Get all users

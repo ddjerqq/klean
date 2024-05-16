@@ -1,5 +1,5 @@
 using Application.Common;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;

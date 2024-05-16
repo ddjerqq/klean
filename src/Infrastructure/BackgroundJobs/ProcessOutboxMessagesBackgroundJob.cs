@@ -1,5 +1,5 @@
 using Application.Common;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Abstractions;
 using Domain.Common;
 using MediatR;

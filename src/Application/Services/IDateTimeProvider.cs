@@ -1,4 +1,4 @@
-namespace Application.Services.Interfaces;
+namespace Application.Services;
 
 public interface IDateTimeProvider
 {

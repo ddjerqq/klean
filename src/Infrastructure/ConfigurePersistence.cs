@@ -1,4 +1,5 @@
-using Application.Services.Interfaces;
+using Application;
+using Application.Services;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -10,30 +11,27 @@ using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure;
 
-public class ConfigurePersistence : IHostingStartup
+public class ConfigurePersistence : ConfigurationBase
 {
-    public void Configure(IWebHostBuilder builder)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
-        builder.ConfigureServices((context, services) =>
+        services.AddSingleton<EntitySaveChangesInterceptor>();
+        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
+        services.AddDbContext<AppDbContext>(builder =>
         {
-            services.AddSingleton<EntitySaveChangesInterceptor>();
-            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-
-            services.AddDbContext<AppDbContext>(o =>
+            if (context.HostingEnvironment.IsDevelopment())
             {
-                if (context.HostingEnvironment.IsDevelopment())
-                {
-                    o.EnableDetailedErrors();
-                    o.EnableSensitiveDataLogging();
-                }
+                builder.EnableDetailedErrors();
+                builder.EnableSensitiveDataLogging();
+            }
 
-                o.UseInMemoryDatabase("app");
-            });
-
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
-            // delegate the IDbContext to the AppDbContext;
-            services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
+            builder.UseInMemoryDatabase("app");
         });
+
+        services.AddDatabaseDeveloperPageExceptionFilter();
+
+        // delegate the IDbContext to the AppDbContext;
+        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
     }
 }

@@ -1,64 +1,40 @@
-using Infrastructure.Idempotency;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using dotenv.net;
+using Presentation;
 
+// fix postgres timestamp issue
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+var solutionDir = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent;
+DotEnv.Fluent()
+    .WithTrimValues()
+    .WithEnvFiles($"{solutionDir}/.env")
+    .WithOverwriteExistingVars()
+    .Load();
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseConfiguredSerilog();
+
 builder.WebHost.UseStaticWebAssets();
+builder.WebHost.ConfigureAssemblies();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.EnsureCreated();
+app.UseConfiguredSerilogRequestLogging();
+app.MigrateDatabase();
 
-    if (!dbContext.Database.IsInMemory() && dbContext.Database.GetPendingMigrations().Any())
-        dbContext.Database.Migrate();
-}
+app.UseRateLimiter();
+app.UseCustomHeaderMiddleware();
+app.UseGlobalExceptionHandler();
 
 if (app.Environment.IsDevelopment())
-{
-    app.UseHttpLogging();
-    app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseWebAssemblyDebugging();
-}
-else
-{
-    app.UseExceptionHandler("/error", createScopeForErrors: true);
-    app.UseHsts();
-    app.UseHttpsRedirection();
-}
+    app.UseDevelopmentMiddleware();
 
-app.UseRouting();
-app.UseRequestLocalization();
+if (app.Environment.IsProduction())
+    app.UseProductionMiddleware();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAppMiddleware();
 
-app.UseAntiforgery();
-
-app.UseBlazorFrameworkFiles();
-
-// compress, then cache, then serve the static files
-app.UseResponseCompression();
-app.UseResponseCaching();
-app.UseStaticFiles();
-
-app.UseIdempotency();
-
-#pragma warning disable ASP0014
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapSwagger();
-    endpoints.MapHealthChecks("/health");
-    endpoints.MapControllers();
-    endpoints.MapDefaultControllerRoute();
-    endpoints.MapFallbackToFile("index.html");
-});
+app.MapEndpoints();
 
 app.Run();

@@ -10,7 +10,20 @@ public sealed class FluentValidationFilter : IActionFilter
         if (!context.ModelState.IsValid)
         {
             var problem = new ValidationProblemDetails(context.ModelState);
-            context.Result = new ObjectResult(problem);
+            var problemDetails = new ProblemDetails
+            {
+                Title = "An error occurred",
+                Type = "https://httpstatuses.com/400",
+                Status = StatusCodes.Status400BadRequest,
+                Detail = problem.Detail,
+                Extensions =
+                {
+                    ["traceId"] = context.HttpContext.TraceIdentifier,
+                    ["errors"] = problem.Errors,
+                    ["handler"] = "fluent_validation_filter",
+                },
+            };
+            context.Result = new ObjectResult(problemDetails);
         }
     }
 

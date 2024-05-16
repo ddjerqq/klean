@@ -1,37 +1,35 @@
 using System.ComponentModel;
 using System.Security.Claims;
-using Infrastructure;
+using Application;
 using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace Infrastructure;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ConfigureAuth : IHostingStartup
+internal sealed class ConfigureAuth : ConfigurationBase
 {
-    public void Configure(IWebHostBuilder builder)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
-        builder.ConfigureServices(services =>
-        {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.MapInboundClaims = false;
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.Events = Jwt.Events;
-                    options.Audience = Jwt.ClaimsAudience;
-                    options.ClaimsIssuer = Jwt.ClaimsIssuer;
-                    options.TokenValidationParameters = Jwt.TokenValidationParameters;
-                });
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.Events = Jwt.Events;
+                options.Audience = Jwt.ClaimsAudience;
+                options.ClaimsIssuer = Jwt.ClaimsIssuer;
+                options.TokenValidationParameters = Jwt.TokenValidationParameters;
+            });
 
-            services.AddAuthorizationBuilder()
-                .AddDefaultPolicy("default", policy => policy.RequireAuthenticatedUser())
-                .AddPolicy("is_elon", policy => policy.RequireClaim(ClaimTypes.NameIdentifier, "elon"));
-
-        });
+        // an example, of an authorization policy
+        services.AddAuthorizationBuilder()
+            .AddDefaultPolicy("default", policy => policy.RequireAuthenticatedUser())
+            .AddPolicy("is_elon", policy => policy.RequireClaim(ClaimTypes.NameIdentifier, "elon"));
     }
 }

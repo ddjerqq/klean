@@ -1,15 +1,16 @@
 using System.Threading.RateLimiting;
 using Application;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Aggregates;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-public class ConfigureRateLimiting : ServiceConfigurationBase
+internal sealed class ConfigureRateLimiting : ConfigurationBase
 {
     private static readonly PartitionedRateLimiter<HttpContext> GlobalRateLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
         context =>
@@ -48,7 +49,7 @@ public class ConfigureRateLimiting : ServiceConfigurationBase
         return ValueTask.CompletedTask;
     }
 
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddRateLimiter(options =>
         {

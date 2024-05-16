@@ -11,9 +11,9 @@ using Quartz;
 namespace Infrastructure;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ConfigureBackgroundJobs : ServiceConfigurationBase
+internal sealed class ConfigureBackgroundJobs : ConfigurationBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddQuartz(config =>
         {

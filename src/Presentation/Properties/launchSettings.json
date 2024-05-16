@@ -19,10 +19,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "WEB_APP__DOMAIN": "localhost",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;Presentation",
-        "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
-        "JWT__ISSUER": "ddjerqq",
-        "JWT__AUDIENCE": "ddjerqq",
+        "JWT__KEY": "66f475922093498b44748a0e69fa4891999ba6f16a31939fa388ef954ef6d65e0c1227fe7be14be0bc557c1af89163f017f78128a3a0497e9c7de5b6e68cd879",
+        "JWT__ISSUER": "klean",
+        "JWT__AUDIENCE": "klean",
         "JWT__EXPIRATION": "60"
       }
     },
@@ -33,10 +32,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
         "WEB_APP__DOMAIN": "localhost",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Domain;Application;Infrastructure;Presentation",
-        "JWT__KEY": "66F475922093498BA388EF954EF6D65E",
-        "JWT__ISSUER": "ddjerqq",
-        "JWT__AUDIENCE": "ddjerqq",
+        "JWT__KEY": "66f475922093498b44748a0e69fa4891999ba6f16a31939fa388ef954ef6d65e0c1227fe7be14be0bc557c1af89163f017f78128a3a0497e9c7de5b6e68cd879",
+        "JWT__ISSUER": "klean",
+        "JWT__AUDIENCE": "klean",
         "JWT__EXPIRATION": "60"
       }
     }

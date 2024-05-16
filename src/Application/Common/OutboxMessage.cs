@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 

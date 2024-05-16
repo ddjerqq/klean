@@ -1,18 +1,16 @@
 using System.ComponentModel;
-using Application;
 using Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace Application;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ConfigureApplication : ServiceConfigurationBase
+internal sealed class ConfigureApplication : ConfigurationBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         services.AddAutoMapper(Application.Assembly);
         services.AddValidatorsFromAssembly(Application.Assembly);

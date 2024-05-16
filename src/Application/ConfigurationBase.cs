@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 
-public abstract class ServiceConfigurationBase : IHostingStartup
+public abstract class ConfigurationBase : IHostingStartup
 {
     protected bool Configured { get; set; }
 
-    public abstract void ConfigureServices(IServiceCollection services);
+    public abstract void ConfigureServices(WebHostBuilderContext context, IServiceCollection services);
 
     public virtual void Configure(IWebHostBuilder builder)
     {

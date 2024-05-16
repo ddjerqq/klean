@@ -1,9 +1,9 @@
-using Application.Services.Interfaces;
+using Application.Services;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Common.Abstractions;
+namespace Presentation.Common;
 
 [ApiController]
 [Produces("application/json")]

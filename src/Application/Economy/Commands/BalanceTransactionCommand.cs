@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Aggregates;
 using FluentValidation;
 using MediatR;

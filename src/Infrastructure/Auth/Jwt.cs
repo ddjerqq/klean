@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.Services.Interfaces;
+using Application.Services;
 using Domain.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +10,7 @@ namespace Infrastructure.Auth;
 
 public static class Jwt
 {
-    internal static readonly JwtSecurityTokenHandler Handler = new();
+    private static readonly JwtSecurityTokenHandler Handler = new();
 
     internal static readonly JwtBearerEvents Events = new()
     {
@@ -28,11 +28,11 @@ public static class Jwt
 
     internal static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("klean");
 
-    internal static readonly string Key = "JWT__KEY".FromEnv() ?? throw new Exception("JWT__KEY is not set");
+    private static readonly string Key = "JWT__KEY".FromEnv() ?? throw new Exception("JWT__KEY is not set");
 
-    internal static readonly SymmetricSecurityKey SecurityKey = new(Encoding.UTF8.GetBytes(Key));
+    private static readonly SymmetricSecurityKey SecurityKey = new(Encoding.UTF8.GetBytes(Key));
 
-    internal static readonly SigningCredentials SigningCredentials = new(SecurityKey, SecurityAlgorithms.HmacSha256);
+    private static readonly SigningCredentials SigningCredentials = new(SecurityKey, SecurityAlgorithms.HmacSha256);
 
     internal static readonly TokenValidationParameters TokenValidationParameters = new()
     {
@@ -46,10 +46,7 @@ public static class Jwt
         ValidAlgorithms = [SecurityAlgorithms.HmacSha256],
     };
 
-    public static string GenerateToken(
-        IEnumerable<Claim> claims,
-        TimeSpan expiration,
-        IDateTimeProvider dateTimeProvider)
+    public static string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiration, IDateTimeProvider dateTimeProvider)
     {
         var token = new JwtSecurityToken(
             ClaimsIssuer,

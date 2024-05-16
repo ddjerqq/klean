@@ -1,4 +1,4 @@
-using Application.Services.Interfaces;
+using Application.Services;
 
 namespace Infrastructure.Services;
 
