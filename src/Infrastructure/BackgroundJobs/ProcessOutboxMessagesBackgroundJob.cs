@@ -1,6 +1,6 @@
 using Application.Abstractions;
 using Application.Common;
-using Domain.Common.Interfaces;
+using Domain.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

@@ -1,5 +1,5 @@
 using Application.Abstractions;
-using Domain.Common.Interfaces;
+using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -38,7 +38,7 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         var dateTime = dateTimeProvider.UtcNow;
 
         context.ChangeTracker
-            .Entries<EntityBase>()
+            .Entries<Entity<>>()
             .ToList()
             .ForEach(entry =>
             {

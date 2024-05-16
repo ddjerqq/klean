@@ -1,7 +1,7 @@
 using Application.Abstractions;
 using Application.Common;
 using Domain.Aggregates;
-using Domain.Common.Extensions;
+using Domain.Common;
 using Domain.Entities;
 using Domain.ValueObjects;
 using Infrastructure.Persistence.Interceptors;

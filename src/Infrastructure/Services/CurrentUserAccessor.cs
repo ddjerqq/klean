@@ -1,6 +1,5 @@
 using Application.Abstractions;
 using Domain.Aggregates;
-using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;

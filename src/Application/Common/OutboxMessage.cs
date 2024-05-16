@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Application.Abstractions;
-using Domain.Common.Interfaces;
+using Domain.Abstractions;
 using Newtonsoft.Json;
 
 namespace Application.Common;

@@ -1,4 +1,4 @@
-using Domain.Common.Extensions;
+using Domain.Common;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Auth;

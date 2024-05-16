@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
 using Domain;
-using Domain.Common.Extensions;
+using Domain.Common;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure;

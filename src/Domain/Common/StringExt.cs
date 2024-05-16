@@ -1,8 +1,8 @@
 using System.Text;
 
-namespace Domain.Common.Extensions;
+namespace Domain.Common;
 
-public static class StringExtensions
+public static class StringExt
 {
     public static string ToSnakeCase(this string text)
     {
@@ -14,9 +14,9 @@ public static class StringExtensions
         var sb = new StringBuilder();
         sb.Append(char.ToLowerInvariant(text[0]));
 
-        for (int i = 1; i < text.Length; ++i)
+        for (var i = 1; i < text.Length; ++i)
         {
-            char c = text[i];
+            var c = text[i];
             if (char.IsUpper(c))
             {
                 sb.Append('_');
@@ -36,6 +36,4 @@ public static class StringExtensions
 
     public static string FromEnv(this string key, string value) =>
         Environment.GetEnvironmentVariable(key) ?? value;
-
-
 }

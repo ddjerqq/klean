@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using Domain.Aggregates;
-using Domain.Common.Extensions;
+using Domain.Common;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

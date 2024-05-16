@@ -1,6 +1,6 @@
 using Application.Abstractions;
 using Application.Common;
-using Domain.Common.Interfaces;
+using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -23,7 +23,7 @@ public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterce
 
         var outboxMessages = dbContext
             .ChangeTracker
-            .Entries<IAggregateRoot>()
+            .Entries<IAggregateRoot<>>()
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {

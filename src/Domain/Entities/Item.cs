@@ -1,16 +1,16 @@
+using Domain.Abstractions;
 using Domain.Aggregates;
-using Domain.Common.Interfaces;
 using Domain.ValueObjects;
 
 namespace Domain.Entities;
 
-public readonly record struct ItemId(Guid Value)
+public readonly record struct ItemId(Ulid Value)
 {
-    public static ItemId Empty => new(Guid.Empty);
-    public static ItemId NewItemId() => new(Guid.NewGuid());
+    public static ItemId Empty => new(Ulid.Empty);
+    public static ItemId NewItemId() => new(Ulid.NewUlid());
 }
 
-public sealed class Item(ItemId id) : EntityBase<ItemId>(id)
+public sealed class Item(ItemId id) : Entity<ItemId>(id)
 {
     public float Rarity { get; init; }
 
