@@ -1,4 +1,3 @@
-using Application.Services;
 using Application.Services.Interfaces;
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-[assembly: HostingStartup(typeof(ConfigurePersistence))]
 
 namespace Infrastructure;
 

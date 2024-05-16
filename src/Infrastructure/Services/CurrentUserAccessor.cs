@@ -1,4 +1,3 @@
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Aggregates;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +9,7 @@ namespace Infrastructure.Services;
 public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IAppDbContext dbContext)
     : ICurrentUserAccessor
 {
-    public Guid? CurrentUserId
+    public UserId? CurrentUserId
     {
         get
         {
@@ -21,19 +20,22 @@ public sealed class CurrentUserAccessor(IHttpContextAccessor httpContextAccessor
                 .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?
                 .Value;
 
-            return Guid.TryParse(stringId, out var id) ? id : null;
+            return Ulid.TryParse(stringId, out var id)
+                ? new UserId(id)
+                : null;
         }
     }
 
     public async Task<User?> GetCurrentUserAsync(CancellationToken ct = default)
     {
-        var currentUserId = CurrentUserId;
+        var id = CurrentUserId;
 
-        if (currentUserId is null)
+        if (id is null)
             return null;
 
-        var id = new UserId(currentUserId.Value);
-
-        return await dbContext.Set<User>().FirstOrDefaultAsync(u => u.Id == id, ct);
+        return await dbContext
+            .Set<User>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id, ct);
     }
 }

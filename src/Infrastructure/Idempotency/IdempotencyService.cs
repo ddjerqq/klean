@@ -1,6 +1,4 @@
-using Infrastructure.Services.Interfaces;
-
-namespace Infrastructure.Services;
+namespace Infrastructure.Idempotency;
 
 public sealed class IdempotencyService : IIdempotencyService
 {

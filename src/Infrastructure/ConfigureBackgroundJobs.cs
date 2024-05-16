@@ -1,34 +1,35 @@
 using System.ComponentModel;
+using Application;
+using Domain.Common;
 using Infrastructure;
 using Infrastructure.BackgroundJobs;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
-[assembly: HostingStartup(typeof(ConfigureBackgroundJobs))]
 
 namespace Infrastructure;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class ConfigureBackgroundJobs : IHostingStartup
+public class ConfigureBackgroundJobs : ServiceConfigurationBase
 {
-    public void Configure(IWebHostBuilder builder)
+    public override void ConfigureServices(IServiceCollection services)
     {
-        builder.ConfigureServices(services =>
+        services.AddQuartz(config =>
         {
-            services.AddQuartz(config =>
-            {
-                var jobKey = new JobKey("ProcessOutboxMessagesJob");
+            var processOutboxMessageIntervalSeconds = int.Parse("OUTBOX__INTERVAL".FromEnv("20"));
 
-                config
-                    .AddJob<ProcessOutboxMessagesBackgroundJob>(jobKey)
-                    .AddTrigger(trigger => trigger
-                        .ForJob(jobKey)
-                        .WithSimpleSchedule(schedule => schedule
-                            .WithInterval(TimeSpan.FromSeconds(10))
-                            .RepeatForever()));
-            });
+            config
+                .AddJob<ProcessOutboxMessagesBackgroundJob>(ProcessOutboxMessagesBackgroundJob.Key, job => { job.StoreDurably(); })
+                .AddTrigger(trigger => trigger
+                    .ForJob(ProcessOutboxMessagesBackgroundJob.Key)
+                    .WithSimpleSchedule(schedule => schedule
+                        .WithInterval(TimeSpan.FromSeconds(processOutboxMessageIntervalSeconds))
+                        .RepeatForever()));
 
-            services.AddQuartzHostedService();
+            config.UseInMemoryStore();
         });
+
+        services.AddQuartzHostedService();
     }
 }

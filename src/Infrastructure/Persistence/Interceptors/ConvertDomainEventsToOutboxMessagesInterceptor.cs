@@ -1,35 +1,39 @@
 using Application.Common;
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Abstractions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Infrastructure.Persistence.Interceptors;
 
-public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
+public sealed class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
         CancellationToken ct = default)
     {
-        DbContext? dbContext = eventData.Context;
+        var dbContext = eventData.Context;
 
         if (dbContext is null)
             return await base.SavingChangesAsync(eventData, result, ct);
 
         var dateTimeProvider = dbContext.GetService<IDateTimeProvider>();
+        var aggregateRootType = typeof(IAggregateRoot<>);
 
+        // this is a horrible hack... but it's a necessary evil,
         var outboxMessages = dbContext
             .ChangeTracker
-            .Entries<IAggregateRoot<>>()
+            .Entries()
             .Select(entry => entry.Entity)
+            .Where(entity => aggregateRootType.IsInstanceOfType(entity))
             .SelectMany(entity =>
             {
-                var domainEvents = entity.DomainEvents.ToList();
-                entity.ClearDomainEvents();
+                if (((dynamic)entity)?.DomainEvents is not IEnumerable<IDomainEvent> domainEvents)
+                    return Enumerable.Empty<IDomainEvent>();
+
+                ((dynamic)entity)?.ClearDomainEvents();
+
                 return domainEvents;
             })
             .Select(e => OutboxMessage.FromDomainEvent(e, dateTimeProvider))

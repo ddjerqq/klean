@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Abstractions;
 using Newtonsoft.Json;
@@ -8,7 +7,7 @@ namespace Application.Common;
 
 public sealed class OutboxMessage
 {
-    private static readonly JsonSerializerSettings JsonSerializerSettings = new()
+    public static readonly JsonSerializerSettings JsonSerializerSettings = new()
     {
         TypeNameHandling = TypeNameHandling.All,
         ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver

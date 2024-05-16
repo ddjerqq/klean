@@ -1,7 +1,7 @@
 using Application.Common;
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Abstractions;
+using Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,14 +18,8 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
     ILogger<ProcessOutboxMessagesBackgroundJob> logger)
     : IJob
 {
-    private static readonly JsonSerializerSettings JsonSerializerSettings = new()
-    {
-        TypeNameHandling = TypeNameHandling.All,
-        ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
-        {
-            NamingStrategy = new Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy(),
-        },
-    };
+    public static readonly JobKey Key = new("process_outbox_messages");
+    private static readonly int MessagesPerBatch = int.Parse("OUTBOX__MESSAGES_PER_BATCH".FromEnv("20"));
 
     public async Task Execute(IJobExecutionContext context)
     {
@@ -33,13 +27,13 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOnUtc == null)
             .OrderBy(m => m.OccuredOnUtc)
-            .Take(20)
+            .Take(MessagesPerBatch)
             .ToListAsync(context.CancellationToken);
 
         foreach (var message in messages)
         {
             var domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>(message.Content, JsonSerializerSettings);
+                .DeserializeObject<IDomainEvent>(message.Content, OutboxMessage.JsonSerializerSettings);
 
             if (domainEvent is null)
             {
@@ -49,6 +43,7 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
 
             try
             {
+                logger.LogInformation("publishing {@DomainEvent}", domainEvent);
                 await publisher.Publish(domainEvent, context.CancellationToken);
             }
             catch (Exception ex)
@@ -58,6 +53,7 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
             }
 
             message.ProcessedOnUtc = dateTimeProvider.UtcNow;
+            dbContext.Set<OutboxMessage>().Update(message);
         }
 
         await dbContext.SaveChangesAsync(context.CancellationToken);

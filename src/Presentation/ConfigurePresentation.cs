@@ -2,12 +2,9 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Application;
-using Domain;
 using Domain.Common;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -16,7 +13,6 @@ using Presentation;
 using Presentation.Filters;
 using ZymLabs.NSwag.FluentValidation;
 
-[assembly: HostingStartup(typeof(ConfigurePresentation))]
 
 namespace Presentation;
 
@@ -111,7 +107,7 @@ public class ConfigurePresentation : IHostingStartup
         {
             services.AddValidatorsFromAssembly(Domain.Domain.Assembly, includeInternalTypes: true);
             services.AddValidatorsFromAssembly(Application.Application.Assembly, includeInternalTypes: true);
-            services.AddValidatorsFromAssembly(InfrastructureAssembly.Assembly, includeInternalTypes: true);
+            services.AddValidatorsFromAssembly(Infrastructure.Infrastructure.Assembly, includeInternalTypes: true);
             services.AddValidatorsFromAssembly(PresentationAssembly.Assembly, includeInternalTypes: true);
 
             services.AddFluentValidationAutoValidation()

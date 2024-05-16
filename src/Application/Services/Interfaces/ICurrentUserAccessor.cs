@@ -4,7 +4,7 @@ namespace Application.Services.Interfaces;
 
 public interface ICurrentUserAccessor
 {
-    public Guid? CurrentUserId { get; }
+    public UserId? CurrentUserId { get; }
 
     public Task<User?> GetCurrentUserAsync(CancellationToken ct = default);
 }

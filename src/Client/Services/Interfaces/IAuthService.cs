@@ -1,6 +1,4 @@
-﻿using Application.Auth.Commands;
-
-namespace Client.Services.Interfaces;
+﻿namespace Client.Services.Interfaces;
 
 public interface IAuthService
 {

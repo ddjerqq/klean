@@ -1,10 +1,8 @@
 using System.ComponentModel;
 using Domain.Aggregates;
-using Domain.Common;
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -13,6 +11,11 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.Property(e => e.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new UserId(value));
+
         builder.HasIndex(e => e.Username)
             .IsUnique();
 

@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
-using Application.Auth.Commands;
 using Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 

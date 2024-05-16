@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Application.Services;
 using Application.Services.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;

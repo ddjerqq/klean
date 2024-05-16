@@ -1,4 +1,4 @@
-namespace Infrastructure.Services.Interfaces;
+namespace Infrastructure.Idempotency;
 
 public interface IIdempotencyService
 {

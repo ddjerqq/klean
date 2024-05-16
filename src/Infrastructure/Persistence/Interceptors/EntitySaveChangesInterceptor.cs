@@ -1,4 +1,3 @@
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -35,24 +34,29 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         var userAccessor = context.GetService<ICurrentUserAccessor>();
         var dateTimeProvider = context.GetService<IDateTimeProvider>();
 
-        var currentUserId = userAccessor.CurrentUserId.ToString();
+        var currentUserId = userAccessor.CurrentUserId?.ToString();
         var dateTime = dateTimeProvider.UtcNow;
 
+        var entityType = typeof(IEntity<>);
+
+        // this is a horrible hack... but it's a necessary evil,
         context.ChangeTracker
-            .Entries<Entity<>>()
+            .Entries()
+            .Select(entry => (Entry: entry, entry.Entity))
+            .Where(x => entityType.IsInstanceOfType(x.Entity))
             .ToList()
-            .ForEach(entry =>
+            .ForEach(x =>
             {
-                if (entry.State == EntityState.Added)
+                if (x.Entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedBy = currentUserId;
-                    entry.Entity.Created = dateTime;
+                    ((dynamic?)x.Entry.Entity)!.CreatedBy = currentUserId!;
+                    ((dynamic?)x.Entry.Entity)!.Created = dateTime;
                 }
 
-                if (entry.State == EntityState.Modified || HasChangedOwnedEntities(entry))
+                if (x.Entry.State == EntityState.Modified || HasChangedOwnedEntities(x.Entry))
                 {
-                    entry.Entity.LastModifiedBy = currentUserId;
-                    entry.Entity.LastModified = dateTime;
+                    ((dynamic?)x.Entry.Entity)!.LastModifiedBy = currentUserId!;
+                    ((dynamic?)x.Entry.Entity)!.LastModified = dateTime;
                 }
             });
     }

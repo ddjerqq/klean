@@ -1,5 +1,4 @@
 using Application.Common;
-using Application.Services;
 using Application.Services.Interfaces;
 using Domain.Aggregates;
 using Domain.Common;
@@ -11,31 +10,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
 public sealed class AppDbContext(
     DbContextOptions<AppDbContext> options,
-    EntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor,
     ConvertDomainEventsToOutboxMessagesInterceptor convertDomainEventsToOutboxMessagesInterceptor)
     : DbContext(options), IAppDbContext
 {
-    public DbSet<User> Users => Set<User>();
-
     public DbSet<Item> Items => Set<Item>();
 
     public DbSet<ItemType> ItemTypes => Set<ItemType>();
+
+    public DbSet<User> Users => Set<User>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(Infrastructure.Assembly);
         base.OnModelCreating(builder);
         SnakeCaseRename(builder);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(auditableEntitySaveChangesInterceptor);
         optionsBuilder.AddInterceptors(convertDomainEventsToOutboxMessagesInterceptor);
         base.OnConfiguring(optionsBuilder);
     }

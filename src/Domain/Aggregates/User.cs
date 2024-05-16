@@ -1,4 +1,5 @@
 using Domain.Abstractions;
+using Domain.Common;
 using Domain.Entities;
 using Domain.ValueObjects;
 
@@ -8,6 +9,8 @@ public readonly record struct UserId(Ulid Value)
 {
     public static UserId Empty => new(Ulid.Empty);
     public static UserId NewUserId() => new(Ulid.NewUlid());
+    public override string ToString() => StrongIdHelper<UserId, Ulid>.Serialize(Value);
+    public static UserId? TryParse(string? value) => StrongIdHelper<UserId, Ulid>.Deserialize(value, null);
 }
 
 public sealed class User(UserId id) : AggregateRoot<UserId>(id)
