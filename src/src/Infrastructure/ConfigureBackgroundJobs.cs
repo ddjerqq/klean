@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Application;
 using Domain.Common;
-using Infrastructure;
 using Infrastructure.BackgroundJobs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

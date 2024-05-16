@@ -36,6 +36,12 @@
         <ProjectReference Include="..\Domain\Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Auth\AuthModal.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\Login.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Auth\Register.razor" />
+    </ItemGroup>
+
     <Target Name="BuildCSS" BeforeTargets="Compile" Condition=" '$(Configuration)' == 'Debug' ">
         <Exec Command="tailwindcss -i ./wwwroot/app.css -o ./wwwroot/app.min.css --minify"
               ContinueOnError="true">

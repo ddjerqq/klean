@@ -1,11 +1,10 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
-using Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Client.Services;
 
-public sealed class JwtAuthManager(HttpClient http) : AuthenticationStateProvider, IAuthService
+public sealed class JwtAuthManager(HttpClient http) : AuthenticationStateProvider
 {
     private static ClaimsPrincipal EmptyPrincipal => new(new ClaimsIdentity());
 
@@ -13,27 +12,6 @@ public sealed class JwtAuthManager(HttpClient http) : AuthenticationStateProvide
     {
         var claimsPrincipal = await GetUserClaimsAsync();
         return new AuthenticationState(claimsPrincipal);
-    }
-
-    public async Task LoginAsync(UserLoginCommand command, CancellationToken ct = default)
-    {
-        var resp = await http.PostAsJsonAsync("api/auth/login", command, ct);
-        resp.EnsureSuccessStatusCode();
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-    }
-
-    public async Task RegisterAsync(UserRegisterCommand command, CancellationToken ct = default)
-    {
-        var resp = await http.PostAsJsonAsync("api/auth/register", command, ct);
-        resp.EnsureSuccessStatusCode();
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-    }
-
-    public async Task LogoutAsync(CancellationToken ct = default)
-    {
-        var resp = await http.PostAsync("api/auth/logout", null, ct);
-        resp.EnsureSuccessStatusCode();
-        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
     private async Task<ClaimsPrincipal> GetUserClaimsAsync(CancellationToken ct = default)

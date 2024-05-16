@@ -1,5 +1,4 @@
 using Application;
-using Blazor.Heroicons.Solid;
 using Infrastructure.Idempotency;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;

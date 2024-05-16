@@ -3,9 +3,7 @@ using System.Security.Claims;
 using Application;
 using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
