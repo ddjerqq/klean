@@ -14,27 +14,28 @@ public sealed class JwtAuthManager(HttpClient http) : AuthenticationStateProvide
         return new AuthenticationState(claimsPrincipal);
     }
 
-    private async Task<ClaimsPrincipal> GetUserClaimsAsync(CancellationToken ct = default)
+    private ValueTask<ClaimsPrincipal> GetUserClaimsAsync(CancellationToken ct = default)
     {
-        try
-        {
-            var body = await http.GetFromJsonAsync<Dictionary<string, string>>("api/auth/user_claims", ct);
-
-            if (body is not { Count: > 0 })
-                return EmptyPrincipal;
-
-            var claims = body
-                .Select(kv => new Claim(kv.Key, kv.Value))
-                .ToList();
-
-            var claimsIdentity = new ClaimsIdentity(claims, "bearer");
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            return claimsPrincipal;
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine(ex);
-            return EmptyPrincipal;
-        }
+        // try
+        // {
+        //     var body = await http.GetFromJsonAsync<Dictionary<string, string>>("api/auth/user_claims", ct);
+        //
+        //     if (body is not { Count: > 0 })
+        //         return EmptyPrincipal;
+        //
+        //     var claims = body
+        //         .Select(kv => new Claim(kv.Key, kv.Value))
+        //         .ToList();
+        //
+        //     var claimsIdentity = new ClaimsIdentity(claims, "bearer");
+        //     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+        //     return claimsPrincipal;
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.Error.WriteLine(ex);
+        //     return EmptyPrincipal;
+        // }
+        return ValueTask.FromResult(EmptyPrincipal);
     }
 }
