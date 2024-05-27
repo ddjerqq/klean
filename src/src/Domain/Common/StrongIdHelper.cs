@@ -34,7 +34,7 @@ public sealed class StrongIdHelper<TId, TValue> where TId : struct
 
     private static string GetPrefix(string idTypeName)
     {
-        var id = idTypeName.Replace("id", string.Empty);
+        var id = idTypeName.Replace("id", string.Empty, StringComparison.InvariantCultureIgnoreCase);
         return id.ToSnakeCase();
     }
 }
