@@ -6,6 +6,7 @@ using Domain.Common;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.ResponseCompression;
 using Presentation.Filters;
+using Presentation.HealthChecks;
 
 namespace Presentation;
 
@@ -21,7 +22,8 @@ public sealed class ConfigurePresentation : ConfigurationBase
         services.AddAntiforgery();
 
         services.AddHealthChecks()
-            .AddDbContextCheck<AppDbContext>("db");
+            .AddDbContextCheck<AppDbContext>("db")
+            .AddCheck<TestHealthCheck>("Test");
 
         services.AddScoped<GlobalExceptionHandlerMiddleware>();
         services.AddHttpContextAccessor();
