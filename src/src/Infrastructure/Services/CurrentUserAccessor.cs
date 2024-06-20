@@ -1,5 +1,6 @@
 using Application.Services;
 using Domain.Aggregates;
+using Klean.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;

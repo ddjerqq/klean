@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Domain.Entities;
+using Klean.Generated;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

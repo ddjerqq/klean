@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Domain.Aggregates;
 using Domain.ValueObjects;
+using Klean.Generated;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

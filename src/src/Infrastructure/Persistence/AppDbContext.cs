@@ -7,6 +7,7 @@ using Domain.ValueObjects;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Persistence.ValueConverters;
 using Microsoft.EntityFrameworkCore;
+using Klean.Generated;
 
 namespace Infrastructure.Persistence;
 
@@ -41,6 +42,9 @@ public sealed class AppDbContext(
         builder
             .Properties<DateTime>()
             .HaveConversion<DateTimeUtcValueConverter>();
+
+        builder.ConfigureUserIdConventions();
+        builder.ConfigureItemIdConventions();
 
         base.ConfigureConventions(builder);
     }

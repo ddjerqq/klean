@@ -1,5 +1,5 @@
 using Domain.Abstractions;
-using Domain.Entities;
+using Klean.Generated;
 
 namespace Domain.Events;
 

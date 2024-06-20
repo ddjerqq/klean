@@ -124,9 +124,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
     private static bool SyntacticPredicate(SyntaxNode node, CancellationToken ct)
     {
         var isRecord = node is RecordDeclarationSyntax { AttributeLists.Count: > 0 };
-        var isClass = node is ClassDeclarationSyntax { AttributeLists.Count: > 0 } candidate
-                      && candidate.Modifiers.Any(SyntaxKind.StaticKeyword);
-
+        var isClass = node is ClassDeclarationSyntax { AttributeLists.Count: > 0 };
         return isRecord || isClass;
     }
 

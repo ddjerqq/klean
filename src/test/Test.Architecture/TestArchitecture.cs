@@ -1,5 +1,3 @@
-using Application;
-using Domain;
 using MediatR;
 using NetArchTest.Rules;
 

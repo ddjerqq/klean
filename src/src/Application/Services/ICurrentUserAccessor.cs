@@ -1,4 +1,5 @@
 using Domain.Aggregates;
+using Klean.Generated;
 
 namespace Application.Services;
 

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Domain.ValueObjects;
+using Klean.Generated;
 
 namespace Application.Dtos;
 
