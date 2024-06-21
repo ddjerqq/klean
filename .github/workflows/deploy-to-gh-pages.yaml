@@ -8,7 +8,7 @@ env:
   NETCORE_VERSION: "8.0.x"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  SRC: "/home/runner/work/klean/klean/src"
+  SRC: "/home/runner/work/klean/klean/src/src"
 
 jobs:
   build-and-deploy:
