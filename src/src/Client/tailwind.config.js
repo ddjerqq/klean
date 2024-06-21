@@ -1,6 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
-const daisyUi = require('daisyui');
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -18,8 +17,5 @@ export default {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
-  },
-  plugins: [
-    daisyUi,
-  ],
+  }
 };
