@@ -12,5 +12,5 @@ public sealed class Item(ItemId id) : Entity<ItemId>(id)
 
     public ItemType ItemType { get; init; } = default!;
 
-    public User Owner { get; set; } = default!;
+    public User Owner { get; init; } = default!;
 }
