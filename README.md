@@ -19,11 +19,11 @@ CQRS pattern, Blazor WASM with TailwindCSS front-end, and much much more.
 You can install this template using [NuGet](https://www.nuget.org/packages/klean):
 
 ```shell
-dotnet new -i Klean
+dotnet new install klean
 ```
-
+In a folder where you want to initialize the project, just do:
 ```shell
-dotnet new Klean
+dotnet new klean
 ```
 
 ## Support
@@ -35,5 +35,6 @@ If you are having problems, please let us know by [raising a new issue](https://
 This project is licensed with the [MIT license](LICENSE).
 
 ## Future plans:
-- [ ] [PostgreSQL database support](https://github.com/ddjerqq/klean/issues/3)
-- [ ] [Rate limiting](https://github.com/ddjerqq/klean/issues/4)
+- YARP instead of NGINX
+- Firefly instead of REDIS
+- RabbitMQ or something? IKD we'll see ;)
