@@ -11,10 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="src\**\*" Exclude="**\bin\**\*;**\obj\**\*"/>
+        <Content Include="src\**\*" Exclude="**\bin\**\*;**\obj\**\*;**\node_modules\**\*;"/>
         <Compile Remove="**\*"/>
         <None Include="README.md" Pack="true" PackagePath="\"/>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />
+<!--        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />-->
     </ItemGroup>
 
     <PropertyGroup>
