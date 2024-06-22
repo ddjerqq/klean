@@ -82,7 +82,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                   return sb.ToString();
               }
           
-              private static string Prefix => ToSnakeCase(typeof(TId).Name.Replace("id", string.Empty));
+              private static string Prefix => ToSnakeCase(typeof(TId).Name.Replace("Id", string.Empty));
           }
           """;
 
