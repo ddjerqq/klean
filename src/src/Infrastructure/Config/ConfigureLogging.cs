@@ -1,18 +1,17 @@
 using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using Application;
-using Presentation.Filters;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
-namespace Presentation;
+namespace Infrastructure.Config;
 
-/// <inheritdoc />
 [EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureLogging : ConfigurationBase
 {
-    /// <inheritdoc />
-    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
         Log.Logger = new LoggerConfiguration()
             .Configure()
@@ -64,7 +63,6 @@ public static class LoggingExt
             options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms\n" +
                                       "UserId: {UserId}\n" +
                                       "Host: {RequestHost}\n" +
-                                      "Client: {RequestClient}\n" +
                                       "UserAgent: {RequestUserAgent}";
 
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
@@ -74,7 +72,6 @@ public static class LoggingExt
                 if (httpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid) is { Value: var id })
                     diagnosticContext.Set("UserId", id);
 
-                diagnosticContext.Set("RequestClient", httpContext.Items[SetClientIpAddressFilter.ClientIpItemName]);
                 diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
                 diagnosticContext.Set("RequestUserAgent", (string?)httpContext.Request.Headers.UserAgent);
             };
