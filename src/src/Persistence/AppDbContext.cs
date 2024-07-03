@@ -1,32 +1,27 @@
+using System.Reflection;
 using Application.Common;
 using Application.Services;
 using Domain.Aggregates;
 using Domain.Common;
-using Domain.Entities;
-using Domain.ValueObjects;
-using Infrastructure.Persistence.Interceptors;
-using Infrastructure.Persistence.ValueConverters;
-using Microsoft.EntityFrameworkCore;
 using Klean.Generated;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Interceptors;
+using Persistence.ValueConverters;
 
-namespace Infrastructure.Persistence;
+namespace Persistence;
 
 public sealed class AppDbContext(
     DbContextOptions<AppDbContext> options,
     ConvertDomainEventsToOutboxMessagesInterceptor convertDomainEventsToOutboxMessagesInterceptor)
     : DbContext(options), IAppDbContext
 {
-    public DbSet<Item> Items => Set<Item>();
-
-    public DbSet<ItemType> ItemTypes => Set<ItemType>();
-
     public DbSet<User> Users => Set<User>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(Infrastructure.Assembly);
+        builder.ApplyConfigurationsFromAssembly(Assembly.Load(nameof(Persistence)));
         base.OnModelCreating(builder);
         SnakeCaseRename(builder);
     }
@@ -43,8 +38,11 @@ public sealed class AppDbContext(
             .Properties<DateTime>()
             .HaveConversion<DateTimeUtcValueConverter>();
 
+        builder
+            .Properties<Ulid>()
+            .HaveConversion<UlidToStringConverter>();
+
         builder.ConfigureUserIdConventions();
-        builder.ConfigureItemIdConventions();
 
         base.ConfigureConventions(builder);
     }

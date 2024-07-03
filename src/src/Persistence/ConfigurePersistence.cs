@@ -2,33 +2,29 @@ using System.ComponentModel;
 using Application;
 using Application.Services;
 using Domain.Common;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Interceptors;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Persistence.Interceptors;
 
-
-namespace Infrastructure;
+namespace Persistence;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class ConfigurePersistence : ConfigurationBase
 {
-    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<EntitySaveChangesInterceptor>();
         services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
         services.AddDbContext<AppDbContext>(builder =>
         {
-            if (context.HostingEnvironment.IsDevelopment())
+            if (IsDevelopment)
             {
                 builder.EnableDetailedErrors();
                 builder.EnableSensitiveDataLogging();
             }
 
-            var dbPath = "DB__PATH".FromEnv();
+            var dbPath = "DB__PATH".FromEnvRequired();
             builder.UseSqlite($"Data Source={dbPath}");
         });
 

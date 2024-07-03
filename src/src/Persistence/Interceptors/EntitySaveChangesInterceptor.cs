@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Infrastructure.Persistence.Interceptors;
+namespace Persistence.Interceptors;
 
 public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
 {
