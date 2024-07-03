@@ -11,14 +11,6 @@
   "shortName": "klean",
   "sourceName": "Klean",
   "description": "A ready-to-use template for ASP.NET Core with Domain Driven Design - clean architecture, CQRS pattern, StyleCop, and Blazor WASM front-end",
-  "symbols": {
-    "skipRestore": {
-      "type": "parameter",
-      "datatype": "bool",
-      "description": "If specified, skips the automatic restore of the project on create.",
-      "defaultValue": "false"
-    }
-  },
   "sources": [
     {
       "modifiers": [
@@ -27,6 +19,9 @@
             "**/.vs/**",
             "**/.idea/**",
             "**/.env",
+            "**/.db",
+            "**/.env",
+            "**/.user",
             "**/*.pfx",
             "**/node_modules/**",
             "**.min.**",
