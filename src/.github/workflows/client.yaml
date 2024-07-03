@@ -3,8 +3,8 @@ name: Client
 on:
   workflow_dispatch:
 
-  push:
-    branches: [ "master" ]
+#  push:
+#    branches: [ "master" ]
 
 env:
   NETCORE_VERSION: "8.0.x"
