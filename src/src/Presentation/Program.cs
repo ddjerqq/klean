@@ -1,4 +1,6 @@
+using Application;
 using dotenv.net;
+using Infrastructure.Config;
 using Presentation;
 
 // fix postgres timestamp issue
@@ -14,9 +16,13 @@ DotEnv.Fluent()
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseConfiguredSerilog();
-
 builder.WebHost.UseStaticWebAssets();
-builder.WebHost.ConfigureAssemblies();
+
+// service registration from configurations.
+ConfigurationBase.ConfigureServicesFromAssemblies(builder.Services, [
+    nameof(Domain), nameof(Application), nameof(Infrastructure),
+    nameof(Persistence), nameof(WebAPI), nameof(Presentation),
+]);
 
 var app = builder.Build();
 
@@ -33,8 +39,7 @@ if (app.Environment.IsDevelopment())
 if (app.Environment.IsProduction())
     app.UseProductionMiddleware();
 
-app.UseAppMiddleware();
-
+app.UseGeneralMiddleware();
 app.MapEndpoints();
 
 app.Run();

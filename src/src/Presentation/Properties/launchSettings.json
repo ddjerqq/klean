@@ -1,31 +1,32 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
+    "watch": {
+      "commandName": "Executable",
+      "workingDirectory": "$(ProjectDir)",
+      "executablePath": "dotnet",
+      "commandLineArgs": "watch run development --launch-profile development --non-interactive",
+      "environmentVariables": {
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "1"
+      }
+    },
     "development": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "hotReloadEnabled": true,
-      "applicationUrl": "http://0.0.0.0:80;https://0.0.0.0:443",
+      "applicationUrl": "http://127.0.0.1:80;https://127.0.0.1:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "WEB_APP__DOMAIN": "localhost",
-        "JWT__KEY": "66f475922093498b44748a0e69fa4891999ba6f16a31939fa388ef954ef6d65e0c1227fe7be14be0bc557c1af89163f017f78128a3a0497e9c7de5b6e68cd879",
-        "JWT__ISSUER": "klean",
-        "JWT__AUDIENCE": "klean",
-        "JWT__EXPIRATION": "60"
+        "WEB_APP__DOMAIN": "localhost"
       }
     },
     "production": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://0.0.0.0:80;https://0.0.0.0:443",
+      "applicationUrl": "http://127.0.0.1:80;https://127.0.0.1:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
-        "WEB_APP__DOMAIN": "localhost",
-        "JWT__KEY": "66f475922093498b44748a0e69fa4891999ba6f16a31939fa388ef954ef6d65e0c1227fe7be14be0bc557c1af89163f017f78128a3a0497e9c7de5b6e68cd879",
-        "JWT__ISSUER": "klean",
-        "JWT__AUDIENCE": "klean",
-        "JWT__EXPIRATION": "60"
+        "WEB_APP__DOMAIN": "localhost"
       }
     }
   }

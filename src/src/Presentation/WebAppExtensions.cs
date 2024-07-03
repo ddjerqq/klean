@@ -1,11 +1,11 @@
-using System.Reflection;
-using Application;
 using Infrastructure.Idempotency;
-using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Presentation.Hubs;
+using Persistence;
+using Presentation.Components;
 using Serilog;
+using WebAPI;
+using WebAPI.Hubs;
 
 namespace Presentation;
 
@@ -15,40 +15,12 @@ namespace Presentation;
 public static class WebAppExt
 {
     /// <summary>
-    /// Configures the configurations from all the assemblies and configuration types.
-    /// </summary>
-    public static void ConfigureAssemblies(this ConfigureWebHostBuilder builder)
-    {
-        Assembly[] assemblies =
-        [
-            Domain.Domain.Assembly,
-            Application.Application.Assembly,
-            Infrastructure.Infrastructure.Assembly,
-            Presentation.Assembly,
-        ];
-
-        assemblies
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(ConfigurationBase).IsAssignableFrom(type))
-            .Where(type => type is { IsInterface: false, IsAbstract: false })
-            .Where(type => type.Name.StartsWith("configure", StringComparison.InvariantCultureIgnoreCase))
-            .Select(type => (ConfigurationBase)Activator.CreateInstance(type)!)
-            .ToList()
-            .ForEach(hostingStartup =>
-            {
-                var name = hostingStartup.GetType().Name.Replace("Configure", "");
-                Console.WriteLine($@"[{DateTime.UtcNow:s}.000 INF] Configured {name}");
-                hostingStartup.Configure(builder);
-            });
-    }
-
-    /// <summary>
     /// Apply any pending migrations to the database if any.
     /// </summary>
     public static void MigrateDatabase(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         if (dbContext.Database.GetPendingMigrations().Any())
         {
@@ -78,13 +50,17 @@ public static class WebAppExt
     {
         app.UseHsts();
         app.UseIdempotency();
+
+        // compress and then cache static files
+        app.UseResponseCompression();
+        app.UseResponseCaching();
     }
 
 
     /// <summary>
     /// Use general web app middleware
     /// </summary>
-    public static void UseAppMiddleware(this WebApplication app)
+    public static void UseGeneralMiddleware(this WebApplication app)
     {
         app.UseRouting();
         app.UseRequestLocalization();
@@ -96,9 +72,7 @@ public static class WebAppExt
 
         app.UseAntiforgery();
 
-        // compress and then cache static files
-        app.UseResponseCompression();
-        app.UseResponseCaching();
+        app.UseStaticFiles();
     }
 
     /// <summary>
@@ -131,6 +105,8 @@ public static class WebAppExt
     /// </summary>
     public static void MapEndpoints(this WebApplication app)
     {
+        app.MapGet("/foo", () => "foo bar baz");
+
         app.MapSwagger();
 
         app.MapHealthChecks("/api/v1/health", new HealthCheckOptions
@@ -141,6 +117,9 @@ public static class WebAppExt
 
         app.MapControllers();
         app.MapDefaultControllerRoute();
+
+        app.MapRazorComponents<App>()
+            .AddInteractiveServerRenderMode();
 
         app.MapHub<EventHub>("/ws");
     }
