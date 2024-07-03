@@ -1,7 +1,65 @@
-**/.idea/*
-**/node_modules/*
-**/bin/*
-**/obj/*
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+nupkg/
+.temp-keys
+.data
+
+# Visual Studio Code
+.vscode
+
+# Rider
+.idea
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
+.vs/
+
+# Env variables
+.env
+
+# Databases
+*.db
+*.sqlite
+*.db-wal
+*.db-shm
+
+# Logs
+.logs
+*.log
+
+# NPM
+package-lock.json
 **/*.min.*
-**/package-lock.json
-**/.env
+node_modules/
+
+# Build artefacts
+dist
+
+# ssh keys
+.ssh
+*.secrets
+.github/workflows/act.secrets

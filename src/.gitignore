@@ -63,8 +63,3 @@ dist
 .ssh
 *.secrets
 .github/workflows/act.secrets
-
-# ssl keys
-nginx/ssl/*.crt
-nginx/ssl/*.key
-nginx/ssl/*.pfx
