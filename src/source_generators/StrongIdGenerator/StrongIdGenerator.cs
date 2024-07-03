@@ -204,7 +204,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                          public readonly record struct {{idClassName}}({{idType}} Value)
                          {
                              public static {{idClassName}} Empty => new({{idType}}.Empty);
-                             public static {{idClassName}} New{{idClassName}}() => new({{idType}}.NewUlid());
+                             public static {{idClassName}} New() => new({{idType}}.NewUlid());
                              public override string ToString() => StrongIdHelper<{{idClassName}}, {{idType}}>.Serialize(Value);
                              public static bool TryParse(string? value, [global::System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out {{idClassName}}? id) => StrongIdHelper<{{idClassName}}, {{idType}}>.Deserialize(value, out id);
                              public static {{idClassName}} Parse(string value) => TryParse(value, out var id) ? id.Value : throw new FormatException("Input string was not in the correct format");
