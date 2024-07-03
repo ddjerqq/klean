@@ -1,8 +1,8 @@
 using System.ComponentModel;
+using System.Reflection;
 using Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -10,7 +10,7 @@ namespace Application;
 [EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureApplication : ConfigurationBase
 {
-    public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
         services.AddAutoMapper(Application.Assembly);
         services.AddValidatorsFromAssembly(Application.Assembly);
@@ -21,5 +21,9 @@ public sealed class ConfigureApplication : ConfigurationBase
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
         });
+
+        services.AddValidatorsFromAssembly(Assembly.Load(nameof(Domain)), includeInternalTypes: true);
+        services.AddValidatorsFromAssembly(Assembly.Load(nameof(Application)), includeInternalTypes: true);
+
     }
 }

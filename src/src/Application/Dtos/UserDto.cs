@@ -12,6 +12,4 @@ public sealed class UserDto
     public string Username { get; init; } = default!;
 
     public decimal Balance { get; init; }
-
-    public IEnumerable<ItemDto> Inventory { get; init; } = [];
 }
