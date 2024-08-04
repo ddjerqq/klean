@@ -3,6 +3,7 @@
 on:
   push:
     branches: [ "master" ]
+  workflow_dispatch:
 
 env:
   NETCORE_VERSION: "8.0.x"
