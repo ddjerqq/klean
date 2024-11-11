@@ -21,9 +21,5 @@ public sealed class ConfigureApplication : ConfigurationBase
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
         });
-
-        services.AddValidatorsFromAssembly(Assembly.Load(nameof(Domain)), includeInternalTypes: true);
-        services.AddValidatorsFromAssembly(Assembly.Load(nameof(Application)), includeInternalTypes: true);
-
     }
 }

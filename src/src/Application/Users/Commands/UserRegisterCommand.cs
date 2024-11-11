@@ -15,8 +15,6 @@ public sealed class UserRegisterCommandValidator : AbstractValidator<UserRegiste
 {
     public UserRegisterCommandValidator(IAppDbContext dbContext)
     {
-        RuleLevelCascadeMode = CascadeMode.Stop;
-
         RuleFor(x => x.Username)
             .NotEmpty()
             .Length(3, 32)
@@ -38,7 +36,7 @@ public sealed class UserRegisterCommandValidator : AbstractValidator<UserRegiste
             RuleFor(x => x.Username)
                 .MustAsync(async (username, ct) =>
                 {
-                    var userCount = await dbContext.Set<User>().CountAsync(x => x.Username == username, ct);
+                    var userCount = await dbContext.Users.CountAsync(x => x.Username == username, ct);
                     return userCount == 0;
                 })
                 .WithMessage("Username is taken");
@@ -46,7 +44,7 @@ public sealed class UserRegisterCommandValidator : AbstractValidator<UserRegiste
             RuleFor(x => x.Email)
                 .MustAsync(async (email, ct) =>
                 {
-                    var userCount = await dbContext.Set<User>().CountAsync(x => x.Email == email, ct);
+                    var userCount = await dbContext.Users.CountAsync(x => x.Email == email, ct);
                     return userCount == 0;
                 })
                 .WithMessage("Email is taken");
@@ -70,7 +68,7 @@ internal sealed class UserRegisterCommandHandler(IAppDbContext dbContext, IDateT
             LastModifiedBy = null,
         };
 
-        dbContext.Set<User>().Add(user);
+        dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync(ct);
 
         return user;

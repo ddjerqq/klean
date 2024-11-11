@@ -9,13 +9,10 @@ namespace Application.Users.Commands;
 
 public sealed record UserLoginCommand(string? Username, string? Email, string Password) : IRequest<User?>;
 
-[EditorBrowsable(EditorBrowsableState.Never)]
-public sealed class UserLoginCommandValidator : AbstractValidator<UserLoginCommand>
+public sealed class UserLoginValidator : AbstractValidator<UserLoginCommand>
 {
-    public UserLoginCommandValidator()
+    public UserLoginValidator()
     {
-        RuleLevelCascadeMode = CascadeMode.Stop;
-
         RuleFor(x => x.Username)
             .Length(3, 32)
             .Matches(@"[a-z0-9_\.]{3,32}")
@@ -45,12 +42,11 @@ public sealed class UserLoginCommandValidator : AbstractValidator<UserLoginComma
     }
 }
 
-[EditorBrowsable(EditorBrowsableState.Never)]
-internal sealed class UserLoginCommandHandler(IAppDbContext dbContext) : IRequestHandler<UserLoginCommand, User?>
+internal sealed class UserLoginHandler(IAppDbContext dbContext) : IRequestHandler<UserLoginCommand, User?>
 {
     public async Task<User?> Handle(UserLoginCommand request, CancellationToken ct)
     {
-        var user = await dbContext.Set<User>().SingleOrDefaultAsync(x => x.Username == request.Username || x.Email == request.Email, ct);
+        var user = await dbContext.Users.SingleOrDefaultAsync(x => x.Username == request.Username || x.Email == request.Email, ct);
 
         if (user is null || !BC.EnhancedVerify(request.Password, user.PasswordHash))
             return null;

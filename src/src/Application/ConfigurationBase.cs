@@ -30,30 +30,9 @@ public abstract class ConfigurationBase
             .ForEach(hostingStartup =>
             {
                 var name = hostingStartup.GetType().Name.Replace("Configure", "");
-                Console.WriteLine($"[{DateTime.UtcNow:s}.000 INF] Configured {name}");
+                Console.WriteLine($"[{DateTime.Now:dd-MM-yyyy hh:mm:ss.fff} INF] Configuring {name}");
                 hostingStartup.ConfigureServices(services);
-            });
-    }
-}
-
-public static class ConfigExt
-{
-    /// <summary>
-    /// Configures the configurations from all the assemblies and configuration types.
-    /// </summary>
-    public static void ConfigureAssemblies(this IServiceCollection services, IEnumerable<Assembly> assemblies)
-    {
-        assemblies
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(ConfigurationBase).IsAssignableFrom(type))
-            .Where(type => type is { IsInterface: false, IsAbstract: false })
-            .Select(type => (ConfigurationBase)Activator.CreateInstance(type)!)
-            .ToList()
-            .ForEach(hostingStartup =>
-            {
-                var name = hostingStartup.GetType().Name.Replace("Configure", "");
-                Console.WriteLine($"[{DateTime.UtcNow:s}.000 INF] Configured {name}");
-                hostingStartup.ConfigureServices(services);
+                Console.WriteLine($"[{DateTime.Now:dd-MM-yyyy hh:mm:ss.fff} INF] Configured  {name}");
             });
     }
 }

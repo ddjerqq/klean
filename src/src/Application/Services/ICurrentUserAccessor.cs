@@ -6,7 +6,9 @@ namespace Application.Services;
 
 public interface ICurrentUserAccessor
 {
-    public UserId? CurrentUserId { get; }
+    public UserId? Id { get; }
+    public string? FullName { get; }
+    public string? Email { get; }
 
     public Task<User?> TryGetCurrentUserAsync(CancellationToken ct = default);
 

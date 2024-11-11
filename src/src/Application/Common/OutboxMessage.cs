@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Application.Services;
+using Destructurama.Attributed;
 using Domain.Abstractions;
 using Newtonsoft.Json;
 
@@ -21,6 +22,7 @@ public sealed class OutboxMessage
     [StringLength(128)]
     public string Type { get; init; } = default!;
 
+    [LogMasked]
     [StringLength(1024)]
     public string Content { get; init; } = string.Empty;
 

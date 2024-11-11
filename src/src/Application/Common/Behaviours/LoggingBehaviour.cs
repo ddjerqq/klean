@@ -2,38 +2,33 @@ using System.Diagnostics;
 using Application.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
+using SerilogTracing;
 
 namespace Application.Common.Behaviours;
 
-internal sealed class LoggingBehaviour<TRequest, TResponse>(
-    ICurrentUserAccessor currentUserAccessor,
-    ILogger<LoggingBehaviour<TRequest, TResponse>> logger)
+internal sealed class LoggingBehaviour<TRequest, TResponse>(ICurrentUserAccessor currentUser)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
     {
-        var user = await currentUserAccessor.GetCurrentUserAsync(ct);
+        var userId = currentUser.Id?.ToString() ?? "unauthenticated";
 
-        logger.LogInformation(
-            "{@UserId} {@UserName} started request {@RequestName} {@Request}",
-            user?.Id,
-            user?.Username,
-            typeof(TRequest).Name,
-            request);
+        using var activity = Log.Logger.StartActivity("{@UserId} sent request {@RequestName} {@Request}", userId, typeof(TRequest).Name, request);
 
-        var stopwatch = Stopwatch.StartNew();
-        var result = await next();
-        stopwatch.Stop();
-
-        logger.LogInformation(
-            "{@UserId} {@UserName} finished request {@RequestName} {@Request} in {@Duration:c}",
-            user?.Id,
-            user?.Username,
-            typeof(TRequest).Name,
-            request,
-            stopwatch.Elapsed);
-
-        return result;
+        try
+        {
+            var result = await next();
+            activity.AddProperty("Result", result, true);
+            activity.Complete();
+            return result;
+        }
+        catch (Exception ex)
+        {
+            activity.Complete(LogEventLevel.Fatal, ex);
+            throw;
+        }
     }
 }
