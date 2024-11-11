@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsPackable>false</IsPackable>
@@ -21,6 +20,4 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
     </ItemGroup>
-
-
 </Project>

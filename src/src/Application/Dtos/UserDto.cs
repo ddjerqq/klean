@@ -1,6 +1,6 @@
 using AutoMapper;
 using Domain.Aggregates;
-using Klean.Generated;
+using Generated;
 
 namespace Application.Dtos;
 

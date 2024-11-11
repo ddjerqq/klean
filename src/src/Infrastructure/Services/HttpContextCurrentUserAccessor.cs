@@ -1,6 +1,6 @@
 using Application.Services;
 using Domain.Aggregates;
-using Klean.Generated;
+using Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -21,7 +21,7 @@ public sealed class HttpContextCurrentUserAccessor(IHttpContextAccessor httpCont
                 .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?
                 .Value;
 
-            return UserId.TryParse(stringId, out var id) ? id : null;
+            return UserId.TryParse(stringId, null, out var id) ? id : null;
         }
     }
 

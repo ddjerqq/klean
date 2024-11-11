@@ -7,13 +7,6 @@ nupkg/
 .temp-keys
 .data
 
-# Visual Studio Code
-.vscode
-
-# Rider
-.idea
-
-# User-specific files
 *.suo
 *.user
 *.userosscache
@@ -35,31 +28,26 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
-.vs/
+# IDEs
+.vscode
+.idea
+.vs
 
-# Env variables
+.aspnet/https/*.pem
+.aspnet/https/*.key
+.aspnet/https/*.crt
+
 .env
-
-# Databases
 *.db
 *.sqlite
 *.db-wal
 *.db-shm
-
-# Logs
 .logs
 *.log
-
-# NPM
 package-lock.json
 **/*.min.*
 node_modules/
-
-# Build artefacts
 dist
-
-# ssh keys
 .ssh
 *.secrets
 .github/workflows/act.secrets

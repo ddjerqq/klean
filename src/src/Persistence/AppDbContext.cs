@@ -3,9 +3,10 @@ using Application.Common;
 using Application.Services;
 using Domain.Aggregates;
 using Domain.Common;
-using Klean.Generated;
+using Generated;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Interceptors;
+using Domain.Abstractions;
 using Persistence.ValueConverters;
 
 namespace Persistence;
@@ -34,6 +35,8 @@ public sealed class AppDbContext(
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
+        builder.ConfigureGeneratedConverters();
+
         builder
             .Properties<DateTime>()
             .HaveConversion<DateTimeUtcValueConverter>();
@@ -41,8 +44,6 @@ public sealed class AppDbContext(
         builder
             .Properties<Ulid>()
             .HaveConversion<UlidToStringConverter>();
-
-        builder.ConfigureUserIdConventions();
 
         base.ConfigureConventions(builder);
     }

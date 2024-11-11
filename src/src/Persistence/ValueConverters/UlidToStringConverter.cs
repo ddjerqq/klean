@@ -4,4 +4,5 @@ namespace Persistence.ValueConverters;
 
 public sealed class UlidToStringConverter() : ValueConverter<Ulid, string>(
     v => v.ToString(),
-    v => Ulid.Parse(v));
+    v => Ulid.Parse(v),
+    new ConverterMappingHints(26));

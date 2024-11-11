@@ -1,6 +1,6 @@
 using Application.Exceptions;
 using Domain.Aggregates;
-using Klean.Generated;
+using Generated;
 
 namespace Application.Services;
 

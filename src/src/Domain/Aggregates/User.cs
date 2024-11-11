@@ -1,9 +1,9 @@
 using Domain.Abstractions;
-using Klean.Generated;
+using Generated;
 
 namespace Domain.Aggregates;
 
-[StrongId(typeof(Ulid))]
+[StrongId]
 public sealed class User(UserId id) : AggregateRoot<UserId>(id)
 {
     public string Username { get; init; } = default!;

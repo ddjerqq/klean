@@ -5,19 +5,17 @@ using Microsoft.CodeAnalysis;
 
 namespace StrongIdGenerator;
 
-internal readonly record struct EntityStrongIdContext(string? Namespace, string TypeName, string IdType)
+internal readonly record struct EntityStrongIdContext(string? Namespace, string TypeName)
 {
-    public static EntityStrongIdContext FromEntityTypeInfo((INamedTypeSymbol EntityType, INamedTypeSymbol IdType)? typeInfo, CancellationToken ct)
+    public static EntityStrongIdContext FromEntityTypeInfo(INamedTypeSymbol entityType, CancellationToken ct)
     {
-        var type = typeInfo!.Value;
-        var ns = type.EntityType.ContainingNamespace.IsGlobalNamespace
+        var ns = entityType.ContainingNamespace.IsGlobalNamespace
             ? null
-            : type.EntityType.ContainingNamespace.ToDisplayString();
+            : entityType.ContainingNamespace.ToDisplayString();
 
-        var name = type.EntityType.Name;
-        var targetType = type.IdType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        var name = entityType.Name;
 
-        return new EntityStrongIdContext(ns, name, targetType);
+        return new EntityStrongIdContext(ns, name);
     }
 }
 
@@ -28,8 +26,7 @@ internal sealed class PartialClassContextEqualityComparer : EqualityComparer<Ent
 
     public override bool Equals(EntityStrongIdContext x, EntityStrongIdContext y) =>
         x.Namespace == y.Namespace
-        && x.TypeName == y.TypeName
-        && x.IdType == y.IdType;
+        && x.TypeName == y.TypeName;
 
-    public override int GetHashCode(EntityStrongIdContext obj) => HashCode.Combine(obj.Namespace, obj.TypeName, obj.IdType);
+    public override int GetHashCode(EntityStrongIdContext obj) => HashCode.Combine(obj.Namespace, obj.TypeName);
 }

@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Application.Services;
 using Domain.Aggregates;
 using FluentValidation;
-using Klean.Generated;
+using Generated;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

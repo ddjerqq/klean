@@ -2,9 +2,10 @@ using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
+using Domain.Abstractions;
 using Domain.Common;
 using FluentValidation.AspNetCore;
-using Klean.Generated;
+using Generated;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Routing;
@@ -67,15 +68,11 @@ public sealed class ConfigureWebApi : ConfigurationBase
             })
             .AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-
-                // fixes annoying bug with System.Text.Json and EF Core
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-
-                // source generators
                 options.JsonSerializerOptions.Converters.Add(new UlidToStringJsonConverter());
-                options.JsonSerializerOptions.Converters.Add(new UserIdToStringJsonConverter());
+                options.JsonSerializerOptions.Converters.ConfigureGeneratedConverters();
             });
 
         services.AddCors(options =>
