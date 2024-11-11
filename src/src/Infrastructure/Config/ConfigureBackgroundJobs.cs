@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Application;
 using Domain.Common;
 using Infrastructure.BackgroundJobs;
@@ -7,14 +6,13 @@ using Quartz;
 
 namespace Infrastructure.Config;
 
-[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureBackgroundJobs : ConfigurationBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddQuartz(config =>
         {
-            var processOutboxMessageIntervalSeconds = int.Parse("OUTBOX__INTERVAL".FromEnv("20"));
+            var processOutboxMessageIntervalSeconds = int.Parse("OUTBOX__INTERVAL".FromEnv("10"));
 
             config
                 .AddJob<ProcessOutboxMessagesBackgroundJob>(ProcessOutboxMessagesBackgroundJob.Key, job => { job.StoreDurably(); })

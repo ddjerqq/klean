@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace WebAPI.JsonConverters;
+namespace Infrastructure.JsonConverters;
 
 /// <inheritdoc />
 public sealed class UlidToStringJsonConverter : JsonConverter<Ulid>

@@ -1,23 +1,38 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Application.Services;
-using Domain.Aggregates;
 using Domain.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Services;
 
-/// <inheritdoc />
-public sealed class JwtGenerator : IJwtGenerator
+public static class JwtGenerator
 {
-    public static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnv("ruby");
-    public static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnv("ruby");
+    public static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnvRequired();
+    public static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnvRequired();
     private static readonly string Key = "JWT__KEY".FromEnvRequired();
 
     public static readonly JwtBearerEvents Events = new()
     {
+        OnChallenge = ctx =>
+        {
+            ctx.Response.StatusCode = (int)HttpStatusCode.Found;
+            ctx.Response.Redirect("/login");
+            ctx.HandleResponse();
+            return Task.CompletedTask;
+        },
+
+        OnForbidden = ctx =>
+        {
+            ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            ctx.Response.Redirect("/404");
+            ctx.Fail("the requested resource could not be found");
+            return Task.CompletedTask;
+        },
+
         OnMessageReceived = ctx =>
         {
             ctx.Request.Query.TryGetValue("authorization", out var query);
@@ -40,11 +55,11 @@ public sealed class JwtGenerator : IJwtGenerator
         ValidAlgorithms = [SecurityAlgorithms.HmacSha256],
     };
 
-    private readonly JwtSecurityTokenHandler _handler = new();
-    private readonly SymmetricSecurityKey _securityKey = new(Encoding.UTF8.GetBytes(Key));
-    private SigningCredentials SigningCredentials => new(_securityKey, SecurityAlgorithms.HmacSha256);
+    private static readonly JwtSecurityTokenHandler Handler = new();
+    private static readonly SymmetricSecurityKey SecurityKey = new(Encoding.UTF8.GetBytes(Key));
+    private static SigningCredentials SigningCredentials => new(SecurityKey, SecurityAlgorithms.HmacSha256);
 
-    public string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiration, IDateTimeProvider dateTimeProvider)
+    public static string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiration, IDateTimeProvider dateTimeProvider)
     {
         var token = new JwtSecurityToken(
             ClaimsIssuer,
@@ -53,17 +68,6 @@ public sealed class JwtGenerator : IJwtGenerator
             expires: dateTimeProvider.UtcNow.Add(expiration),
             signingCredentials: SigningCredentials);
 
-        return _handler.WriteToken(token);
-    }
-
-    public static IEnumerable<Claim> GetUserClaims(User user)
-    {
-        return new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, user.Username),
-            // new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            // new Claim("role", user.Level.DisplayName),
-        };
+        return Handler.WriteToken(token);
     }
 }

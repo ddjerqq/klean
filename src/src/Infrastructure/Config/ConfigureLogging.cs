@@ -1,14 +1,17 @@
-using System.ComponentModel;
-using System.IdentityModel.Tokens.Jwt;
 using Application;
+using Chfs.Generated;
+using Destructurama;
+using Domain.Common;
+using Infrastructure.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using Serilog.Templates.Themes;
+using SerilogTracing.Expressions;
 
 namespace Infrastructure.Config;
 
-[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureLogging : ConfigurationBase
 {
     public override void ConfigureServices(IServiceCollection services)
@@ -29,28 +32,42 @@ public static class LoggingExt
 
     public static LoggerConfiguration Configure(this LoggerConfiguration config)
     {
-        var logPath = Environment.GetEnvironmentVariable("LOG__PATH")
-            ?? throw new Exception("LOG__PATH is not set");
+        var logPath = "LOG__PATH".FromEnvRequired();
 
-        var seqApiKey = Environment.GetEnvironmentVariable("SEQ__API_KEY")
-            ?? throw new Exception("SEQ__API_KEY is not set");
+        var seqHost = "SEQ__HOST".FromEnvRequired();
+        var seqPort = "SEQ__PORT".FromEnvRequired();
+        var seqApiKey = "SEQ__API_KEY".FromEnvRequired();
 
         return config
             .MinimumLevel.Information()
             .MinimumLevel.Override("Quartz", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+            .Destructure.UsingAttributes()
+
+            // source generators
+            // TODO - add source generators for this
+            .Destructure.ByTransforming<Ulid>(id => id.ToString())
+            .Destructure.ByTransforming<UserId>(id => id.ToString())
+            .Destructure.ByTransforming<ChildId>(id => id.ToString())
+            .Destructure.ByTransforming<SessionId>(id => id.ToString())
+            .Destructure.ByTransforming<ReservationId>(id => id.ToString())
+            .Destructure.ByTransforming<InvoiceId>(id => id.ToString())
+            .Destructure.ByTransforming<InvoiceServiceId>(id => id.ToString())
+            .Destructure.ByTransforming<PartyId>(id => id.ToString())
+
+            .Enrich.WithProperty("Application", "chfs")
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()
             .Enrich.WithThreadId()
             .Enrich.WithAssemblyName()
             .WriteTo.Debug()
-            .WriteTo.Console(outputTemplate: OutputFormat)
-            .WriteTo.Seq("http://seq:5341", apiKey: seqApiKey)
+            .WriteTo.Console(Formatters.CreateConsoleTextFormatter(TemplateTheme.Code))
+            .WriteTo.Seq($"http://{seqHost}:{seqPort}", apiKey: seqApiKey)
             .WriteTo.File(logPath,
                 outputTemplate: OutputFormat,
                 flushToDiskInterval: TimeSpan.FromSeconds(10),
-                fileSizeLimitBytes: 100_000_000,
+                fileSizeLimitBytes: 10_000_000,
                 rollOnFileSizeLimit: true,
                 rollingInterval: RollingInterval.Day);
     }
@@ -59,21 +76,15 @@ public static class LoggingExt
     {
         app.UseSerilogRequestLogging(options =>
         {
+            options.Logger = Log.Logger;
             options.IncludeQueryInRequestPath = true;
-            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms\n" +
-                                      "UserId: {UserId}\n" +
-                                      "Host: {RequestHost}\n" +
-                                      "UserAgent: {RequestUserAgent}";
-
+            options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms";
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
-                diagnosticContext.Set("UserId", "NaN");
-
-                if (httpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid) is { Value: var id })
-                    diagnosticContext.Set("UserId", id);
-
-                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
-                diagnosticContext.Set("RequestUserAgent", (string?)httpContext.Request.Headers.UserAgent);
+                diagnosticContext.Set("UserId", httpContext.User.GetId()?.ToString() ?? "unauthenticated");
+                diagnosticContext.Set("ClientAddress", httpContext.Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown");
+                diagnosticContext.Set("ClientUserAgent", (string?)httpContext.Request.Headers.UserAgent);
+                diagnosticContext.Set("TraceIdentifier", httpContext.TraceIdentifier);
             };
         });
     }

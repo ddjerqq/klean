@@ -1,8 +1,8 @@
-using System.ComponentModel;
 using System.Threading.RateLimiting;
 using Application;
 using Application.Services;
 using Domain.Aggregates;
+using Domain.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.RateLimiting;
@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Config;
 
-[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureRateLimiting : ConfigurationBase
 {
     private static readonly PartitionedRateLimiter<HttpContext> GlobalRateLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
@@ -29,15 +28,15 @@ public sealed class ConfigureRateLimiting : ConfigurationBase
     private static TokenBucketRateLimiterOptions GlobalPolicy => new()
     {
         AutoReplenishment = true,
-        QueueLimit = int.Parse(Environment.GetEnvironmentVariable("RATE_LIMIT__QUEUE_LIMIT")!),
+        QueueLimit = int.Parse("RATE_LIMIT__QUEUE_LIMIT".FromEnv("50")),
         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
         ReplenishmentPeriod =
-            TimeSpan.FromSeconds(int.Parse(Environment.GetEnvironmentVariable("RATE_LIMIT__REPLENISHMENT_PERIOD_SECONDS")!)),
-        TokenLimit = int.Parse(Environment.GetEnvironmentVariable("RATE_LIMIT__TOKEN_LIMIT")!),
-        TokensPerPeriod = int.Parse(Environment.GetEnvironmentVariable("RATE_LIMIT__TOKENS_PER_PERIOD")!),
+            TimeSpan.FromSeconds(int.Parse("RATE_LIMIT__REPLENISHMENT_PERIOD_SECONDS".FromEnv("1"))),
+        TokenLimit = int.Parse("RATE_LIMIT__TOKEN_LIMIT".FromEnv("30")),
+        TokensPerPeriod = int.Parse("RATE_LIMIT__TOKENS_PER_PERIOD".FromEnv("20")),
     };
 
-    private static ValueTask OnRejected(OnRejectedContext ctx, CancellationToken ct)
+    private static ValueTask OnRejectedAsync(OnRejectedContext ctx, CancellationToken ct)
     {
         var dateTimeProvider = ctx.HttpContext.RequestServices.GetRequiredService<IDateTimeProvider>();
 
@@ -55,7 +54,7 @@ public sealed class ConfigureRateLimiting : ConfigurationBase
         services.AddRateLimiter(options =>
         {
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-            options.OnRejected = OnRejected;
+            options.OnRejected = OnRejectedAsync;
             options.GlobalLimiter = GlobalRateLimiter;
         });
     }

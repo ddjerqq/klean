@@ -4,25 +4,29 @@ using Domain.Abstractions;
 using Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Quartz;
+using Serilog;
+using Serilog.Events;
+using SerilogTracing;
 
 namespace Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public sealed class ProcessOutboxMessagesBackgroundJob(
-    IPublisher publisher,
-    IAppDbContext dbContext,
-    IDateTimeProvider dateTimeProvider,
-    ILogger<ProcessOutboxMessagesBackgroundJob> logger)
-    : IJob
+public sealed class ProcessOutboxMessagesBackgroundJob(IPublisher publisher, IAppDbContext dbContext, IDateTimeProvider dateTimeProvider) : IJob
 {
     public static readonly JobKey Key = new("process_outbox_messages");
     private static readonly int MessagesPerBatch = int.Parse("OUTBOX__MESSAGES_PER_BATCH".FromEnv("20"));
 
     public async Task Execute(IJobExecutionContext context)
     {
+        var unprocessedMessageCount = await dbContext
+            .Set<OutboxMessage>()
+            .CountAsync(m => m.ProcessedOnUtc == null);
+
+        if (unprocessedMessageCount == 0)
+            return;
+
         var messages = await dbContext
             .Set<OutboxMessage>()
             .Where(m => m.ProcessedOnUtc == null)
@@ -32,28 +36,32 @@ public sealed class ProcessOutboxMessagesBackgroundJob(
 
         foreach (var message in messages)
         {
-            var domainEvent = JsonConvert
-                .DeserializeObject<IDomainEvent>(message.Content, OutboxMessage.JsonSerializerSettings);
+            var domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(message.Content, OutboxMessage.JsonSerializerSettings);
 
             if (domainEvent is null)
             {
-                logger.LogWarning("Failed to deserialize message {MessageId}", message.Id);
+                // fatal
+                Log.Logger.Fatal("failed to deserialize message {@MessageId}", message.Id);
                 continue;
             }
 
+            using var activity = Log.Logger.StartActivity("Publish {@DomainEvent}", domainEvent);
+
             try
             {
-                logger.LogInformation("publishing {@DomainEvent}", domainEvent);
                 await publisher.Publish(domainEvent, context.CancellationToken);
             }
             catch (Exception ex)
             {
                 message.Error = ex.ToString();
-                logger.LogError(ex, "Failed to publish message {MessageId}", message.Id);
+                Log.Logger.Fatal("failed to process message {@MessageId}", message.Id);
+                activity.Complete(LogEventLevel.Fatal, ex);
             }
-
-            message.ProcessedOnUtc = dateTimeProvider.UtcNow;
-            dbContext.Set<OutboxMessage>().Update(message);
+            finally
+            {
+                message.ProcessedOnUtc = dateTimeProvider.UtcNow;
+                await Log.CloseAndFlushAsync();
+            }
         }
 
         await dbContext.SaveChangesAsync(context.CancellationToken);
