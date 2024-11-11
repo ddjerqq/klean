@@ -1,9 +1,12 @@
+using System.Reflection;
 using Application.Services;
 using Domain.Abstractions;
+using Domain.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Serilog;
 
 namespace Persistence.Interceptors;
 
@@ -26,6 +29,7 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         return await base.SavingChangesAsync(eventData, result, ct);
     }
 
+    // ReSharper disable once CognitiveComplexity
     private static void UpdateEntities(DbContext? context)
     {
         if (context is null)
@@ -34,32 +38,51 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         var userAccessor = context.GetService<ICurrentUserAccessor>();
         var dateTimeProvider = context.GetService<IDateTimeProvider>();
 
-        var currentUserId = userAccessor.CurrentUserId?.ToString();
+        var currentUserId = userAccessor.Id?.ToString() ?? "system";
         var dateTime = dateTimeProvider.UtcNow;
 
-        var entityType = typeof(IEntity<>);
-
-        // this is a horrible hack... but it's a necessary evil,
-        context.ChangeTracker
+        var trackedEntityEntries = context.ChangeTracker
             .Entries()
-            .Select(entry => (Entry: entry, entry.Entity))
-            .Where(x => entityType.IsInstanceOfType(x.Entity))
-            .ToList()
-            .ForEach(x =>
-            {
-                if (x.Entry.State == EntityState.Added)
-                {
-                    ((dynamic?)x.Entry.Entity)!.CreatedBy = currentUserId!;
-                    ((dynamic?)x.Entry.Entity)!.Created = dateTime;
-                }
+            .Where(x => x.Entity is ITrackedEntity);
 
-                if (x.Entry.State == EntityState.Modified || HasChangedOwnedEntities(x.Entry))
-                {
-                    ((dynamic?)x.Entry.Entity)!.LastModifiedBy = currentUserId!;
-                    ((dynamic?)x.Entry.Entity)!.LastModified = dateTime;
-                }
-            });
+        foreach (var entry in trackedEntityEntries)
+        {
+            var modifiedProperties = string.Join(", ", entry.Properties
+                .Where(x => x.IsModified)
+                .Select(x => x.Metadata.Name));
+
+            if (entry.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+                Log.Logger.Information("{UserId} {EntryState} entity {EntityId} {ModifiedProperties}", currentUserId, entry.State, ((dynamic)entry.Entity).Id, modifiedProperties);
+
+            if (entry.State == EntityState.Added)
+            {
+                ((ITrackedEntity)entry.Entity).CreatedBy = currentUserId;
+                ((ITrackedEntity)entry.Entity).Created = dateTime;
+            }
+
+            if (entry.State == EntityState.Modified || HasChangedOwnedEntities(entry))
+            {
+                ((ITrackedEntity)entry.Entity).LastModifiedBy = currentUserId;
+                ((ITrackedEntity)entry.Entity).LastModified = dateTime;
+            }
+
+            if (entry.State == EntityState.Deleted)
+            {
+                // prevent deletion only if the entity has the SoftDeleteAttribute
+                if (HasSoftDeleteAttribute(entry))
+                    entry.State = EntityState.Modified;
+
+                ((ITrackedEntity)entry.Entity).LastModifiedBy = currentUserId;
+                ((ITrackedEntity)entry.Entity).LastModified = dateTime;
+
+                ((ITrackedEntity)entry.Entity).DeletedBy = currentUserId;
+                ((ITrackedEntity)entry.Entity).Deleted = dateTime;
+            }
+        }
     }
+
+    private static bool HasSoftDeleteAttribute(EntityEntry entry) =>
+        entry.Entity.GetType().GetCustomAttribute<SoftDeleteAttribute>() is not null;
 
     private static bool HasChangedOwnedEntities(EntityEntry entry) =>
         entry.References.Any(r =>

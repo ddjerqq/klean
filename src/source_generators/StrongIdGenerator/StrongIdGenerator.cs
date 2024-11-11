@@ -32,7 +32,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
           {{GeneratedCodeAttribute}}
           public static class SourceGeneratorExt
           {
-              public static string ToSnakeCase(string text)
+              public static string ToSnakeCase(this string text)
               {
                   if (string.IsNullOrWhiteSpace(text))
                       throw new global::System.ArgumentNullException(nameof(text));

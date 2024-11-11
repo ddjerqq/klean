@@ -13,6 +13,13 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.Username)
             .IsUnique();
 
+        // builder.ComplexProperty(x => x.ContactInfo, contactInfoBuilder =>
+        // {
+        //     contactInfoBuilder.Property(x => x.PersonalId).HasColumnName("contact_id");
+        //     contactInfoBuilder.Property(x => x.FullName).HasColumnName("contact_name");
+        //     contactInfoBuilder.Property(x => x.Phone).HasColumnName("contact_phone");
+        // });
+
         builder.Property(x => x.Username)
             .HasMaxLength(32);
 

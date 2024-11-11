@@ -19,20 +19,24 @@ public sealed class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChanges
             return await base.SavingChangesAsync(eventData, result, ct);
 
         var dateTimeProvider = dbContext.GetService<IDateTimeProvider>();
-        var aggregateRootType = typeof(IAggregateRoot<>);
 
-        // this is a horrible hack... but it's a necessary evil,
         var outboxMessages = dbContext
             .ChangeTracker
             .Entries()
             .Select(entry => entry.Entity)
-            .Where(entity => aggregateRootType.IsInstanceOfType(entity))
+            .Where(entity => entity
+                .GetType()
+                .GetInterfaces()
+                .Where(type => type.IsGenericType)
+                .Any(type => type.GetGenericTypeDefinition() == typeof(IAggregateRoot<>)))
             .SelectMany(entity =>
             {
-                if (((dynamic)entity)?.DomainEvents is not IEnumerable<IDomainEvent> domainEvents)
-                    return Enumerable.Empty<IDomainEvent>();
+                if (((dynamic?)entity)?.DomainEvents is not IEnumerable<IDomainEvent> domainEvents)
+                    return [];
 
-                ((dynamic)entity)?.ClearDomainEvents();
+                domainEvents = domainEvents.ToList();
+
+                ((dynamic?)entity)?.ClearDomainEvents();
 
                 return domainEvents;
             })

@@ -48,6 +48,7 @@ public sealed class AppDbContext(
         base.ConfigureConventions(builder);
     }
 
+    // TODO move to ext
     private static void SnakeCaseRename(ModelBuilder builder)
     {
         foreach (var entity in builder.Model.GetEntityTypes())

@@ -1,4 +1,4 @@
-using Domain.Common;
+using Generated;
 
 namespace Test.Domain.Common;
 
