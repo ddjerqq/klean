@@ -1,16 +1,10 @@
+using Generated;
+
 namespace Domain.Abstractions;
 
-public interface IEntity<TId> where TId : IEquatable<TId>
+public interface IEntity<TId> : ITrackedEntity where TId : struct, IStrongId, IEquatable<TId>
 {
     public TId Id { get; set; }
-
-    public DateTime? Created { get; set; }
-
-    public string? CreatedBy { get; set; }
-
-    public DateTime? LastModified { get; set; }
-
-    public string? LastModifiedBy { get; set; }
 
     public static IEqualityComparer<Entity<TId>> IdEqualityComparer =>
         EqualityComparer<Entity<TId>>.Create((x, y) =>

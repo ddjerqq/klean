@@ -1,12 +1,7 @@
-using Generated;
+﻿namespace Domain.Abstractions;
 
-namespace Domain.Abstractions;
-
-public abstract class Entity<TId>(TId id) : IEntity<TId>
-    where TId : struct, IStrongId, IEquatable<TId>
+public interface ITrackedEntity
 {
-    public TId Id { get; set; } = id;
-
     public DateTime? Created { get; set; }
 
     public string? CreatedBy { get; set; }

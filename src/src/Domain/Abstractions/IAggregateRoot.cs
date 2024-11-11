@@ -1,7 +1,9 @@
+using Generated;
+
 namespace Domain.Abstractions;
 
 public interface IAggregateRoot<TId> : IEntity<TId>
-    where TId : IEquatable<TId>
+    where TId : struct, IStrongId, IEquatable<TId>
 {
     public IEnumerable<IDomainEvent> DomainEvents { get; }
 

@@ -1,3 +1,4 @@
+using Destructurama.Attributed;
 using Domain.Abstractions;
 using Generated;
 
@@ -10,5 +11,6 @@ public sealed class User(UserId id) : AggregateRoot<UserId>(id)
 
     public string Email { get; init; } = default!;
 
+    [LogMasked]
     public string PasswordHash { get; init; } = default!;
 }
