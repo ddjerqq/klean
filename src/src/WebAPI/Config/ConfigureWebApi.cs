@@ -6,6 +6,7 @@ using Domain.Abstractions;
 using Domain.Common;
 using FluentValidation.AspNetCore;
 using Generated;
+using Infrastructure.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Routing;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.Logging;
 using Persistence;
 using WebAPI.Filters;
 using WebAPI.HealthChecks;
-using WebAPI.JsonConverters;
 using ZymLabs.NSwag.FluentValidation;
 
 namespace WebAPI.Config;
