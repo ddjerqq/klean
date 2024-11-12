@@ -1,7 +1,7 @@
 using Application;
-using Chfs.Generated;
 using Destructurama;
 using Domain.Common;
+using Generated;
 using Infrastructure.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,16 +45,8 @@ public static class LoggingExt
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
             .Destructure.UsingAttributes()
 
-            // source generators
-            // TODO - add source generators for this
             .Destructure.ByTransforming<Ulid>(id => id.ToString())
-            .Destructure.ByTransforming<UserId>(id => id.ToString())
-            .Destructure.ByTransforming<ChildId>(id => id.ToString())
-            .Destructure.ByTransforming<SessionId>(id => id.ToString())
-            .Destructure.ByTransforming<ReservationId>(id => id.ToString())
-            .Destructure.ByTransforming<InvoiceId>(id => id.ToString())
-            .Destructure.ByTransforming<InvoiceServiceId>(id => id.ToString())
-            .Destructure.ByTransforming<PartyId>(id => id.ToString())
+            .Destructure_ByTransformingStrongIdsToStrings()
 
             .Enrich.WithProperty("Application", "chfs")
             .Enrich.FromLogContext()
