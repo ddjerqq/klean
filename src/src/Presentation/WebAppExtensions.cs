@@ -80,8 +80,8 @@ public static class WebAppExt
             endpointBuilder.MapAppHealthChecks();
             endpointBuilder.MapControllers();
         });
-        // app.UseSpaApiFallbackMiddleware();
-        // app.UseSpa(spaBuilder => spaBuilder.UseProxyToSpaDevelopmentServer("http://127.0.0.1:2080/"));
+        app.UseSpaApiFallbackMiddleware();
+        app.UseSpa(spaBuilder => spaBuilder.UseProxyToSpaDevelopmentServer("http://127.0.0.1:2080/"));
 
         app.MapDefaultControllerRoute();
     }

@@ -13,6 +13,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Application\Application.csproj" Type="Classic C#" />
+    <Project Path="src\Client\Client.csproj" Type="Classic C#" />
     <Project Path="src\Domain\Domain.csproj" Type="Classic C#" />
     <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#" />
     <Project Path="src\Persistence\Persistence.csproj" Type="Classic C#" />

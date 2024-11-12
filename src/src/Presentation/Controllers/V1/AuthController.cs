@@ -14,7 +14,7 @@ namespace Presentation.Controllers.V1;
 /// Controller for authentication actions
 /// </summary>
 [Authorize]
-public sealed class AuthController(ILogger<AuthController> logger, IAppDbContext dbContext, IMediator mediator) : ApiController(logger)
+public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) : ApiController
 {
     /// <summary>
     /// Gets the user's claims
@@ -58,6 +58,17 @@ public sealed class AuthController(ILogger<AuthController> logger, IAppDbContext
     /// <summary>
     /// Register a new user
     /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /register
+    ///     {
+    ///        "email": "elon@gmail.com",
+    ///        "fullname": "elonmusk",
+    ///        "password": "supersecure
+    ///     }
+    ///
+    /// </remarks>
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<User>> Register(RegisterCommand command, CancellationToken ct)
