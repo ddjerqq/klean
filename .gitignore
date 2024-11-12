@@ -9,3 +9,7 @@
 **/.env
 **/*.nupkg
 **/package-lock.json
+*.db
+*.db-wal
+*.db-shm
+*.log

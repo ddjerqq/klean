@@ -12,16 +12,12 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Microsoft.OpenApi" Version="1.6.15" />
         <PackageReference Include="Quartz" Version="3.9.0" />
         <PackageReference Include="Quartz.Extensions.Hosting" Version="3.9.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
     

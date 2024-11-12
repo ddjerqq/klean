@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <Target Name="NpmBuild" BeforeTargets="Build">
+        <Message Text="Building npm package" Importance="High"/>
+        <Exec Command="npm run build"/>
+    </Target>
+
+    <Target Name="BuildCss" DependsOnTargets="NpmBuild">
+        <Message Text="Building css" Importance="High"/>
+        <Exec Command="npm run tw:build"/>
+    </Target>
+</Project>
