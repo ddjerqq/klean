@@ -7,12 +7,9 @@ using ValidationException = FluentValidation.ValidationException;
 using DataAnnotationsValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 using FluentValidationResult = FluentValidation.Results.ValidationResult;
 
-namespace Application.Common.Behaviours;
+namespace Application.Behaviours;
 
-internal sealed class RequestValidationBehaviour<TRequest, TResponse>(
-    IServiceProvider serviceProvider,
-    IEnumerable<IValidator<TRequest>> validators)
-    : IPipelineBehavior<TRequest, TResponse>
+internal sealed class RequestValidationBehaviour<TRequest, TResponse>(IServiceProvider serviceProvider, IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     private IEnumerable<FluentValidationResult> DataAnnotationValidate(TRequest request)

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/template",
-  "author": "ddjerqq <ddjerqq@gmail.com>",
-  "classifications": [ "ASP.NET Core", "DDD", "Clean Architecture", "Blazor", "Template", "Web" ],
+  "author": "tenxdeveloper <ddjerqq@gmail.com>",
+  "classifications": [ "asp.net Core", "ddd", "cqrs", "svelte", "tailwindcss", "web" ],
   "tags": {
     "type": "solution",
     "language": "C#"
@@ -10,7 +10,7 @@
   "name": "Klean Architecture",
   "shortName": "klean",
   "sourceName": "Klean",
-  "description": "A ready-to-use template for ASP.NET Core with Domain Driven Design - clean architecture, CQRS pattern, StyleCop, and Blazor WASM front-end",
+  "description": "A ready-to-use template for ASP.NET Core with DDD, CQRS, svelte and tailwind",
   "sources": [
     {
       "modifiers": [

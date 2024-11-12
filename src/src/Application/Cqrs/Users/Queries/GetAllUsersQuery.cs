@@ -4,7 +4,7 @@ using Domain.Aggregates;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Users.Queries;
+namespace Application.Cqrs.Users.Queries;
 
 public sealed record GetAllUsersQuery(int Page, int PerPage) : IRequest<IEnumerable<User>>;
 

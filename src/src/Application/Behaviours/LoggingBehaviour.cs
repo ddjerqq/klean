@@ -1,15 +1,12 @@
-using System.Diagnostics;
 using Application.Services;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using SerilogTracing;
 
-namespace Application.Common.Behaviours;
+namespace Application.Behaviours;
 
-internal sealed class LoggingBehaviour<TRequest, TResponse>(ICurrentUserAccessor currentUser)
-    : IPipelineBehavior<TRequest, TResponse>
+internal sealed class LoggingBehaviour<TRequest, TResponse>(ICurrentUserAccessor currentUser) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)

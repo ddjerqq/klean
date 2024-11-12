@@ -1,5 +1,6 @@
 using Destructurama.Attributed;
 using Domain.Abstractions;
+using Domain.ValueObjects;
 using Generated;
 
 namespace Domain.Aggregates;
@@ -7,10 +8,15 @@ namespace Domain.Aggregates;
 [StrongId]
 public sealed class User(UserId id) : AggregateRoot<UserId>(id)
 {
-    public string Username { get; init; } = default!;
-
-    public string Email { get; init; } = default!;
+    [LogMasked]
+    public required string FullName { get; init; }
 
     [LogMasked]
-    public string PasswordHash { get; init; } = default!;
+    public required string Email { get; init; }
+
+    [LogMasked]
+    public required Role Role { get; init; }
+
+    [LogMasked]
+    public required string PasswordHash { get; init; }
 }

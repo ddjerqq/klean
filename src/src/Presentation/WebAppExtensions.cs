@@ -41,6 +41,8 @@ public static class WebAppExt
 
         if (app.Environment.IsDevelopment())
         {
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseMigrationsEndPoint();
         }
         else
@@ -74,12 +76,12 @@ public static class WebAppExt
 
         app.UseEndpoints(endpointBuilder =>
         {
+            endpointBuilder.MapSwagger();
             endpointBuilder.MapAppHealthChecks();
             endpointBuilder.MapControllers();
-            endpointBuilder.MapSwagger();
         });
-        app.UseSpaApiFallbackMiddleware();
-        app.UseSpa(spaBuilder => spaBuilder.UseProxyToSpaDevelopmentServer("http://127.0.0.1:2080/"));
+        // app.UseSpaApiFallbackMiddleware();
+        // app.UseSpa(spaBuilder => spaBuilder.UseProxyToSpaDevelopmentServer("http://127.0.0.1:2080/"));
 
         app.MapDefaultControllerRoute();
     }

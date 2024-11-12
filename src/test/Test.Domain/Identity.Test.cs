@@ -1,7 +1,5 @@
-﻿using Domain.Abstractions;
-using Domain.Aggregates;
+﻿using Domain.Aggregates;
 using FluentAssertions;
-using Generated;
 
 namespace Test.Domain;
 

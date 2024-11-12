@@ -10,7 +10,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasIndex(x => x.Username)
+        builder.HasIndex(x => x.FullName)
             .IsUnique();
 
         // builder.ComplexProperty(x => x.ContactInfo, contactInfoBuilder =>
@@ -20,7 +20,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         //     contactInfoBuilder.Property(x => x.Phone).HasColumnName("contact_phone");
         // });
 
-        builder.Property(x => x.Username)
+        builder.Property(x => x.FullName)
             .HasMaxLength(32);
 
         builder.Property(x => x.Email)

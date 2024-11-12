@@ -1,3 +1,5 @@
+#pragma warning disable CS1591
+using System.ComponentModel;
 using Application;
 using Domain.Aggregates;
 using Infrastructure.Services;
@@ -6,10 +8,9 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Presentation.Config;
 
-/// <inheritdoc />
+[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureAuth : ConfigurationBase
 {
-    /// <inheritdoc />
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -23,7 +24,6 @@ public sealed class ConfigureAuth : ConfigurationBase
                 options.ClaimsIssuer = JwtGenerator.ClaimsIssuer;
                 options.TokenValidationParameters = JwtGenerator.TokenValidationParameters;
 
-                // for role based authz
                 options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
                 options.TokenValidationParameters.RoleClaimType = nameof(User.Role);
             });
@@ -31,6 +31,6 @@ public sealed class ConfigureAuth : ConfigurationBase
         // an example, of an authorization policy
         services.AddAuthorizationBuilder()
             .AddDefaultPolicy("default", policy => policy.RequireAuthenticatedUser())
-            .AddPolicy("is_elon", policy => policy.RequireClaim(JwtRegisteredClaimNames.Name, "elon"));
+            .AddPolicy("is_elon", policy => policy.RequireClaim(JwtRegisteredClaimNames.Name, "ELON"));
     }
 }

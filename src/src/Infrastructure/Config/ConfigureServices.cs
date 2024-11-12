@@ -14,7 +14,9 @@ public sealed class ConfigureInfrastructure : ConfigurationBase
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
 
-        services.AddScoped<ICurrentUserAccessor, HttpContextCurrentUserAccessor>();
         services.AddScoped<IDateTimeProvider, UtcDateTimeProvider>();
+        services.AddScoped<ICurrentUserAccessor, HttpContextCurrentUserAccessor>();
+
+        services.AddTransient<IJwtGenerator, JwtGenerator>();
     }
 }

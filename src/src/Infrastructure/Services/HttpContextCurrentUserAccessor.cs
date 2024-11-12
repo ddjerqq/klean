@@ -1,7 +1,7 @@
 using System.Security.Claims;
+using Application.Common;
 using Application.Services;
 using Domain.Aggregates;
-using Infrastructure.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 

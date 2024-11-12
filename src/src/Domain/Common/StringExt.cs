@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Domain.Common;
 
 public static class StringExt

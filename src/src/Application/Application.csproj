@@ -24,6 +24,7 @@
         <PackageReference Include="QuickForm" Version="2.1.0"/>
         <PackageReference Include="SerilogTracing" Version="2.1.0" />
         <PackageReference Include="SerilogTracing.Expressions" Version="2.1.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
         <Using Include="BCrypt.Net.BCrypt" Alias="BC"/>
     </ItemGroup>
 
@@ -35,5 +36,9 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Test.Chfs</_Parameter1>
         </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Cqrs\" />
     </ItemGroup>
 </Project>

@@ -36,14 +36,14 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception)
     {
-        logger.LogError(exception, "An unhandled exception occurred. {Message}", exception.Message);
+        logger.LogError(exception, "An unhandled exception occurred. {Message} {TraceId}", exception.Message, httpContext.TraceIdentifier);
 
         var problemDetails = new ProblemDetails
         {
             Type = "https://httpstatuses.com/500",
             Title = "An error occurred",
             Status = StatusCodes.Status500InternalServerError,
-            Detail = IsDev(httpContext) ? exception.Message : "Please come back later, we are working on fixing the issues day and night!",
+            Detail = IsDev(httpContext) ? exception.Message : "Please come back later, we are working on fixing the issues!",
             Extensions =
             {
                 ["traceId"] = httpContext.TraceIdentifier,
@@ -59,7 +59,7 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, NotFoundException exception)
     {
-        logger.LogError(exception, "A not found exception occurred. {Message}", exception.Message);
+        logger.LogError(exception, "A not found exception occurred. {Message} {TraceId}", exception.Message, httpContext.TraceIdentifier);
 
         var problemDetails = new ProblemDetails
         {
@@ -82,7 +82,7 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, UnauthenticatedException exception)
     {
-        logger.LogError(exception, "An unauthenticated exception occurred. {Message}", exception.Message);
+        logger.LogError(exception, "An unauthenticated exception occurred. {Message} {TraceId}", exception.Message, httpContext.TraceIdentifier);
 
         var problemDetails = new ProblemDetails
         {
@@ -105,7 +105,7 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, ValidationException exception)
     {
-        logger.LogError(exception, "A validation exception occurred. {Message}", exception.Message);
+        logger.LogError(exception, "A validation exception occurred. {Message} {TraceId}", exception.Message, httpContext.TraceIdentifier);
 
         var errors = exception
             .Errors

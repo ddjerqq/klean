@@ -1,8 +1,8 @@
 using Application;
+using Application.Common;
 using Destructurama;
 using Domain.Common;
 using Generated;
-using Infrastructure.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -46,9 +46,10 @@ public static class LoggingExt
             .Destructure.UsingAttributes()
 
             .Destructure.ByTransforming<Ulid>(id => id.ToString())
-            .Destructure_ByTransformingStrongIdsToStrings()
+            .Destructure.ByTransforming<IStrongId>(id => id.ToString()!)
+            // .Destructure_ByTransformingStrongIdsToStrings()
 
-            .Enrich.WithProperty("Application", "chfs")
+            .Enrich.WithProperty("Application", "SEQ__APP_NAME".FromEnvRequired())
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()
             .Enrich.WithThreadId()

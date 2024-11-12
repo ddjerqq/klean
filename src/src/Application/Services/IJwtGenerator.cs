@@ -10,5 +10,5 @@ public interface IJwtGenerator
     /// <summary>
     /// Generates a JWT token with the specified claims, expiration, and date time provider.
     /// </summary>
-    public string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiration, IDateTimeProvider dateTimeProvider);
+    public string GenerateToken(IEnumerable<Claim> claims, TimeSpan? expiration = null);
 }

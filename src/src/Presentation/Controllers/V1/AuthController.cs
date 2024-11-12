@@ -1,6 +1,8 @@
-﻿using Application.Services;
+﻿using Application.Common;
+using Application.Cqrs.Users.Commands;
+using Application.Services;
 using Domain.Aggregates;
-using Infrastructure.Common;
+using Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +28,8 @@ public sealed class AuthController(ILogger<AuthController> logger, IAppDbContext
     [HttpGet("me")]
     public async Task<ActionResult<User>> GetCurrentUser(CancellationToken ct)
     {
-        var user = (await dbContext.Users.FindAsync([User.GetId()], ct))!;
-        return Ok(new User(user) { PasswordHash = string.Empty });
+        var user = await dbContext.Users.FindAsync([User.GetId()], ct);
+        return Ok(user);
     }
 
     /// <summary>
@@ -69,7 +71,7 @@ public sealed class AuthController(ILogger<AuthController> logger, IAppDbContext
     /// Gets all users
     /// <note>This is only for Elon</note>
     /// </summary>
-    [Authorize(Policy = "is_elon")]
+    [Authorize(Roles = RoleExt.Admin)]
     [HttpGet("all_users")]
     public async Task<ActionResult<IEnumerable<User>>> GetAllUsers(CancellationToken ct)
     {

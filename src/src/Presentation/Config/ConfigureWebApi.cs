@@ -38,6 +38,8 @@ public sealed class ConfigureWebApi : ConfigurationBase
             x.AppendTrailingSlash = false;
         });
 
+        services.AddSpaApiFallbackMiddleware();
+
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
 
@@ -51,14 +53,9 @@ public sealed class ConfigureWebApi : ConfigurationBase
         services
             .AddControllers(o =>
             {
-                if (IsDevelopment)
-                {
-                    o.Filters.Add<ResponseTimeFilter>();
-                }
-
+                o.Filters.Add<ResponseTimeFilter>();
                 o.Filters.Add<SetClientIpAddressFilter>();
                 o.Filters.Add<FluentValidationFilter>();
-                o.RespectBrowserAcceptHeader = true;
             })
             .AddJsonOptions(options =>
             {
@@ -81,8 +78,6 @@ public sealed class ConfigureWebApi : ConfigurationBase
                 policy.AllowCredentials();
             });
         });
-
-        services.AddSignalR(o => { o.EnableDetailedErrors = IsDevelopment; });
 
         services.AddResponseCaching();
         services.AddResponseCompression(o =>

@@ -1,58 +1,44 @@
-﻿version: "3.4"
-
-services:
+﻿services:
   api:
-    build: .
     container_name: api
+    image: ddjerqq/chfs:latest
     ports:
-      - "8000:8000"
+      - "80:1080"
+      - "443:1443"
     env_file:
       - .env
     healthcheck:
-      test: [ "CMD-SHELL", "curl --fail https://localhost/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl --fail http://api:1080/api/v1/health || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 3
-    shm_size: 256mb
+    shm_size: 512mb
     environment:
-      - WEB_APP__DOMAIN=localhost
+      - WEB_APP__DOMAIN=yourdomain.com
       - ASPNETCORE_ENVIRONMENT=Production
-      - HTTP_PORT=80
-      - HTTPS_PORT=443
-      - ASPNETCORE_URLS=http://0.0.0.0:80;https://0.0.0.0:443
+      - ASPNETCORE_URLS=http://0.0.0.0:1080;https://0.0.0.0:1443
+      - ASPNETCORE_DATAPROTECTION__PATH=/var/data-protection
+      - DB__PATH=/var/data/app.db
     volumes:
-      - ./.temp-keys:/root/.aspnet/DataProtection-Keys
+      - ./.aspnet/dp:/var/data-protection
       - ./.aspnet/https:/https/:ro
-    restart: unless-stopped
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    depends_on:
-      - api
-    tty: true
-    ports:
-      - "80:80"
-      - "443:443"
-    shm_size: 256mb
-    volumes:
-      - ./.logs:/var/log/nginx
-      - ./nginx/conf.d/:/etc/nginx/conf.d/:ro
-      - ./nginx/ssl/:/etc/nginx/ssl/:ro
-      - ./dist/:/dist/:ro
+      - ./.data:/var/data
     restart: unless-stopped
 
   seq:
-    image: datalust/seq:latest
     container_name: seq
+    image: datalust/seq:latest
     ports:
-      - "1232:80"
+      - "1080:80"
       - "5341:5341"
     shm_size: 128mb
     environment:
       - ACCEPT_EULA=Y
-# echo 'p@ssw0rd' | docker run --rm -i datalust/seq config hash
+      - SEQ__HOST=seq
+      - SEQ__PORT=5341
+      - SEQ_FIRSTRUN_ADMINUSERNAME=admin
+#      acquire by running: echo '<password>' | docker run --rm -i datalust/seq config hash
       - SEQ_FIRSTRUN_ADMINPASSWORDHASH=
     volumes:
-      - ./.logs/seq/:/data
+      - /var/log/chfs/seq/:/data
     restart: unless-stopped
