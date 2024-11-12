@@ -1,10 +1,13 @@
 using Application;
 using dotenv.net;
+using FluentValidation;
 using Infrastructure.Config;
 using Presentation;
+using SerilogTracing;
 
-// fix postgres timestamp issue
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+// for custom languages
+// ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("ka");
 
 var solutionDir = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent;
 DotEnv.Fluent()
@@ -16,30 +19,26 @@ DotEnv.Fluent()
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseConfiguredSerilog();
+
+// for serilog - seq tracing
+using var _ = new ActivityListenerConfiguration()
+    .Instrument.AspNetCoreRequests(options => options.IncomingTraceParent = IncomingTraceParent.Trust)
+    .Instrument.SqlClientCommands()
+    .TraceToSharedLogger();
+
+builder.WebHost.UseSetting(WebHostDefaults.DetailedErrorsKey, "true");
 builder.WebHost.UseStaticWebAssets();
 
 // service registration from configurations.
 ConfigurationBase.ConfigureServicesFromAssemblies(builder.Services, [
     nameof(Domain), nameof(Application), nameof(Infrastructure),
-    nameof(Persistence), nameof(WebAPI), nameof(Presentation),
+    nameof(Persistence), nameof(Presentation),
 ]);
 
 var app = builder.Build();
 
 app.UseConfiguredSerilogRequestLogging();
-app.MigrateDatabase();
-
-app.UseRateLimiter();
-app.UseCustomHeaderMiddleware();
-app.UseGlobalExceptionHandler();
-
-if (app.Environment.IsDevelopment())
-    app.UseDevelopmentMiddleware();
-
-if (app.Environment.IsProduction())
-    app.UseProductionMiddleware();
-
-app.UseGeneralMiddleware();
-app.MapEndpoints();
+await app.MigrateDatabaseAsync();
+app.UseApplicationMiddleware();
 
 app.Run();

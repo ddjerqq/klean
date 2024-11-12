@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace WebAPI.HealthChecks;
+namespace Presentation.HealthChecks;
 
 /// <summary>
 /// A test healthcheck for you to implement

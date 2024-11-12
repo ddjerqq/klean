@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 
-namespace WebAPI.Filters;
+namespace Presentation.Filters;
 
 /// <inheritdoc />
 public sealed class ResponseTimeFilter : IActionFilter

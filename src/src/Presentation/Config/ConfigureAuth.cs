@@ -1,22 +1,17 @@
-using System.ComponentModel;
 using Application;
-using Application.Services;
+using Domain.Aggregates;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace WebAPI.Config;
+namespace Presentation.Config;
 
 /// <inheritdoc />
-[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureAuth : ConfigurationBase
 {
     /// <inheritdoc />
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped<IJwtGenerator, JwtGenerator>();
-
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -27,6 +22,10 @@ public sealed class ConfigureAuth : ConfigurationBase
                 options.Audience = JwtGenerator.ClaimsAudience;
                 options.ClaimsIssuer = JwtGenerator.ClaimsIssuer;
                 options.TokenValidationParameters = JwtGenerator.TokenValidationParameters;
+
+                // for role based authz
+                options.TokenValidationParameters.NameClaimType = JwtRegisteredClaimNames.Name;
+                options.TokenValidationParameters.RoleClaimType = nameof(User.Role);
             });
 
         // an example, of an authorization policy

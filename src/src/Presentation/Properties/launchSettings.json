@@ -14,7 +14,6 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "hotReloadEnabled": true,
-      "applicationUrl": "http://127.0.0.1:80;https://127.0.0.1:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "WEB_APP__DOMAIN": "localhost"
@@ -23,7 +22,6 @@
     "production": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://127.0.0.1:80;https://127.0.0.1:443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
         "WEB_APP__DOMAIN": "localhost"

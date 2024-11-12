@@ -5,7 +5,6 @@ using Generated;
 
 namespace Test.Domain;
 
-
 public sealed class IdentityTests
 {
     [Test]

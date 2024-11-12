@@ -14,24 +14,24 @@ WORKDIR /src
 COPY ["Domain/Domain.csproj", "Domain/"]
 COPY ["Application/Application.csproj", "Application/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-COPY ["WebClient/WebClient.csproj", "WebClient/"]
+COPY ["Presentation/Presentation.csproj", "Presentation/"]
 
 RUN dotnet restore "Domain/Domain.csproj"
 RUN dotnet restore "Application/Application.csproj"
 RUN dotnet restore "Infrastructure/Infrastructure.csproj"
-RUN dotnet restore "WebClient/WebClient.csproj"
+RUN dotnet restore "Presentation/Presentation.csproj"
 
 COPY . .
 
 RUN dotnet build "Domain/Domain.csproj" -c Release -o /app/build
 RUN dotnet build "Application/Application.csproj" -c Release -o /app/build
 RUN dotnet build "Infrastructure/Infrastructure.csproj" -c Release -o /app/build
-RUN dotnet build "WebClient/WebClient.csproj" -c Release -o /app/build
+RUN dotnet build "Presentation/Presentation.csproj" -c Release -o /app/build
 
 RUN dotnet publish "Domain/Domain.csproj" -c Release -o /app/publish
 RUN dotnet publish "Application/Application.csproj" -c Release -o /app/publish
 RUN dotnet publish "Infrastructure/Infrastructure.csproj" -c Release -o /app/publish
-RUN dotnet publish "WebClient/WebClient.csproj" -c Release -o /app/publish
+RUN dotnet publish "Presentation/Presentation.csproj" -c Release -o /app/publish
 
 WORKDIR /src/Client
 RUN /usr/bin/tailwindcss -i ./wwwroot/app.css -o ./wwwroot/app.min.css --minify
@@ -42,4 +42,4 @@ COPY --from=build /app/publish .
 
 HEALTHCHECK --interval=30s --timeout=10s CMD curl --silent --fail https://localhost/health || exit 1
 
-ENTRYPOINT ["dotnet", "WebClient.dll"]
+ENTRYPOINT ["dotnet", "Presentation.dll"]

@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebAPI.Filters;
+namespace Presentation.Filters;
 
 /// <inheritdoc />
 public sealed class FluentValidationFilter : IActionFilter

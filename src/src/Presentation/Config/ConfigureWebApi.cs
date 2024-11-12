@@ -1,26 +1,20 @@
-using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Application;
-using Domain.Abstractions;
 using Domain.Common;
 using FluentValidation.AspNetCore;
 using Generated;
 using Infrastructure.JsonConverters;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Persistence;
-using WebAPI.Filters;
-using WebAPI.HealthChecks;
+using Presentation.Filters;
+using Presentation.HealthChecks;
+using Presentation.Middleware;
 using ZymLabs.NSwag.FluentValidation;
 
-namespace WebAPI.Config;
+namespace Presentation.Config;
 
 /// <inheritdoc />
-[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class ConfigureWebApi : ConfigurationBase
 {
     private static readonly string[] CompressionTypes = ["application/octet-stream"];
@@ -68,8 +62,8 @@ public sealed class ConfigureWebApi : ConfigurationBase
             })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 options.JsonSerializerOptions.Converters.Add(new UlidToStringJsonConverter());
                 options.JsonSerializerOptions.Converters.ConfigureGeneratedConverters();

@@ -132,10 +132,10 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
     {
         ClassDeclarationSyntax { AttributeLists.Count: > 0 } classDeclarationSyntax =>
             classDeclarationSyntax.AttributeLists.Any(static attr =>
-            attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
+                attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
         RecordDeclarationSyntax { AttributeLists.Count: > 0 } recordDeclarationSyntax =>
             recordDeclarationSyntax.AttributeLists.Any(static attr =>
-            attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
+                attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
         _ => false,
     };
 

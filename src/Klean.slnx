@@ -8,20 +8,16 @@
     <File Path=".gitignore" />
     <File Path="Makefile" />
   </Folder>
-
   <Folder Name="/source_generators/">
     <Project Path="source_generators\StrongIdGenerator\StrongIdGenerator.csproj" Type="Classic C#" />
   </Folder>
-
   <Folder Name="/src/">
     <Project Path="src\Application\Application.csproj" Type="Classic C#" />
     <Project Path="src\Domain\Domain.csproj" Type="Classic C#" />
     <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#" />
     <Project Path="src\Persistence\Persistence.csproj" Type="Classic C#" />
     <Project Path="src\Presentation\Presentation.csproj" Type="Classic C#" />
-    <Project Path="src\WebAPI\WebAPI.csproj" Type="Classic C#" />
   </Folder>
-
   <Folder Name="/test/">
     <Project Path="test\Test.Application\Test.Application.csproj" Type="Classic C#" />
     <Project Path="test\Test.Architecture\Test.Architecture.csproj" Type="Classic C#" />

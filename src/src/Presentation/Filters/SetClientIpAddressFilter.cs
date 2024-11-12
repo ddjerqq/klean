@@ -1,10 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebAPI.Filters;
+namespace Presentation.Filters;
 
 /// <inheritdoc />
 public sealed class SetClientIpAddressFilter : IActionFilter
