@@ -1,7 +1,6 @@
 #pragma warning disable CS1591
 using System.Reflection;
 using Application;
-using Domain.Aggregates;
 using Generated;
 using Microsoft.OpenApi.Models;
 

@@ -4,18 +4,22 @@ namespace Domain.Common;
 
 public static class EnumExt
 {
-    public static IEnumerable<TEnum> GetIndividualFlags<TEnum>(this TEnum @enum, params TEnum[] except) where TEnum : Enum =>
-        Enum.GetValues(typeof(TEnum))
+    public static IEnumerable<TEnum> GetIndividualFlags<TEnum>(this TEnum @enum, params TEnum[] except) where TEnum : Enum
+    {
+        return Enum.GetValues(typeof(TEnum))
             .Cast<TEnum>()
             .Where(value => @enum.HasFlag(value))
             .Where(value => !except.Contains(value));
+    }
 
-    public static TEnum GetAll<TEnum>() where TEnum : Enum =>
-        Enum.GetValues(typeof(TEnum))
+    public static TEnum GetAll<TEnum>() where TEnum : Enum
+    {
+        return Enum.GetValues(typeof(TEnum))
             .Cast<TEnum>()
             .Aggregate(
                 (TEnum)Enum.ToObject(typeof(TEnum), 0),
                 (current, value) => (TEnum)(object)((int)(object)current | (int)(object)value));
+    }
 
     public static string GetDisplayName<TEnum>(this TEnum value) where TEnum : Enum
     {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers;
 
 /// <summary>
-/// The base api controller for all api controllers alike
+///     The base api controller for all api controllers alike
 /// </summary>
 [Authorize]
 [ApiController]

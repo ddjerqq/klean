@@ -8,12 +8,12 @@ using Serilog;
 namespace Presentation;
 
 /// <summary>
-/// Web application extensions
+///     Web application extensions
 /// </summary>
 public static class WebAppExt
 {
     /// <summary>
-    /// Apply any pending migrations to the database if any.
+    ///     Apply any pending migrations to the database if any.
     /// </summary>
     public static async Task MigrateDatabaseAsync(this WebApplication app)
     {
@@ -33,7 +33,7 @@ public static class WebAppExt
     }
 
     /// <summary>
-    /// Use general web app middleware
+    ///     Use general web app middleware
     /// </summary>
     public static void UseApplicationMiddleware(this WebApplication app)
     {

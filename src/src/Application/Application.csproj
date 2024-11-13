@@ -15,16 +15,16 @@
         <PackageReference Include="Destructurama.Attributed" Version="4.0.0"/>
         <PackageReference Include="FluentValidation" Version="11.9.2"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2"/>
-        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="8.0.8"/>
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.8"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
         <PackageReference Include="QuickForm" Version="2.1.0"/>
-        <PackageReference Include="SerilogTracing" Version="2.1.0" />
-        <PackageReference Include="SerilogTracing.Expressions" Version="2.1.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+        <PackageReference Include="SerilogTracing" Version="2.1.0"/>
+        <PackageReference Include="SerilogTracing.Expressions" Version="2.1.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2"/>
         <Using Include="BCrypt.Net.BCrypt" Alias="BC"/>
     </ItemGroup>
 
@@ -39,6 +39,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Cqrs\" />
+        <Folder Include="Cqrs\"/>
     </ItemGroup>
 </Project>

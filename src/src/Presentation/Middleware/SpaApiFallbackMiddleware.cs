@@ -18,9 +18,13 @@ public sealed class SpaApiFallbackMiddleware : IMiddleware
 
 public static class SpaApiFallbackMiddlewareExtensions
 {
-    public static IServiceCollection AddSpaApiFallbackMiddleware(this IServiceCollection services) =>
-        services.AddScoped<SpaApiFallbackMiddleware>();
+    public static IServiceCollection AddSpaApiFallbackMiddleware(this IServiceCollection services)
+    {
+        return services.AddScoped<SpaApiFallbackMiddleware>();
+    }
 
-    public static IApplicationBuilder UseSpaApiFallbackMiddleware(this IApplicationBuilder builder) =>
-        builder.UseMiddleware<SpaApiFallbackMiddleware>();
+    public static IApplicationBuilder UseSpaApiFallbackMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<SpaApiFallbackMiddleware>();
+    }
 }

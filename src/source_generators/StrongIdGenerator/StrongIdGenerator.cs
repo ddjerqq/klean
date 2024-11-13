@@ -128,16 +128,19 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
         context.AddSource("Generated.Common.g.cs", CommonSrc);
     }
 
-    private static bool SyntacticPredicate(SyntaxNode node, CancellationToken ct) => node switch
+    private static bool SyntacticPredicate(SyntaxNode node, CancellationToken ct)
     {
-        ClassDeclarationSyntax { AttributeLists.Count: > 0 } classDeclarationSyntax =>
-            classDeclarationSyntax.AttributeLists.Any(static attr =>
-                attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
-        RecordDeclarationSyntax { AttributeLists.Count: > 0 } recordDeclarationSyntax =>
-            recordDeclarationSyntax.AttributeLists.Any(static attr =>
-                attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
-        _ => false,
-    };
+        return node switch
+        {
+            ClassDeclarationSyntax { AttributeLists.Count: > 0 } classDeclarationSyntax =>
+                classDeclarationSyntax.AttributeLists.Any(static attr =>
+                    attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
+            RecordDeclarationSyntax { AttributeLists.Count: > 0 } recordDeclarationSyntax =>
+                recordDeclarationSyntax.AttributeLists.Any(static attr =>
+                    attr.Attributes.Any(static a => a.Name.ToString() == "StrongId")),
+            _ => false,
+        };
+    }
 
     private static INamedTypeSymbol? SemanticTransform(GeneratorSyntaxContext context, CancellationToken ct)
     {

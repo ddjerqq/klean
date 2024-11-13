@@ -6,18 +6,19 @@ namespace Application;
 
 public abstract class ConfigurationBase
 {
+    protected static bool IsDevelopment => "ASPNETCORE_ENVIRONMENT".FromEnv("Development") == "Development";
     public abstract void ConfigureServices(IServiceCollection services);
 
-    protected static bool IsDevelopment => "ASPNETCORE_ENVIRONMENT".FromEnv("Development") == "Development";
-
     /// <summary>
-    /// Configures the configurations from all the assembly names.
+    ///     Configures the configurations from all the assembly names.
     /// </summary>
     public static void ConfigureServicesFromAssemblies(IServiceCollection services, IEnumerable<string> assemblies)
-        => ConfigureServicesFromAssemblies(services, assemblies.Select(Assembly.Load));
+    {
+        ConfigureServicesFromAssemblies(services, assemblies.Select(Assembly.Load));
+    }
 
     /// <summary>
-    /// Configures the configurations from all the assemblies and configuration types.
+    ///     Configures the configurations from all the assemblies and configuration types.
     /// </summary>
     public static void ConfigureServicesFromAssemblies(IServiceCollection services, IEnumerable<Assembly> assemblies)
     {

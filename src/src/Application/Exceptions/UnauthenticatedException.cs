@@ -4,7 +4,7 @@ using Domain.Aggregates;
 namespace Application.Exceptions;
 
 /// <summary>
-/// Exception thrown when the user is not authenticated
+///     Exception thrown when the user is not authenticated
 /// </summary>
 public sealed class UnauthenticatedException(string message) : Exception(message)
 {

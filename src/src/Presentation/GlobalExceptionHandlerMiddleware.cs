@@ -7,8 +7,6 @@ namespace Presentation;
 /// <inheritdoc />
 public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHandlerMiddleware> logger) : IMiddleware
 {
-    private static bool IsDev(HttpContext httpContext) => httpContext.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment();
-
     /// <inheritdoc />
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
@@ -32,6 +30,11 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
         {
             await TryHandleAsync(httpContext, ex);
         }
+    }
+
+    private static bool IsDev(HttpContext httpContext)
+    {
+        return httpContext.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment();
     }
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception)

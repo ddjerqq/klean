@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Http;
 namespace Infrastructure.Services;
 
 /// <summary>
-/// cookie options
+///     cookie options
 /// </summary>
 public static class Cookie
 {
     /// <summary>
-    /// options for secure cookies.
+    ///     options for secure cookies.
     /// </summary>
     public static readonly CookieOptions SecureOptions = new()
     {

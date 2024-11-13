@@ -7,6 +7,14 @@ public abstract class AggregateRoot<TId>(TId id) : Entity<TId>(id), IAggregateRo
 {
     private readonly List<IDomainEvent> _domainEvents = [];
     public IEnumerable<IDomainEvent> DomainEvents => _domainEvents;
-    public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
-    public void ClearDomainEvents() => _domainEvents.Clear();
+
+    public void AddDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
 }

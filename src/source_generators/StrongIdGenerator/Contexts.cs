@@ -21,12 +21,20 @@ internal readonly record struct EntityStrongIdContext(string? Namespace, string 
 
 internal sealed class PartialClassContextEqualityComparer : EqualityComparer<EntityStrongIdContext>
 {
-    private PartialClassContextEqualityComparer() {}
+    private PartialClassContextEqualityComparer()
+    {
+    }
+
     public static IEqualityComparer<EntityStrongIdContext> Instance { get; } = new PartialClassContextEqualityComparer();
 
-    public override bool Equals(EntityStrongIdContext x, EntityStrongIdContext y) =>
-        x.Namespace == y.Namespace
-        && x.TypeName == y.TypeName;
+    public override bool Equals(EntityStrongIdContext x, EntityStrongIdContext y)
+    {
+        return x.Namespace == y.Namespace
+               && x.TypeName == y.TypeName;
+    }
 
-    public override int GetHashCode(EntityStrongIdContext obj) => HashCode.Combine(obj.Namespace, obj.TypeName);
+    public override int GetHashCode(EntityStrongIdContext obj)
+    {
+        return HashCode.Combine(obj.Namespace, obj.TypeName);
+    }
 }

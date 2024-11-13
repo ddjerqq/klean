@@ -9,6 +9,7 @@ namespace Application.Cqrs.Users.Commands;
 public abstract record LoginResponse
 {
     public sealed record Success(string Token, User User) : LoginResponse;
+
     // public sealed record TwoFactorRequired(string Token, User User) : LoginResponse;
     public sealed record Failure : LoginResponse;
 }

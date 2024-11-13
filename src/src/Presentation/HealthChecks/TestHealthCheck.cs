@@ -3,7 +3,7 @@
 namespace Presentation.HealthChecks;
 
 /// <summary>
-/// A test healthcheck for you to implement
+///     A test healthcheck for you to implement
 /// </summary>
 public sealed class TestHealthCheck : IHealthCheck
 {

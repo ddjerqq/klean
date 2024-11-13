@@ -1,29 +1,29 @@
 ﻿<Solution>
-  <Folder Name="/Solution Items/">
-    <File Path="docker-compose.yaml" />
-    <File Path="Dockerfile" />
-    <File Path=".dockerignore" />
-    <File Path=".env" />
-    <File Path=".env.example" />
-    <File Path=".gitignore" />
-    <File Path="Makefile" />
-  </Folder>
-  <Folder Name="/source_generators/">
-    <Project Path="source_generators\StrongIdGenerator\StrongIdGenerator.csproj" Type="Classic C#" />
-  </Folder>
-  <Folder Name="/src/">
-    <Project Path="src\Application\Application.csproj" Type="Classic C#" />
-    <Project Path="src\Client\Client.csproj" Type="Classic C#" />
-    <Project Path="src\Domain\Domain.csproj" Type="Classic C#" />
-    <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#" />
-    <Project Path="src\Persistence\Persistence.csproj" Type="Classic C#" />
-    <Project Path="src\Presentation\Presentation.csproj" Type="Classic C#" />
-  </Folder>
-  <Folder Name="/test/">
-    <Project Path="test\Test.Application\Test.Application.csproj" Type="Classic C#" />
-    <Project Path="test\Test.Architecture\Test.Architecture.csproj" Type="Classic C#" />
-    <Project Path="test\Test.Domain\Test.Domain.csproj" Type="Classic C#" />
-    <Project Path="test\Test.Infrastructure\Test.Infrastructure.csproj" Type="Classic C#" />
-    <Project Path="test\Test.Persistence\Test.Persistence.csproj" Type="Classic C#" />
-  </Folder>
+    <Folder Name="/Solution Items/">
+        <File Path="docker-compose.yaml"/>
+        <File Path="Dockerfile"/>
+        <File Path=".dockerignore"/>
+        <File Path=".env"/>
+        <File Path=".env.example"/>
+        <File Path=".gitignore"/>
+        <File Path="Makefile"/>
+    </Folder>
+    <Folder Name="/source_generators/">
+        <Project Path="source_generators\StrongIdGenerator\StrongIdGenerator.csproj" Type="Classic C#"/>
+    </Folder>
+    <Folder Name="/src/">
+        <Project Path="src\Application\Application.csproj" Type="Classic C#"/>
+        <Project Path="src\Client\Client.csproj" Type="Classic C#"/>
+        <Project Path="src\Domain\Domain.csproj" Type="Classic C#"/>
+        <Project Path="src\Infrastructure\Infrastructure.csproj" Type="Classic C#"/>
+        <Project Path="src\Persistence\Persistence.csproj" Type="Classic C#"/>
+        <Project Path="src\Presentation\Presentation.csproj" Type="Classic C#"/>
+    </Folder>
+    <Folder Name="/test/">
+        <Project Path="test\Test.Application\Test.Application.csproj" Type="Classic C#"/>
+        <Project Path="test\Test.Architecture\Test.Architecture.csproj" Type="Classic C#"/>
+        <Project Path="test\Test.Domain\Test.Domain.csproj" Type="Classic C#"/>
+        <Project Path="test\Test.Infrastructure\Test.Infrastructure.csproj" Type="Classic C#"/>
+        <Project Path="test\Test.Persistence\Test.Persistence.csproj" Type="Classic C#"/>
+    </Folder>
 </Solution>

@@ -14,9 +14,8 @@ public sealed class AppDbContext(
     ConvertDomainEventsToOutboxMessagesInterceptor convertDomainEventsToOutboxMessagesInterceptor)
     : DbContext(options), IAppDbContext
 {
-    public DbSet<User> Users => Set<User>();
-
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Application.Exceptions;
 
 /// <summary>
-/// Exception thrown when an entity is not found
+///     Exception thrown when an entity is not found
 /// </summary>
 public sealed class NotFoundException(string message) : Exception(message)
 {

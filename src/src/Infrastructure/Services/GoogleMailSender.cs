@@ -8,8 +8,8 @@ namespace Infrastructure.Services;
 
 public sealed class GoogleMailSender : IEmailSender
 {
-    private readonly ILogger<GoogleMailSender> _logger;
     private readonly SmtpClient _client;
+    private readonly ILogger<GoogleMailSender> _logger;
 
     public GoogleMailSender(ILogger<GoogleMailSender> logger)
     {

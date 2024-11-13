@@ -12,25 +12,9 @@ namespace Application.Behaviours;
 internal sealed class RequestValidationBehaviour<TRequest, TResponse>(IServiceProvider serviceProvider, IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private IEnumerable<FluentValidationResult> DataAnnotationValidate(TRequest request)
-    {
-        var context = new ValidationContext(request, serviceProvider, items: null);
-        var results = new List<DataAnnotationsValidationResult>();
-
-        Validator.TryValidateObject(request, context, results, true);
-
-        var failures =
-            from result in results
-            let memberName = result.MemberNames.First()
-            let errorMessage = result.ErrorMessage
-            select new ValidationFailure(memberName, errorMessage);
-
-        return failures.Select(failure => new FluentValidationResult([failure]));
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
     {
-        var context = new ValidationContext(request, serviceProvider: null, items: null);
+        var context = new ValidationContext(request, null, null);
         var results = new List<DataAnnotationsValidationResult>();
         Validator.TryValidateObject(request, context, results, true);
 
@@ -54,5 +38,21 @@ internal sealed class RequestValidationBehaviour<TRequest, TResponse>(IServicePr
         }
 
         return await next();
+    }
+
+    private IEnumerable<FluentValidationResult> DataAnnotationValidate(TRequest request)
+    {
+        var context = new ValidationContext(request, serviceProvider, null);
+        var results = new List<DataAnnotationsValidationResult>();
+
+        Validator.TryValidateObject(request, context, results, true);
+
+        var failures =
+            from result in results
+            let memberName = result.MemberNames.First()
+            let errorMessage = result.ErrorMessage
+            select new ValidationFailure(memberName, errorMessage);
+
+        return failures.Select(failure => new FluentValidationResult([failure]));
     }
 }

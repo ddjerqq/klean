@@ -81,12 +81,16 @@ public sealed class EntitySaveChangesInterceptor : SaveChangesInterceptor
         }
     }
 
-    private static bool HasSoftDeleteAttribute(EntityEntry entry) =>
-        entry.Entity.GetType().GetCustomAttribute<SoftDeleteAttribute>() is not null;
+    private static bool HasSoftDeleteAttribute(EntityEntry entry)
+    {
+        return entry.Entity.GetType().GetCustomAttribute<SoftDeleteAttribute>() is not null;
+    }
 
-    private static bool HasChangedOwnedEntities(EntityEntry entry) =>
-        entry.References.Any(r =>
+    private static bool HasChangedOwnedEntities(EntityEntry entry)
+    {
+        return entry.References.Any(r =>
             r.TargetEntry != null &&
             r.TargetEntry.Metadata.IsOwned() &&
             r.TargetEntry.State is EntityState.Added or EntityState.Modified);
+    }
 }

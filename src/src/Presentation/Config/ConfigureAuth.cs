@@ -17,7 +17,7 @@ public sealed class ConfigureAuth : ConfigurationBase
             .AddJwtBearer(options =>
             {
                 options.MapInboundClaims = false;
-                options.RequireHttpsMetadata = false;
+                options.RequireHttpsMetadata = true;
                 options.SaveToken = true;
                 options.Events = JwtGenerator.Events;
                 options.Audience = JwtGenerator.ClaimsAudience;

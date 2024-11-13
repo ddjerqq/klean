@@ -12,15 +12,15 @@
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-        <PackageReference Include="Microsoft.OpenApi" Version="1.6.15" />
-        <PackageReference Include="Quartz" Version="3.9.0" />
-        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.9.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.OpenApi" Version="1.6.15"/>
+        <PackageReference Include="Quartz" Version="3.9.0"/>
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.9.0"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
-    
+
     <ItemGroup Label="Logging">
         <PackageReference Include="Serilog" Version="4.0.0"/>
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.1"/>
@@ -30,7 +30,7 @@
         <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
         <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0"/>
         <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0"/>
     </ItemGroup>
 

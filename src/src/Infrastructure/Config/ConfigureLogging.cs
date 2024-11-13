@@ -44,11 +44,9 @@ public static class LoggingExt
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
             .Destructure.UsingAttributes()
-
             .Destructure.ByTransforming<Ulid>(id => id.ToString())
             .Destructure.ByTransforming<IStrongId>(id => id.ToString()!)
             // .Destructure_ByTransformingStrongIdsToStrings()
-
             .Enrich.WithProperty("Application", "SEQ__APP_NAME".FromEnvRequired())
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()

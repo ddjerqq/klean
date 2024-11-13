@@ -11,19 +11,22 @@ using Microsoft.EntityFrameworkCore;
 namespace Presentation.Controllers.V1;
 
 /// <summary>
-/// Controller for authentication actions
+///     Controller for authentication actions
 /// </summary>
 [Authorize]
 public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) : ApiController
 {
     /// <summary>
-    /// Gets the user's claims
+    ///     Gets the user's claims
     /// </summary>
     [HttpGet("claims")]
-    public ActionResult<Dictionary<string, string>> GetUserClaims() => Ok(User.Claims.ToDictionary(c => c.Type, c => c.Value));
+    public ActionResult<Dictionary<string, string>> GetUserClaims()
+    {
+        return Ok(User.Claims.ToDictionary(c => c.Type, c => c.Value));
+    }
 
     /// <summary>
-    /// Gets the current user
+    ///     Gets the current user
     /// </summary>
     [HttpGet("me")]
     public async Task<ActionResult<User>> GetCurrentUser(CancellationToken ct)
@@ -33,7 +36,7 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     }
 
     /// <summary>
-    /// Logs the user in
+    ///     Logs the user in
     /// </summary>
     [AllowAnonymous]
     [HttpPost("login")]
@@ -56,18 +59,16 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     }
 
     /// <summary>
-    /// Register a new user
+    ///     Register a new user
     /// </summary>
     /// <remarks>
-    /// Sample request:
-    ///
+    ///     Sample request:
     ///     POST /register
     ///     {
-    ///        "email": "elon@gmail.com",
-    ///        "fullname": "elonmusk",
-    ///        "password": "supersecure
+    ///     "email": "elon@gmail.com",
+    ///     "fullname": "elonmusk",
+    ///     "password": "supersecure
     ///     }
-    ///
     /// </remarks>
     [AllowAnonymous]
     [HttpPost("register")]
@@ -79,8 +80,8 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     }
 
     /// <summary>
-    /// Gets all users
-    /// <note>This is only for Elon</note>
+    ///     Gets all users
+    ///     <note>This is only for Elon</note>
     /// </summary>
     [Authorize(Roles = RoleExt.Admin)]
     [HttpGet("all_users")]

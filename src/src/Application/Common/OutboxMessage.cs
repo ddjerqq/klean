@@ -3,6 +3,7 @@ using Application.Services;
 using Destructurama.Attributed;
 using Domain.Abstractions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Application.Common;
 
@@ -11,9 +12,9 @@ public sealed class OutboxMessage
     public static readonly JsonSerializerSettings JsonSerializerSettings = new()
     {
         TypeNameHandling = TypeNameHandling.All,
-        ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+        ContractResolver = new DefaultContractResolver
         {
-            NamingStrategy = new Newtonsoft.Json.Serialization.SnakeCaseNamingStrategy(),
+            NamingStrategy = new SnakeCaseNamingStrategy(),
         },
     };
 

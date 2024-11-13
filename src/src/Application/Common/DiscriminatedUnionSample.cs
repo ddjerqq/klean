@@ -10,10 +10,13 @@ public static class DiscriminatedUnionExt
 {
     public static TResult Map<TResult>(this DiscriminatedUnionSample unionSample,
         Func<String, TResult> mapString,
-        Func<Decimal, TResult> mapDecimal) => unionSample switch
+        Func<Decimal, TResult> mapDecimal)
     {
-        String s => mapString(s),
-        Decimal d => mapDecimal(d),
-        _ => throw new InvalidOperationException("Unknown DiscriminatedUnion type"),
-    };
+        return unionSample switch
+        {
+            String s => mapString(s),
+            Decimal d => mapDecimal(d),
+            _ => throw new InvalidOperationException("Unknown DiscriminatedUnion type"),
+        };
+    }
 }
