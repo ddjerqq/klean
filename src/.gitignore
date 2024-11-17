@@ -51,3 +51,5 @@ dist
 .ssh
 *.secrets
 .github/workflows/act.secrets
+
+.routify

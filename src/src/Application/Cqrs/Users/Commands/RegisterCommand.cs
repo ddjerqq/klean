@@ -18,12 +18,11 @@ public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand
 
         RuleFor(c => c.FullName)
             .NotEmpty()
-            .MinimumLength(5).MaximumLength(32);
+            .MinimumLength(3).MaximumLength(32);
 
         RuleFor(c => c.Password)
             .NotEmpty()
-            .MinimumLength(16)
-            .MaximumLength(256);
+            .MinimumLength(8).MaximumLength(256);
 
         RuleSet("async", () =>
         {

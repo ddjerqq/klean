@@ -32,13 +32,16 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "TEXT", nullable: false),
-                    username = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    full_name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
                     email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    role = table.Column<int>(type: "INTEGER", nullable: false),
                     password_hash = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     created = table.Column<DateTime>(type: "TEXT", nullable: true),
                     created_by = table.Column<string>(type: "TEXT", nullable: true),
                     last_modified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    last_modified_by = table.Column<string>(type: "TEXT", nullable: true)
+                    last_modified_by = table.Column<string>(type: "TEXT", nullable: true),
+                    deleted = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    deleted_by = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,9 +49,9 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_username",
+                name: "i_x_user_full_name",
                 table: "user",
-                column: "username",
+                column: "full_name",
                 unique: true);
         }
 

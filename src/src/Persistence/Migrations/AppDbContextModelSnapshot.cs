@@ -15,7 +15,7 @@ namespace Persistence.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
             modelBuilder.Entity("Application.Common.OutboxMessage", b =>
                 {
@@ -68,11 +68,25 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("created_by");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted_by");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("TEXT")
                         .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("full_name");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT")
@@ -88,18 +102,16 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("password_hash");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("username");
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("role");
 
                     b.HasKey("Id")
                         .HasName("p_k_user");
 
-                    b.HasIndex("Username")
+                    b.HasIndex("FullName")
                         .IsUnique()
-                        .HasDatabaseName("i_x_user_username");
+                        .HasDatabaseName("i_x_user_full_name");
 
                     b.ToTable("user");
                 });

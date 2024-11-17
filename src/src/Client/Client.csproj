@@ -5,10 +5,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="src\lib\"/>
+        <Folder Include="src\lib\apiClient\" />
         <Folder Include="src\lib\components\ui\" />
-        <Folder Include="src\routes\"/>
-        <Folder Include="static\assets\"/>
     </ItemGroup>
 
     <Target Name="NpmBuild" BeforeTargets="Build">

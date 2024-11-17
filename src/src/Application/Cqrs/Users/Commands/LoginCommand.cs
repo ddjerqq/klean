@@ -20,7 +20,7 @@ internal sealed class LoginCommandHandler(IAppDbContext dbContext, IJwtGenerator
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken ct)
     {
-        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email.ToUpperInvariant(), ct);
+        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == request.Email.ToLowerInvariant(), ct);
         if (user is null || !BC.EnhancedVerify(request.Password, user.PasswordHash))
             return new LoginResponse.Failure();
 
