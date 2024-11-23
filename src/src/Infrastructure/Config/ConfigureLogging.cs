@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application;
 using Application.Common;
 using Destructurama;
@@ -32,6 +33,8 @@ public static class LoggingExt
 
     public static LoggerConfiguration Configure(this LoggerConfiguration config)
     {
+        Serilog.Debugging.SelfLog.Enable(Console.Error);
+
         var logPath = "LOG__PATH".FromEnvRequired();
 
         var seqHost = "SEQ__HOST".FromEnvRequired();
@@ -46,7 +49,6 @@ public static class LoggingExt
             .Destructure.UsingAttributes()
             .Destructure.ByTransforming<Ulid>(id => id.ToString())
             .Destructure.ByTransforming<IStrongId>(id => id.ToString()!)
-            // .Destructure_ByTransformingStrongIdsToStrings()
             .Enrich.WithProperty("Application", "SEQ__APP_NAME".FromEnvRequired())
             .Enrich.FromLogContext()
             .Enrich.WithProcessId()
@@ -54,7 +56,7 @@ public static class LoggingExt
             .Enrich.WithAssemblyName()
             .WriteTo.Debug()
             .WriteTo.Console(Formatters.CreateConsoleTextFormatter(TemplateTheme.Code))
-            .WriteTo.Seq($"http://{seqHost}:{seqPort}", apiKey: seqApiKey)
+            // .WriteTo.Seq($"http://{seqHost}:{seqPort}", apiKey: seqApiKey)
             .WriteTo.File(logPath,
                 outputTemplate: OutputFormat,
                 flushToDiskInterval: TimeSpan.FromSeconds(10),
@@ -72,7 +74,7 @@ public static class LoggingExt
             options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000}ms";
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
-                diagnosticContext.Set("UserId", httpContext.User.GetId()?.ToString() ?? "unauthenticated");
+                diagnosticContext.Set("UserId", httpContext.User.FindFirstValue(ClaimsPrincipalExt.IdClaimType) ?? "unauthenticated");
                 diagnosticContext.Set("ClientAddress", httpContext.Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown");
                 diagnosticContext.Set("ClientUserAgent", (string?)httpContext.Request.Headers.UserAgent);
                 diagnosticContext.Set("TraceIdentifier", httpContext.TraceIdentifier);
