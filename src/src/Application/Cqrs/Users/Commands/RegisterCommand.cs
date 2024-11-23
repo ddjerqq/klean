@@ -46,7 +46,9 @@ internal sealed class RegisterCommandHandler(IAppDbContext dbContext, IJwtGenera
             Email = request.Email.ToLowerInvariant(),
             FullName = request.FullName,
             Role = Role.User,
+            AvatarUrl = ClaimsPrincipalExt.GetDefaultAvatar(request.FullName),
             PasswordHash = BC.EnhancedHashPassword(request.Password),
+            SecurityStamp = Guid.NewGuid().ToString(),
         };
 
         dbContext.Users.Add(user);

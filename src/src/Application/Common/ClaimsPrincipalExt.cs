@@ -1,54 +1,56 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text.Encodings.Web;
+using Application.Cqrs.Users;
 using Domain.Aggregates;
 using Domain.ValueObjects;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Application.Common;
 
 public static class ClaimsPrincipalExt
 {
-    private static string? GetClaimValue(this ClaimsPrincipal principal, string claimType)
+    public const string IdClaimType = "sid";
+    public const string UsernameClaimType = "name";
+    public const string EmailClaimType = "email";
+    public const string AvatarClaimType = "avatar";
+    public const string RoleClaimType = "role";
+    public const string SecurityStampClaimType = "security_stamp";
+
+    public static string GetDefaultAvatar(string? username = default)
     {
-        return principal
-            .Claims
-            .FirstOrDefault(x => x.Type == claimType)?
-            .Value;
+        username ??= RandomNumberGenerator.GetHexString(5);
+        username = UrlEncoder.Default.Encode(username);
+        return $"https://api.dicebear.com/9.x/glass/svg?backgroundType=gradientLinear&scale=50&seed={username}";
     }
 
-    public static UserId? GetId(this ClaimsPrincipal principal)
+    public static bool TryGetUserDto(this ClaimsPrincipal principal, [NotNullWhen(true)] out UserDto? user)
     {
-        return UserId.TryParse(principal.GetClaimValue(JwtRegisteredClaimNames.Sid), null, out var id) ? id : null;
+        user = default!;
+
+        if (!(principal.Identity?.IsAuthenticated ?? true))
+            return false;
+
+        var id = principal.FindFirst(IdClaimType)?.Value!;
+        var username = principal.FindFirst(UsernameClaimType)?.Value!;
+        var email = principal.FindFirst(EmailClaimType)?.Value!;
+        var avatar = principal.FindFirst(AvatarClaimType)?.Value!;
+        var role = principal.FindFirst(RoleClaimType)?.Value!;
+        var securityStamp = principal.FindFirst(SecurityStampClaimType)?.Value!;
+
+        user = new UserDto(UserId.Parse(id), username, email, avatar, Enum.Parse<Role>(role), securityStamp);
+        return true;
     }
 
-    public static string? GetFullName(this ClaimsPrincipal principal)
-    {
-        return principal.GetClaimValue(JwtRegisteredClaimNames.Name);
-    }
+    public static IEnumerable<Claim> GetClaims(this UserDto userDto) =>
+    [
+        new(IdClaimType, userDto.Id.ToString()),
+        new(UsernameClaimType, userDto.FullName),
+        new(EmailClaimType, userDto.Email),
+        new(AvatarClaimType, userDto.AvatarUrl ?? GetDefaultAvatar()),
+        new(RoleClaimType, ((int)userDto.Role).ToString()),
+        new(SecurityStampClaimType, userDto.SecurityStamp),
+    ];
 
-    public static string? GetEmail(this ClaimsPrincipal principal)
-    {
-        return principal.GetClaimValue(JwtRegisteredClaimNames.Email);
-    }
-
-    public static Role? GetRole(this ClaimsPrincipal principal)
-    {
-        return int.TryParse(principal.GetClaimValue(nameof(User.Role)), out var value) ? (Role)value : null;
-    }
-
-    public static bool HasAnyRole(this ClaimsPrincipal principal, params Role[] roles)
-    {
-        return principal.GetRole() is { } role &&
-               roles.ToArray().Contains(role);
-    }
-
-    public static IEnumerable<Claim> GetClaims(this User user)
-    {
-        return
-        [
-            new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, user.FullName),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(nameof(User.Role), ((int)user.Role).ToString()),
-        ];
-    }
+    public static IEnumerable<Claim> GetClaims(this User user) => GetClaims((UserDto)user);
 }
