@@ -60,24 +60,6 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                   return sb.ToString();
               }
           
-              // public static global::Serilog.LoggerConfiguration Destructure_ByTransformingStrongIdsToStrings(this global::Serilog.LoggerConfiguration config)
-              // {
-              //     var types =
-              //         from global::System.Type type in global::System.Reflection.Assembly.GetAssembly(typeof(global::Generated.StrongIdAttribute))!.GetTypes()
-              //         where type.GetInterfaces().Any(i => i == typeof(global::Generated.IStrongId))
-              //         select type;
-              // 
-              //     foreach (var type in types)
-              //     {
-              //         var destructure = config.Destructure;
-              //         var method = typeof(global::Serilog.Configuration.LoggerDestructuringConfiguration).GetMethod(nameof(global::Serilog.Configuration.LoggerDestructuringConfiguration.ByTransforming))!;
-              //         var generic = method.MakeGenericMethod(type);
-              //         generic.Invoke(destructure, id => id.ToString());
-              //     }
-              // 
-              //     return config;
-              // }
-          
               public static void ConfigureGeneratedConverters(this global::Microsoft.EntityFrameworkCore.ModelConfigurationBuilder builder)
               {
                   var types =
