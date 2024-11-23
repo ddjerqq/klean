@@ -1,7 +1,7 @@
 ﻿services:
   api:
     container_name: api
-    image: ddjerqq/chfs:latest
+    image: ddjerqq/klean:latest
     ports:
       - "80:1080"
       - "443:1443"
@@ -14,7 +14,6 @@
       retries: 3
     shm_size: 512mb
     environment:
-      - WEB_APP__DOMAIN=yourdomain.com
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://0.0.0.0:1080;https://0.0.0.0:1443
       - ASPNETCORE_DATAPROTECTION__PATH=/var/data-protection
@@ -40,5 +39,10 @@
       #      acquire by running: echo '<password>' | docker run --rm -i datalust/seq config hash
       - SEQ_FIRSTRUN_ADMINPASSWORDHASH=
     volumes:
-      - /var/log/chfs/seq/:/data
+      - /var/log/klean/seq/:/data
     restart: unless-stopped
+  workerservice1:
+    image: workerservice1
+    build:
+      context: .
+      dockerfile: WorkerService1/Dockerfile
