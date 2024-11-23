@@ -32,10 +32,12 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "TEXT", nullable: false),
-                    full_name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
-                    email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    full_name = table.Column<string>(type: "TEXT", nullable: false),
+                    email = table.Column<string>(type: "TEXT", nullable: false),
+                    avatar_url = table.Column<string>(type: "TEXT", nullable: true),
                     role = table.Column<int>(type: "INTEGER", nullable: false),
-                    password_hash = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    password_hash = table.Column<string>(type: "TEXT", nullable: false),
+                    security_stamp = table.Column<string>(type: "TEXT", nullable: false),
                     created = table.Column<DateTime>(type: "TEXT", nullable: true),
                     created_by = table.Column<string>(type: "TEXT", nullable: true),
                     last_modified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -47,12 +49,6 @@ namespace Persistence.Migrations
                 {
                     table.PrimaryKey("p_k_user", x => x.id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "i_x_user_full_name",
-                table: "user",
-                column: "full_name",
-                unique: true);
         }
 
         /// <inheritdoc />

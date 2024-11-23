@@ -63,6 +63,10 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("id");
 
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("avatar_url");
+
                     b.Property<DateTime?>("Created")
                         .HasColumnType("TEXT")
                         .HasColumnName("created");
@@ -81,13 +85,11 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(256)
                         .HasColumnType("TEXT")
                         .HasColumnName("email");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(32)
                         .HasColumnType("TEXT")
                         .HasColumnName("full_name");
 
@@ -101,7 +103,6 @@ namespace Persistence.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(64)
                         .HasColumnType("TEXT")
                         .HasColumnName("password_hash");
 
@@ -109,12 +110,13 @@ namespace Persistence.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("role");
 
+                    b.Property<string>("SecurityStamp")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("security_stamp");
+
                     b.HasKey("Id")
                         .HasName("p_k_user");
-
-                    b.HasIndex("FullName")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_user_full_name");
 
                     b.ToTable("user");
                 });
