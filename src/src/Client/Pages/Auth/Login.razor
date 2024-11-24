@@ -1,0 +1,111 @@
+﻿@using Application.Cqrs.Users.Commands
+@using Blazored.Toast.Services
+@using Client.Components.Ui.Form
+@using Client.Services
+
+@page "/login"
+@layout AuthLayout
+@attribute [AllowAnonymous]
+@inject ApiService Api
+@inject IToastService Toast
+
+<AuthorizeView>
+    <Redirect To="/"/>
+</AuthorizeView>
+
+<div class="flex flex-col space-y-2 text-start">
+    <h1 class="text-2xl font-semibold tracking-tight">
+        Create an account
+    </h1>
+    <p class="text-sm text-muted-foreground">
+        Enter your email below to create your account
+    </p>
+</div>
+
+<div class="grid gap-6">
+    <AppForm @bind-Model="Command" OnValidSubmit="OnValidSubmit" novalidate class="grid gap-4">
+        <FormField>
+            <FormLabel for="email">Email</FormLabel>
+            <FormInputText id="email"
+                           @bind-Value="@Command.Email"
+                           placeholder="name@example.com"
+                           type="email"
+                           required
+                           autocomplete="email"
+                           disabled="@IsLoading" />
+
+            <FormInvalidFeedback For="@(() => Command.Email)" />
+        </FormField>
+
+        <FormField>
+            <FormLabel for="password">Password</FormLabel>
+            <FormInputText id="password"
+                           @bind-Value="@Command.Password"
+                           placeholder="*****"
+                           type="password"
+                           required
+                           autocomplete="password"
+                           disabled="@IsLoading" />
+
+            <FormDescription>
+                <a href="/forgot" class="underline underline-offset-4 hover:text-primary">Forgot password?</a>
+            </FormDescription>
+
+            <FormInvalidFeedback For="@(() => Command.Password)" />
+        </FormField>
+
+        <Button type="submit" disabled="@IsLoading">
+            @if (IsLoading)
+            {
+                <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" />
+            }
+            Sign In with Email
+        </Button>
+    </AppForm>
+
+    <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+            <span class="w-full border-t"></span>
+        </div>
+        <div class="relative flex justify-center text-xs uppercase">
+            <span class="bg-background px-2 text-muted-foreground">
+                Or continue with
+            </span>
+        </div>
+    </div>
+
+    <Button Href="https://github.com/ddjerqq" target="_blank" Variant="outline" type="button" disabled="@IsLoading">
+        @if (IsLoading)
+        {
+            <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" />
+        }
+        else
+        {
+            <Blazicon Svg="ShieldX" class="mr-2 h-4 w-4" />
+        }
+        GitHub
+    </Button>
+</div>
+
+@code {
+    private bool IsLoading { get; set; }
+
+    // TODO get from querystring just like 404.razor
+    [Parameter]
+    public string? ReturnUrl { get; set; }
+
+    private LoginCommand Command { get; set; } = new();
+
+    private async Task OnValidSubmit()
+    {
+        IsLoading = true;
+        var user = await Api.PostLogin(Command);
+
+        if (user is not null)
+        {
+            Toast.ShowSuccess($"Welcome back {user.FullName}");
+        }
+
+        IsLoading = false;
+    }
+}

@@ -1,0 +1,35 @@
+﻿@using Client.Layout
+@using Blazored.Toast
+@using Blazored.Toast.Configuration
+@inject NavigationManager Nav
+
+<CascadingBlazoredModal
+    Class="min-w-sm w-full max-w-full sm:max-w-2xl text-lg sm:text-2xl bg-white border-2 border-gray-300 rounded-md flex flex-col justify-center text-center p-2"
+    OverlayCustomClass="backdrop-blur p-4"
+    Position="ModalPosition.Middle"
+    AnimationType="ModalAnimationType.FadeInOut">
+
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <Redirect To="login" Force="true" ReturnUrl="@Nav.Uri" />
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <Redirect To="404" Force="true" ReturnUrl="@Nav.Uri"/>
+        </NotFound>
+    </Router>
+</CascadingBlazoredModal>
+
+@* TODO these are horribly ugly and do not respect dark more *@
+<BlazoredToasts
+    Position="@ToastPosition.BottomRight"
+    Timeout="5"
+    MaxToastCount="3"
+    ShowProgressBar="true"
+    PauseProgressOnHover="true"
+    RemoveToastsOnNavigation="false"
+    ShowCloseButton="true"/>
