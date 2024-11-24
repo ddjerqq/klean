@@ -1,0 +1,18 @@
+﻿@using System.Diagnostics.CodeAnalysis
+
+<img alt="@Alt" src="@Src" class="@(Tw.Merge("aspect-square h-full w-full", Class))" @attributes="AdditionalAttributes"/>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    [StringSyntax(StringSyntaxAttribute.Uri)]
+    public string Src { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Alt { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}

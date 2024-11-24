@@ -1,0 +1,14 @@
+﻿<div class="@(Tw.Merge("relative flex size-10 shrink-0 overflow-hidden rounded-full", Class))" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}

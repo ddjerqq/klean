@@ -1,0 +1,9 @@
+﻿<span class="@(Tw.Merge("bg-muted flex h-full w-full items-center justify-center rounded-full", Class))" @attributes="AdditionalAttributes"></span>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}
