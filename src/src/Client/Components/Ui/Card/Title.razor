@@ -1,0 +1,23 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+<div aria-level="@Level"
+     role="heading"
+     class="@(Tw.Merge("text-lg font-semibold leading-none tracking-tight", Class))"
+     @attributes="@AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    [AllowedValues("1", "2", "3", "4", "5", "6")]
+    public string Level { get; set; } = "3";
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}
