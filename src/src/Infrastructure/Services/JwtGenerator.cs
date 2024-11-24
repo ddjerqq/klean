@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Encodings.Web;
 using Application.Services;
 using Domain.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +23,29 @@ public sealed class JwtGenerator : IJwtGenerator
             ctx.Request.Headers.TryGetValue("authorization", out var header);
             ctx.Request.Cookies.TryGetValue("authorization", out var cookie);
             ctx.Token = (string?)query ?? (string?)header ?? cookie;
+            return Task.CompletedTask;
+        },
+        OnForbidden = ctx =>
+        {
+            if (ctx.Request.Path.StartsWithSegments("/api"))
+            {
+                ctx.Response.StatusCode = 403;
+                return Task.CompletedTask;
+            }
+
+            ctx.Response.Redirect($"/404?returnUrl={UrlEncoder.Default.Encode(ctx.Request.Path)}");
+            return Task.CompletedTask;
+        },
+        OnChallenge = ctx =>
+        {
+            if (ctx.Request.Path.StartsWithSegments("/api"))
+            {
+                ctx.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            }
+
+            ctx.Response.Redirect($"/login?returnUrl={UrlEncoder.Default.Encode(ctx.Request.Path)}");
+            ctx.HandleResponse();
             return Task.CompletedTask;
         },
     };

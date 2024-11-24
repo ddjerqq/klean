@@ -13,7 +13,7 @@ public static class Cookie
     /// </summary>
     public static readonly CookieOptions SecureOptions = new()
     {
-        Domain = "WEB_APP__DOMAIN".FromEnvRequired(),
+        Domain = "WEB_APP__COOKIE_DOMAIN".FromEnvRequired(),
         MaxAge = TimeSpan.FromDays(1),
         Secure = true,
         HttpOnly = true,

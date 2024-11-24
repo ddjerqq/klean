@@ -1,19 +1,24 @@
 using System.Security.Claims;
-using Application.Common;
 using Application.Services;
 using Domain.Aggregates;
+using Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services;
 
-public sealed class HttpContextCurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IMemoryCache cache, IAppDbContext dbContext) : ICurrentUserAccessor
+public sealed class HttpContextCurrentUserAccessor(IHttpContextAccessor httpContextAccessor, IOptions<IdentityOptions> optionsAccessor, IMemoryCache cache, IAppDbContext dbContext)
+    : ICurrentUserAccessor
 {
+    private IdentityOptions IdentityOptions => optionsAccessor.Value;
     private ClaimsPrincipal? User => httpContextAccessor.HttpContext?.User;
 
-    public UserId? Id => User?.GetId();
-    public string? FullName => User?.GetFullName();
-    public string? Email => User?.GetEmail();
+    public UserId? Id => UserId.TryParse(User?.FindFirstValue(IdentityOptions.ClaimsIdentity.UserIdClaimType), null, out var id) ? id : null;
+    public string? FullName => User?.FindFirstValue(IdentityOptions.ClaimsIdentity.UserNameClaimType);
+    public string? Email => User?.FindFirstValue(IdentityOptions.ClaimsIdentity.EmailClaimType);
+    public Role? Role => Enum.TryParse<Role>(User?.FindFirstValue(IdentityOptions.ClaimsIdentity.RoleClaimType), true, out var role) ? role : null;
 
     public async Task<User?> TryGetCurrentUserAsync(CancellationToken ct = default)
     {
