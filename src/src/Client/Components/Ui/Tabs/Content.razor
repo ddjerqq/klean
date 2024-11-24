@@ -1,0 +1,25 @@
+﻿@if (CurrentValue == Value)
+{
+    <div
+        class="@(Tw.Merge("ring-offset-background focus-visible:ring-ring mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2", Class))"
+        @attributes="@AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter(Name = nameof(Tabs.Value))]
+    public string CurrentValue { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public string Value { get; set; } = default!;
+
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}

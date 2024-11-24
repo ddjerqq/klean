@@ -1,0 +1,15 @@
+﻿<div class="@(Tw.Merge("bg-muted text-muted-foreground inline-flex h-10 items-center justify-center rounded-md p-1", Class))"
+     @attributes="@AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}
