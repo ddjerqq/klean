@@ -1,8 +1,13 @@
+@import 'blazor-tweaks.css';
+@import 'backgrounds.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #app {
+/* custom classes here */
+
+html, body {
   width: 100%;
   height: 100%;
 }
@@ -87,4 +92,19 @@ html, body, #app {
 
 @layer utilities {
 
+}
+
+h1:focus {
+  outline: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+  background: transparent; /* Optional: just make scrollbar invisible */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-none::-webkit-scrollbar-thumb {
+  background: #FF0000;
 }
