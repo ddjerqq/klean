@@ -1,0 +1,41 @@
+﻿@page "/cards"
+
+<div class="h-full flex-1 space-y-4 p-8 pt-6">
+    <div class="flex items-center justify-between space-y-2">
+        <h2 class="text-3xl font-bold tracking-tight">Cards</h2>
+    </div>
+
+    <div class="items-start justify-center gap-6 rounded-lg md:grid lg:grid-cols-2 xl:grid-cols-3">
+        <div class="col-span-2 grid items-start gap-6 lg:col-span-1">
+            <DemoContainer>
+                <CreateAccount />
+            </DemoContainer>
+            <DemoContainer>
+                <PaymentMethod />
+            </DemoContainer>
+        </div>
+        <div class="col-span-2 grid items-start gap-6 lg:col-span-1">
+            <DemoContainer>
+                <TeamMembers />
+            </DemoContainer>
+            <DemoContainer>
+                <Share />
+            </DemoContainer>
+            <DemoContainer>
+                <Notifications />
+            </DemoContainer>
+        </div>
+        <div class="col-span-2 grid items-start gap-6 lg:col-span-2 lg:grid-cols-2 xl:col-span-1 xl:grid-cols-1">
+            <DemoContainer>
+                <ReportIssue />
+            </DemoContainer>
+            <DemoContainer>
+                <Github />
+            </DemoContainer>
+            <DemoContainer>
+                <CookieSettings />
+            </DemoContainer>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,8 @@
+﻿<div class="flex items-center justify-center [&>div]:w-full">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

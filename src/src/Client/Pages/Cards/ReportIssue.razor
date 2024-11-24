@@ -1,0 +1,50 @@
+﻿@using Client.Components.Ui.Card
+@using Client.Components.Ui.Form
+
+<Card>
+    <Header>
+        <Title>Report an issue</Title>
+        <Description>What area are you having problems with?</Description>
+    </Header>
+    <Content class="grid gap-6">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="grid gap-2">
+                <FormLabel for="area">Area</FormLabel>
+                <select id="area" class="@(Button.GetButtonClass(Tw, "outline", @class: "outline-none appearance-none"))">
+                    <option value="team">Team</option>
+                    <option value="billing">Billing</option>
+                    <option value="account">Account</option>
+                    <option value="deployments">Deployments</option>
+                    <option value="support">Support</option>
+                </select>
+            </div>
+            <div class="grid gap-2">
+                <FormLabel for="security-level">Security Level</FormLabel>
+                <select id="security-level" class="@(Button.GetButtonClass(Tw, "outline", @class: "outline-none appearance-none"))">
+                    <option value="0">Severity 1 (Highest)</option>
+                    <option value="1">Severity 2</option>
+                    <option value="2">Severity 3</option>
+                    <option value="3">Severity 4 (Lowest)</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid gap-2">
+            <FormLabel for="subject">Subject</FormLabel>
+            <FormInput id="subject" placeholder="I need help with..." />
+        </div>
+        <div class="grid gap-2">
+            <FormLabel for="description">Description</FormLabel>
+            <FormTextarea id="description"
+                      placeholder="Please include all information relevant to your issue." />
+        </div>
+    </Content>
+    <Footer class="justify-between space-x-2">
+        <Button variant="ghost">Cancel</Button>
+        <Button>Submit</Button>
+    </Footer>
+</Card>
+
+@code {
+    private static readonly string[] Areas = ["team", "billing", "account", "deployments", "support"];
+    private static readonly string[] Levels = ["Severity 1 (Highest)", "Severity 2", "Severity 3", "Severity 4 (Lowest)"];
+}

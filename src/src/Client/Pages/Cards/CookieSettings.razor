@@ -1,0 +1,43 @@
+﻿@using Client.Components.Ui.Card
+@using Client.Components.Ui.Form
+
+<Card>
+    <Header>
+        <Title>Cookie settings</Title>
+        <Description>Manage your cookies here.</Description>
+    </Header>
+    <Content Class="grid gap-6">
+        <div class="flex items-center justify-between space-x-2">
+            <FormLabel for="necessary" Class="flex flex-col space-y-1">
+                <span>Strictly Necessary</span>
+                <span class="text-muted-foreground text-xs font-normal leading-snug">
+                    These cookies are essential in order to use the website and use its features.
+                </span>
+            </FormLabel>
+            <Switch id="necessary" checked aria-label="Necessary" />
+        </div>
+        <div class="flex items-center justify-between space-x-2">
+            <FormLabel for="functional" Class="flex flex-col space-y-1">
+                <span>Functional Cookies</span>
+                <span class="text-muted-foreground text-xs font-normal leading-snug">
+                    These cookies allow the website to provide personalized functionality.
+                </span>
+            </FormLabel>
+            <Switch id="functional" aria-label="Functional" />
+        </div>
+        <div class="flex items-center justify-between space-x-2">
+            <FormLabel for="performance" Class="flex flex-col space-y-1">
+                <span>Performance Cookies</span>
+                <span class="text-muted-foreground text-xs font-normal leading-snug">
+                    These cookies help to improve the performance of the website.
+                </span>
+            </FormLabel>
+            <Switch id="performance" aria-label="Performance" />
+        </div>
+    </Content>
+    <Footer>
+        <Button Variant="outline" Class="w-full">
+            Save
+        </Button>
+    </Footer>
+</Card>
