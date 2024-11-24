@@ -1,0 +1,35 @@
+﻿@page "/dashboard"
+@using Client.Components.Ui.Tabs
+
+<div class="h-full flex-1 space-y-4 p-8 pt-6">
+    <div class="flex items-center justify-between space-y-2">
+        <h2 class="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <div class="flex items-center space-x-2">
+            <Button Size="sm">
+                <Blazicon Svg="Download" class="mr-2 size-4"/>
+                Download
+            </Button>
+        </div>
+    </div>
+
+    <Tabs Value="overview" class="space-y-4">
+        <List>
+            <Trigger Value="overview">Overview</Trigger>
+            <Trigger Value="analytics">Analytics</Trigger>
+            <Trigger Value="reports">Reports</Trigger>
+            <Trigger Value="notifications">Notifications</Trigger>
+        </List>
+        <Content Value="overview" class="space-y-4">
+            <Overview/>
+        </Content>
+        <Content Value="analytics" class="space-y-4">
+            analytics
+        </Content>
+        <Content Value="reports" class="space-y-4">
+            reports
+        </Content>
+        <Content Value="notifications" class="space-y-4">
+            notifications
+        </Content>
+    </Tabs>
+</div>
