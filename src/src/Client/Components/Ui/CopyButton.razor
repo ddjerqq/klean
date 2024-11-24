@@ -1,0 +1,49 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inject IJSRuntime Js
+
+<Button Variant="@Variant" Class="@Class"
+        @onclick="@OnClick">
+    @if (Copied)
+    {
+        @:Copied!
+    }
+    else
+    {
+        @ChildContent
+    }
+</Button>
+
+@code {
+    private bool Copied { get; set; } = false;
+
+    [Parameter, EditorRequired]
+    public string Content { get; set; } = default!;
+
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    [AllowedValues("default", "destructive", "outline", "secondary", "ghost", "link")]
+    public string Variant { get; set; } = "default";
+
+    [Parameter]
+    [AllowedValues("default", "sm", "lg", "icon")]
+    public string Size { get; set; } = "default";
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+
+    private async Task OnClick()
+    {
+        Copied = true;
+        await Js.InvokeVoidAsync("navigator.clipboard.writeText", Content);
+        await Task.Delay(1500);
+        Copied = false;
+    }
+}
