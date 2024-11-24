@@ -1,0 +1,15 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+<div class="@(Tw.Merge("bg-border shrink-0", Orientation == "horizontal" ? "h-[1px] w-full" : "min-h-full w-[1px]", Class))" @attributes="AdditionalAttributes"></div>
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = default!;
+
+    [Parameter]
+    [AllowedValues("horizontal", "vertical")]
+    public string Orientation { get; set; } = "horizontal";
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+}
