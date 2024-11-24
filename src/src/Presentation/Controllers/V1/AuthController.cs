@@ -1,12 +1,16 @@
-﻿using Application.Common;
+﻿using System.Security.Claims;
+using Application.Cqrs.Users;
 using Application.Cqrs.Users.Commands;
 using Application.Services;
 using Domain.Aggregates;
 using Domain.ValueObjects;
+using Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Presentation.Controllers.V1;
 
@@ -14,25 +18,29 @@ namespace Presentation.Controllers.V1;
 ///     Controller for authentication actions
 /// </summary>
 [Authorize]
-public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) : ApiController
+public sealed class AuthController(IAppDbContext dbContext, IOptions<IdentityOptions> identityOptions, IMediator mediator) : ApiController
 {
     /// <summary>
-    ///     Gets the user's claims
+    /// Gets the user's claims
     /// </summary>
     [HttpGet("claims")]
-    public ActionResult<Dictionary<string, string>> GetUserClaims()
-    {
-        return Ok(User.Claims.ToDictionary(c => c.Type, c => c.Value));
-    }
+    public ActionResult<Dictionary<string, string>> GetUserClaims() => Ok(User.Claims.ToDictionary(c => c.Type, c => c.Value));
 
     /// <summary>
     ///     Gets the current user
     /// </summary>
     [HttpGet("me")]
-    public async Task<ActionResult<User>> GetCurrentUser(CancellationToken ct)
+    public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken ct)
     {
-        var user = await dbContext.Users.FindAsync([User.GetId()], ct);
-        return Ok(user);
+        var id = User.FindFirstValue(identityOptions.Value.ClaimsIdentity.UserIdClaimType)!;
+        var userId = UserId.Parse(id);
+
+        var user = await dbContext.Users.FindAsync([userId], ct);
+
+        if (user is null)
+            return NotFound();
+
+        return Ok((UserDto)user);
     }
 
     /// <summary>
@@ -40,17 +48,15 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     /// </summary>
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<User>> Login(LoginCommand command, CancellationToken ct)
+    public async Task<ActionResult<UserDto>> Login(LoginCommand command, CancellationToken ct)
     {
         var response = await mediator.Send(command, ct);
 
         switch (response)
         {
             case LoginResponse.Success { Token: var token, User: var user }:
-                Response.Cookies.Append("authorization", token);
-                return Ok(user);
-            // case LoginResponse.TwoFactorRequired:
-            //     return Redirect()
+                Response.Cookies.Append("authorization", token, Cookie.SecureOptions);
+                return Ok((UserDto)user);
             case LoginResponse.Failure:
                 return BadRequest("bad credentials");
             default:
@@ -72,11 +78,11 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     /// </remarks>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(RegisterCommand command, CancellationToken ct)
+    public async Task<ActionResult<UserDto>> Register(RegisterCommand command, CancellationToken ct)
     {
         var (user, token) = await mediator.Send(command, ct);
         Response.Cookies.Append("authorization", token);
-        return Ok(user);
+        return Ok((UserDto)user);
     }
 
     /// <summary>
@@ -85,8 +91,9 @@ public sealed class AuthController(IAppDbContext dbContext, IMediator mediator) 
     /// </summary>
     [Authorize(Roles = RoleExt.Admin)]
     [HttpGet("all_users")]
-    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers(CancellationToken ct)
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(CancellationToken ct)
     {
-        return Ok(await dbContext.Users.ToListAsync(ct));
+        var users = await dbContext.Users.ToListAsync(ct);
+        return Ok(users.Select(user => (UserDto)user));
     }
 }

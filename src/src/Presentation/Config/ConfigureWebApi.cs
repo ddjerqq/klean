@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Persistence;
 using Presentation.Filters;
 using Presentation.HealthChecks;
-using Presentation.Middleware;
 using ZymLabs.NSwag.FluentValidation;
 
 namespace Presentation.Config;
@@ -37,8 +36,6 @@ public sealed class ConfigureWebApi : ConfigurationBase
             x.LowercaseQueryStrings = true;
             x.AppendTrailingSlash = false;
         });
-
-        services.AddSpaApiFallbackMiddleware();
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters();
@@ -68,14 +65,14 @@ public sealed class ConfigureWebApi : ConfigurationBase
 
         services.AddCors(options =>
         {
-            var webAppDomain = "WEB_APP__DOMAIN".FromEnvRequired();
+            var webAppDomain = "WEB_APP__API_DOMAIN".FromEnvRequired();
 
             options.AddDefaultPolicy(policy =>
             {
-                policy.AllowAnyHeader();
-                policy.WithOrigins(webAppDomain);
-                policy.WithMethods("GET", "POST", "HEAD");
-                policy.AllowCredentials();
+                policy.WithOrigins("http://localhost:1080", "https://localhost:1443", webAppDomain)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
 

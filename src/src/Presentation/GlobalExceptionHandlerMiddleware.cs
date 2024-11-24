@@ -83,27 +83,14 @@ public sealed class GlobalExceptionHandlerMiddleware(ILogger<GlobalExceptionHand
         return true;
     }
 
-    private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, UnauthenticatedException exception)
+    private ValueTask<bool> TryHandleAsync(HttpContext httpContext, UnauthenticatedException exception)
     {
         logger.LogError(exception, "An unauthenticated exception occurred. {Message} {TraceId}", exception.Message, httpContext.TraceIdentifier);
 
-        var problemDetails = new ProblemDetails
-        {
-            Title = "An error occurred",
-            Type = "https://httpstatuses.com/401",
-            Status = StatusCodes.Status401Unauthorized,
-            Detail = exception.Message,
-            Extensions =
-            {
-                ["traceId"] = httpContext.TraceIdentifier,
-                ["handler"] = "global",
-            },
-        };
+        if (!httpContext.Request.Path.StartsWithSegments("/api"))
+            httpContext.Response.Redirect("login");
 
-        httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        await httpContext.Response.WriteAsJsonAsync(problemDetails);
-
-        return true;
+        return ValueTask.FromResult(true);
     }
 
     private async ValueTask<bool> TryHandleAsync(HttpContext httpContext, ValidationException exception)

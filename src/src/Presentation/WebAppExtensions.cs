@@ -1,8 +1,9 @@
 #pragma warning disable ASP0014
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Presentation.Middleware;
+using Presentation.Components;
 using Serilog;
 
 namespace Presentation;
@@ -43,6 +44,7 @@ public static class WebAppExt
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseWebAssemblyDebugging();
             app.UseMigrationsEndPoint();
         }
         else
@@ -64,10 +66,7 @@ public static class WebAppExt
         app.UseRateLimiter();
         app.UseRequestLocalization();
 
-        app.UseCors(o => o
-            .WithOrigins("http://localhost:2080", "https://localhost:2443")
-            .AllowAnyHeader()
-            .AllowAnyMethod());
+        app.UseCors();
 
         app.UseAuthentication();
         app.UseAuthorization();
@@ -79,11 +78,17 @@ public static class WebAppExt
             endpointBuilder.MapSwagger();
             endpointBuilder.MapAppHealthChecks();
             endpointBuilder.MapControllers();
-        });
-        app.UseSpaApiFallbackMiddleware();
-        app.UseSpa(spaBuilder => spaBuilder.UseProxyToSpaDevelopmentServer("http://127.0.0.1:2080/"));
+            endpointBuilder.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode()
+                .AddInteractiveWebAssemblyRenderMode()
+                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
-        app.MapDefaultControllerRoute();
+            endpointBuilder.MapFallback(ctx =>
+            {
+                ctx.Response.Redirect($"/404?returnUrl={UrlEncoder.Default.Encode(ctx.Request.Path)}");
+                return Task.CompletedTask;
+            });
+        });
     }
 
     private static void UseCustomHeaderMiddleware(this WebApplication app)

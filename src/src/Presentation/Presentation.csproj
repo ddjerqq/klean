@@ -15,20 +15,21 @@
 
     <ItemGroup>
         <PackageReference Include="dotenv.net" Version="3.2.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.10"/>
+        <PackageReference Include="TailwindMerge.NET" Version="0.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8"/>
+        <PackageReference Include="Blazicons.Lucide" Version="1.0.4"/>
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
+        <PackageReference Include="SerilogTracing.Instrumentation.AspNetCore" Version="2.2.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.0.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.0.0"/>
+        <PackageReference Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.7.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
-        <PackageReference Include="SerilogTracing.Instrumentation.AspNetCore" Version="2.1.0"/>
-        <PackageReference Include="SerilogTracing.Instrumentation.SqlClient" Version="2.1.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.9.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.9.0"/>
-        <PackageReference Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.6.3"/>
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.8"/>
         <Using Include="BCrypt.Net.BCrypt" Alias="BC"/>
     </ItemGroup>
 
@@ -37,6 +38,7 @@
         <ProjectReference Include="..\Application\Application.csproj"/>
         <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
         <ProjectReference Include="..\Persistence\Persistence.csproj"/>
+        <ProjectReference Include="..\Client\Client.csproj"/>
     </ItemGroup>
 
 </Project>

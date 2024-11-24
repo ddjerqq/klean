@@ -23,7 +23,6 @@ builder.Host.UseConfiguredSerilog();
 // for serilog - seq tracing
 using var _ = new ActivityListenerConfiguration()
     .Instrument.AspNetCoreRequests(options => options.IncomingTraceParent = IncomingTraceParent.Trust)
-    .Instrument.SqlClientCommands()
     .TraceToSharedLogger();
 
 builder.WebHost.UseSetting(WebHostDefaults.DetailedErrorsKey, "true");
