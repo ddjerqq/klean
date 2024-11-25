@@ -19,17 +19,16 @@
             </AuthorizeRouteView>
         </Found>
         <NotFound>
-            <Redirect To="404" Force="true" ReturnUrl="@Nav.Uri"/>
+            <Redirect To="404" Force="true" ReturnUrl="@Nav.Uri" />
         </NotFound>
     </Router>
 </CascadingBlazoredModal>
 
-@* TODO these are horribly ugly and do not respect dark more *@
 <BlazoredToasts
     Position="@ToastPosition.BottomRight"
-    Timeout="5"
+    Timeout="4"
     MaxToastCount="3"
-    ShowProgressBar="true"
+    ShowCloseButton="false"
+    ShowProgressBar="false"
     PauseProgressOnHover="true"
-    RemoveToastsOnNavigation="false"
-    ShowCloseButton="true"/>
+    RemoveToastsOnNavigation="false"/>

@@ -23,7 +23,7 @@ builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredToast();
 
 builder.Services.AddScoped<ApiService>();
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("http://127.0.0.1:1080") });
+builder.Services.AddScoped(_ => new HttpClient {  BaseAddress = new Uri("https://localhost") });
 builder.Services.AddScoped<JsonSerializerOptions>(_ =>
 {
     var jsonOptions = new JsonSerializerOptions

@@ -104,51 +104,11 @@ html, body {
   content: "An error has occurred."
 }
 
-.loading-progress {
-  position: relative;
-  display: block;
-  width: 8rem;
-  height: 8rem;
-  margin: 20vh auto 1rem auto;
-}
-
-.loading-progress circle {
-  fill: none;
-  stroke: #e0e0e0;
-  stroke-width: 0.6rem;
-  transform-origin: 50% 50%;
-  transform: rotate(-90deg);
-}
-
-.loading-progress circle:last-child {
-  stroke: #1b6ec2;
-  stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
-  transition: stroke-dasharray 0.05s ease-in-out;
-}
-
-.loading-progress-text {
-  position: absolute;
-  text-align: center;
-  font-weight: bold;
-  inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
-}
-
-.loading-progress-text:after {
-  content: var(--blazor-load-percentage-text, "Loading");
-}
-
-.blazored-toast-progressbar {
-  display: none;
-}
-
-/* once again blazored fix */
-
 .bm-header {
   padding: 0 !important;
 }
 
 /* quickgrid fix */
-
 .col-options {
   padding: 0 !important;
   color: black;
@@ -162,4 +122,50 @@ html, body {
   border-radius: 0.375rem;
   color: white !important;
   background-color: white !important;
+}
+
+/* blazored toast tweaks */
+.blazored-toast-progressbar {
+  display: none !important;
+}
+
+.blazored-toast {
+  --toast-bg-color: hsl(var(--primary) / var(--tw-bg-opacity, 1));
+  --toast-text-color: #000;
+  --toast-border-color: var(--border);
+
+  margin-bottom: 1rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: calc(0.5rem - 2px) !important;
+
+  /*--toast-box-shadow-color: #f3f4f6;*/
+  /*box-shadow: var(--box-shadow-color) 0 0 5px 2px!important;*/
+
+  background-color: var(--toast-bg-color) !important;
+  border: 1px solid var(--toast-border-color) !important;
+  color: var(--toast-text-color) !important;
+}
+
+.blazored-toast-info {
+  --toast-bg-color: #dbeafe;
+  --toast-text-color: #1e40af;
+  --toast-border-color: #172554;
+}
+
+.blazored-toast-success {
+  --toast-bg-color: #dcfce7;
+  --toast-text-color: #166534;
+  --toast-border-color: #052e16;
+}
+
+.blazored-toast-warning {
+  --toast-bg-color: #fef9c3;
+  --toast-text-color: #854d0e;
+  --toast-border-color: #422006;
+}
+
+.blazored-toast-error {
+  --toast-bg-color: #fee2e2;
+  --toast-text-color: #991b1b;
+  --toast-border-color: #450a0a;
 }

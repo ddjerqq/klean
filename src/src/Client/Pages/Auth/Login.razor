@@ -7,6 +7,7 @@
 @layout AuthLayout
 @attribute [AllowAnonymous]
 @inject ApiService Api
+@inject NavigationManager Nav
 @inject IToastService Toast
 
 <AuthorizeView>
@@ -41,7 +42,7 @@
             <FormLabel for="password">Password</FormLabel>
             <FormInputText id="password"
                            @bind-Value="@Command.Password"
-                           placeholder="*****"
+                           placeholder="Enter password"
                            type="password"
                            required
                            autocomplete="password"
@@ -104,6 +105,7 @@
         if (user is not null)
         {
             Toast.ShowSuccess($"Welcome back {user.FullName}");
+            Nav.NavigateTo("/");
         }
 
         IsLoading = false;
