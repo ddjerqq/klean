@@ -65,11 +65,11 @@ public sealed class ConfigureWebApi : ConfigurationBase
 
         services.AddCors(options =>
         {
-            var webAppDomain = "WEB_APP__API_DOMAIN".FromEnvRequired();
+            var webAppDomain = "ASPNETCORE_URLS".FromEnvRequired().Split(';');
 
             options.AddDefaultPolicy(policy =>
             {
-                policy.WithOrigins("http://localhost:1080", "https://localhost:1443", webAppDomain)
+                policy.WithOrigins(webAppDomain)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

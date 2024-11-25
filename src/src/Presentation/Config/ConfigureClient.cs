@@ -39,7 +39,7 @@ public sealed class ConfigureClient : ConfigurationBase
             return jsonOptions;
         });
 
-        services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("http://127.0.0.1:1080") });
+        services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost") });
         services.AddScoped<ApiService>();
     }
 }

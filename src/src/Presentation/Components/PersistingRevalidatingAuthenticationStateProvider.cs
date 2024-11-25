@@ -41,18 +41,14 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
     {
         await using var scope = _scopeFactory.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<IAppDbContext>();
-        return await ValidateSecurityStampAsync(dbContext, authenticationState.User, ct);
-    }
 
-    private async Task<bool> ValidateSecurityStampAsync(IAppDbContext dbContext, ClaimsPrincipal principal, CancellationToken ct)
-    {
-        var id = principal.FindFirstValue(_options.ClaimsIdentity.UserIdClaimType);
+        var id = authenticationState.User.FindFirstValue(_options.ClaimsIdentity.UserIdClaimType);
         var user = await dbContext.Users.FindAsync([id], ct);
 
         if (user is null)
             return false;
 
-        var principalStamp = principal.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
+        var principalStamp = authenticationState.User.FindFirstValue(_options.ClaimsIdentity.SecurityStampClaimType);
         return principalStamp == user.SecurityStamp;
     }
 

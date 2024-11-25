@@ -1,5 +1,4 @@
-using Domain.Common;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services;
 
@@ -13,12 +12,11 @@ public static class Cookie
     /// </summary>
     public static readonly CookieOptions SecureOptions = new()
     {
-        Domain = "WEB_APP__COOKIE_DOMAIN".FromEnvRequired(),
         MaxAge = TimeSpan.FromDays(1),
-        Secure = true,
         HttpOnly = true,
         IsEssential = true,
-        SameSite = SameSiteMode.None,
+        Secure = true,
+        SameSite = SameSiteMode.Strict,
         Path = "/",
     };
 }
