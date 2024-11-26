@@ -1,13 +1,8 @@
 ﻿@inject NavigationManager NavigationManager
 
-@code
-
-{
+@code {
     [Parameter, EditorRequired]
     public string To { get; set; } = default!;
-
-    [Parameter]
-    public string? ReturnUrl { get; set; }
 
     [Parameter]
     public bool Force { get; set; }
@@ -15,9 +10,6 @@
     protected override void OnInitialized()
     {
         var url = Uri.EscapeDataString(To);
-        if (!string.IsNullOrWhiteSpace(ReturnUrl))
-            url += $"?returnUrl={Uri.EscapeDataString(ReturnUrl)}";
-
         NavigationManager.NavigateTo(url, Force);
     }
 }

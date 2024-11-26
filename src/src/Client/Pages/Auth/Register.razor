@@ -5,7 +5,7 @@
 @using Client.Components.Ui.Form
 @using Client.Services
 
-@page "/login"
+@page "/register"
 @layout AuthLayout
 @attribute [AllowAnonymous]
 @inject ApiService Api
@@ -18,8 +18,11 @@
 
 <div class="flex flex-col space-y-2 text-start">
     <h1 class="text-2xl font-semibold tracking-tight">
-        Log in to your account
+        Create an account
     </h1>
+    <p class="text-sm text-muted-foreground">
+        Enter your email below to create your account
+    </p>
 </div>
 
 <div class="grid gap-6">
@@ -59,40 +62,32 @@
             {
                 <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" />
             }
-            Login
-        </Button>
-
-        <Button Href="/register" Variant="outline" disabled="@IsLoading">
-            @if (IsLoading)
-            {
-                <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" />
-            }
-            Register
+            Sign In with Email
         </Button>
     </AppForm>
 
-    @* <div class="relative"> *@
-    @*     <div class="absolute inset-0 flex items-center"> *@
-    @*         <span class="w-full border-t"></span> *@
-    @*     </div> *@
-    @*     <div class="relative flex justify-center text-xs uppercase"> *@
-    @*         <span class="bg-background px-2 text-muted-foreground"> *@
-    @*             Or continue with *@
-    @*         </span> *@
-    @*     </div> *@
-    @* </div> *@
-    @* *@
-    @* <Button Href="https://github.com/ddjerqq" target="_blank" Variant="outline" type="button" disabled="@IsLoading"> *@
-    @*     @if (IsLoading) *@
-    @*     { *@
-    @*         <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" /> *@
-    @*     } *@
-    @*     else *@
-    @*     { *@
-    @*         <Blazicon Svg="ShieldX" class="mr-2 h-4 w-4" /> *@
-    @*     } *@
-    @*     GitHub *@
-    @* </Button> *@
+    <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+            <span class="w-full border-t"></span>
+        </div>
+        <div class="relative flex justify-center text-xs uppercase">
+            <span class="bg-background px-2 text-muted-foreground">
+                Or continue with
+            </span>
+        </div>
+    </div>
+
+    <Button Href="https://github.com/ddjerqq" target="_blank" Variant="outline" type="button" disabled="@IsLoading">
+        @if (IsLoading)
+        {
+            <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" />
+        }
+        else
+        {
+            <Blazicon Svg="ShieldX" class="mr-2 h-4 w-4" />
+        }
+        GitHub
+    </Button>
 </div>
 
 @code {
@@ -102,15 +97,15 @@
 
     private async Task OnValidSubmit()
     {
-        IsLoading = true;
-        var user = await Api.PostLogin(Command);
-
-        if (user is not null)
-        {
-            Toast.ShowSuccess($"Welcome back {user.FullName}");
-            Nav.NavigateTo("/");
-        }
-
-        IsLoading = false;
+        // IsLoading = true;
+        // var user = await Api.PostLogin(Command);
+        //
+        // if (user is not null)
+        // {
+        //     Toast.ShowSuccess($"Welcome back {user.FullName}");
+        //     Nav.NavigateTo("/");
+        // }
+        //
+        // IsLoading = false;
     }
 }

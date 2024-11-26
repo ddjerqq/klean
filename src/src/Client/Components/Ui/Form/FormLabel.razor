@@ -1,9 +1,11 @@
-﻿<label class="@(Tw.Merge("text-sm font-medium leading-none peer-required:after:content-['*'] peer-disabled:cursor-not-allowed peer-disabled:opacity-70", Class))"
+﻿<label class="@(Tw.Merge(BaseClass, Class))"
        @attributes="@AdditionalAttributes">
     @ChildContent
 </label>
 
 @code {
+    public static string BaseClass = "text-sm font-medium leading-none peer-required:after:content-['*'] peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+
     [Parameter]
     public string Class { get; set; } = default!;
 

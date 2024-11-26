@@ -14,12 +14,12 @@
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    <Redirect To="login" Force="true" ReturnUrl="@Nav.Uri" />
+                    <Redirect To="login" Force="true" />
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
         <NotFound>
-            <Redirect To="404" Force="true" ReturnUrl="@Nav.Uri" />
+            <Redirect To="404" Force="true" />
         </NotFound>
     </Router>
 </CascadingBlazoredModal>
@@ -31,4 +31,4 @@
     ShowCloseButton="false"
     ShowProgressBar="false"
     PauseProgressOnHover="true"
-    RemoveToastsOnNavigation="false"/>
+    RemoveToastsOnNavigation="false" />
