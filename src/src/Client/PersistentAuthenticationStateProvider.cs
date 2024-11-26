@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Application.Common;
 using Application.Cqrs.Users;
-using Domain.Aggregates;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
