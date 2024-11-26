@@ -91,9 +91,7 @@
 @code {
     private bool IsLoading { get; set; }
 
-    // TODO get from querystring just like 404.razor
-    [Parameter]
-    public string? ReturnUrl { get; set; }
+    public string ReturnUrl { get; set; } = "/";
 
     private LoginCommand Command { get; set; } = new();
 
@@ -105,9 +103,15 @@
         if (user is not null)
         {
             Toast.ShowSuccess($"Welcome back {user.FullName}");
-            Nav.NavigateTo("/");
+            Nav.NavigateTo(ReturnUrl);
         }
 
         IsLoading = false;
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Nav.TryGetQueryString("returnUrl", out string value))
+            ReturnUrl = value;
     }
 }
