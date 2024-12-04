@@ -24,5 +24,7 @@ public sealed class ApiService(HttpClient http, JsonSerializerOptions jsonOption
         return await resp.Content.ReadFromJsonAsync<UserDto>(jsonOptions, ct);
     }
 
+    public async Task PostSignout(CancellationToken ct = default) => await http.PostAsync("/api/v1/auth/signout", default, ct);
+
     public async Task<IEnumerator<UserDto>?> GetAllUsers(CancellationToken ct = default) => await http.GetFromJsonAsync<IEnumerator<UserDto>>("/api/v1/users", jsonOptions, ct);
 }

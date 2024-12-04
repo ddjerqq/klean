@@ -85,6 +85,13 @@ public sealed class AuthController(IAppDbContext dbContext, IOptions<IdentityOpt
         return Ok((UserDto)user);
     }
 
+    [HttpPost("signout")]
+    public Task<ActionResult> Signout()
+    {
+        Response.Cookies.Delete("authorization");
+        return Task.FromResult<ActionResult>(Ok());
+    }
+
     /// <summary>
     ///     Gets all users
     ///     <note>This is only for Elon</note>

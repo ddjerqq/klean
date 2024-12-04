@@ -2,7 +2,7 @@
 @implements IDisposable
 @typeparam TValue
 
-<div class="@(Tw.Merge("text-sm text-red-700 dark:text-red-200 space-y-2 hidden peer-[.invalid]:block", Class))" @attributes="@AdditionalAttributes">
+<div class="@(Tw.Merge("text-sm text-red-200 space-y-2 hidden peer-[.invalid]:block", Class))" @attributes="@AdditionalAttributes">
     @foreach (var message in EditContext.GetValidationMessages(_fieldIdentifier))
     {
         <p>@message</p>

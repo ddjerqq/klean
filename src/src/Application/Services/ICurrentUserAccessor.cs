@@ -7,9 +7,11 @@ namespace Application.Services;
 public interface ICurrentUserAccessor
 {
     public UserId? Id { get; }
-    public string? FullName { get; }
+    public string? Username { get; }
     public string? Email { get; }
+    public string? Avatar { get; }
     public Role? Role { get; }
+    public string SecurityStamp { get; }
 
     public Task<User?> TryGetCurrentUserAsync(CancellationToken ct = default);
 
