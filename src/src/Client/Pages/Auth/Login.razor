@@ -1,6 +1,4 @@
-﻿@using System.Text.Encodings.Web
-@using System.Web
-@using Application.Cqrs.Users.Commands
+﻿@using Application.Cqrs.Users.Commands
 @using Blazored.Toast.Services
 @using Client.Components.Ui.Form
 @using Client.Services
@@ -70,29 +68,6 @@
             Register
         </Button>
     </AppForm>
-
-    @* <div class="relative"> *@
-    @*     <div class="absolute inset-0 flex items-center"> *@
-    @*         <span class="w-full border-t"></span> *@
-    @*     </div> *@
-    @*     <div class="relative flex justify-center text-xs uppercase"> *@
-    @*         <span class="bg-background px-2 text-muted-foreground"> *@
-    @*             Or continue with *@
-    @*         </span> *@
-    @*     </div> *@
-    @* </div> *@
-    @* *@
-    @* <Button Href="https://github.com/ddjerqq" target="_blank" Variant="outline" type="button" disabled="@IsLoading"> *@
-    @*     @if (IsLoading) *@
-    @*     { *@
-    @*         <Blazicon Svg="Loader" class="mr-2 h-4 w-4 animate-spin" /> *@
-    @*     } *@
-    @*     else *@
-    @*     { *@
-    @*         <Blazicon Svg="ShieldX" class="mr-2 h-4 w-4" /> *@
-    @*     } *@
-    @*     GitHub *@
-    @* </Button> *@
 </div>
 
 @code {
@@ -108,7 +83,7 @@
         if (user is not null)
         {
             Toast.ShowSuccess($"Welcome back {user.FullName}");
-            Nav.NavigateTo("/");
+            Nav.NavigateTo("/", true);
         }
 
         IsLoading = false;

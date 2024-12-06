@@ -9,7 +9,6 @@
 
     protected override void OnInitialized()
     {
-        var url = Uri.EscapeDataString(To);
-        NavigationManager.NavigateTo(url, Force);
+        NavigationManager.NavigateTo(To, Force);
     }
 }

@@ -8,14 +8,12 @@
 
 <EditForm EditContext="EditContext" OnSubmit="OnSubmit" Enhance AdditionalAttributes="@AdditionalAttributes">
     <DataAnnotationsValidator />
-    <FluentValidationValidator @ref="FluentValidationValidator" Options="@(options => options.IncludeAllRuleSets())" />
+    <FluentValidationValidator @ref="FluentValidationValidator" />
 
     @ChildContent
 </EditForm>
 
-@code
-
-{
+@code {
     [Parameter, EditorRequired]
     public TEntity? Model { get; set; }
 

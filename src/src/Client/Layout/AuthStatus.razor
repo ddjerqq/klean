@@ -3,6 +3,7 @@
 @using Client.Services
 @using Domain.Common
 @inject ApiService Api
+@inject NavigationManager Nav
 
 <AuthorizeView>
     <Button Variant="outline" Class="flex-shrink-0" data-dropdown-toggle="dropdown">
@@ -18,20 +19,20 @@
         </Avatar>
     </Button>
 
-    <div id="dropdown" class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-gray-700">
+    <div id="dropdown" class="z-10 hidden divide-y divide-background-100 rounded-lg shadow w-44 border bg-background-700">
         <div class="px-4 py-3 text-sm text-white">
             <div>@context.User.GetUsername()</div>
             <div class="font-medium truncate">@context.User.GetEmail()</div>
         </div>
 
-        <ul class="py-2 text-sm  text-gray-200" aria-labelledby="dropdownInformationButton">
+        <ul class="py-2 text-sm text-background-200" aria-labelledby="dropdownInformationButton">
             <li>
-                <a href="me" class="block px-4 py-2  hover:bg-gray-600 hover:text-white">Settings</a>
+                <a href="me" class="block px-4 py-2  hover:bg-background-600 hover:text-white">Settings</a>
             </li>
         </ul>
 
         <div class="py-2">
-            <a @onclick="SignOut" class="block px-4 py-2 text-sm hover:bg-gray-600 text-red-200 hover:text-white">
+            <a @onclick="SignOut" class="block px-4 py-2 text-sm hover:bg-background-600 text-red-200 hover:text-white">
                 Sign out
             </a>
         </div>
@@ -43,5 +44,6 @@
     private async Task SignOut()
     {
         await Api.PostSignout();
+        Nav.NavigateTo("login", true);
     }
 }

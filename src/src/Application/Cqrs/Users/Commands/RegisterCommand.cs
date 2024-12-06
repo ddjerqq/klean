@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Services;
+using Destructurama.Attributed;
 using Domain.Aggregates;
 using Domain.ValueObjects;
 using FluentValidation;
@@ -8,7 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Cqrs.Users.Commands;
 
-public sealed record RegisterCommand(string Email, string FullName, string Password) : IRequest<(User User, string Token)>;
+public sealed record RegisterCommand : IRequest<(User User, string Token)>
+{
+    [LogMasked]
+    public string Email { get; set; } = default!;
+
+    [LogMasked]
+    public string FullName { get; set; } = default!;
+
+    [LogMasked]
+    public string Password { get; set; } = default!;
+}
 
 public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
