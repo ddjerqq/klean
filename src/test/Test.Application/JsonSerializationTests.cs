@@ -35,14 +35,4 @@ public class JsonSerializationTests
         var deserialized = JsonSerializer.Deserialize<UserDto>(json, _jsonOptions);
         Console.WriteLine(deserialized);
     }
-
-    [Test]
-    public void TestDerArbitraryData()
-    {
-        var json = """
-                   {"id":"user_01jd80357g0abgjgng6426zayt","full_name":"giorgi nachkebia","email":"g@nachkebia.dev","avatar_url":"https://api.dicebear.com/9.x/glass/svg?backgroundType=gradientLinear&scale=50&seed=giorgi%20nachkebia","role":"Staff","security_stamp":"e5de6821-5e25-42bf-91c7-f446331c7139"}
-                   """;
-        var deserialized = JsonSerializer.Deserialize<UserDto>(json, _jsonOptions);
-        Console.WriteLine(deserialized);
-    }
 }
