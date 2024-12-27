@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
 
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  NETCORE_VERSION: '9.0.x'
+
 jobs:
   build-and-publish:
     concurrency: ci-${{ github.ref }}
