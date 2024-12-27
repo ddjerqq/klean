@@ -1,0 +1,76 @@
+﻿@using System.Diagnostics.CodeAnalysis
+@using Blazored.FluentValidation
+@using Serilog
+@typeparam TEntity where TEntity : class, new()
+@attribute [CascadingTypeParameter(nameof(TEntity))]
+
+<EditForm EditContext="EditContext" OnSubmit="OnSubmit" FormName="@FormName" Enhance AdditionalAttributes="@AdditionalAttributes">
+    <DataAnnotationsValidator />
+    <FluentValidationValidator @ref="FluentValidationValidator" />
+
+    @ChildContent
+</EditForm>
+
+@code {
+    [Parameter, EditorRequired]
+    public TEntity? Model { get; set; }
+
+    [Parameter]
+    public string? FormName { get; set; }
+
+    [Parameter]
+    public EventCallback<TEntity> ModelChanged { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<EditContext> OnValidSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback<EditContext> OnInvalidSubmit { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; } = [];
+
+    public FluentValidationValidator? FluentValidationValidator { get; set; }
+
+    [DisallowNull]
+    public CustomValidationCssClassProvider? ValidationCssClassProvider { get; private set; }
+
+    public EditContext? EditContext { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+
+        ArgumentNullException.ThrowIfNull(Model);
+
+        if (Model is null || !ModelChanged.HasDelegate)
+            throw new ArgumentException("you must bind a model to the form bidirectionally using @bind-Model");
+
+        ValidationCssClassProvider ??= new CustomValidationCssClassProvider("valid", "invalid");
+
+        if (EditContext is null)
+        {
+            EditContext = new EditContext(Model!);
+            EditContext.SetFieldCssClassProvider(ValidationCssClassProvider);
+        }
+    }
+
+    private async Task OnSubmit()
+    {
+        ValidationCssClassProvider!.ValidateAllFields = true;
+
+        if (await FluentValidationValidator!.ValidateAsync())
+            await OnValidSubmit.InvokeAsync(EditContext);
+        else
+        {
+            var messages = EditContext!.GetValidationMessages().ToList();
+            Toast.ShowWarning($"Validation errors: {string.Join(';', messages)}");
+            Log.Logger.Warning("Validation failed in form: {Messages}", string.Join(';', messages));
+            StateHasChanged();
+            await OnInvalidSubmit.InvokeAsync(EditContext);
+        }
+    }
+}

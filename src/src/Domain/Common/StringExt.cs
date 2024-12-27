@@ -14,6 +14,12 @@ public static class StringExt
         _ => null,
     };
 
+    public static string? CapitalizeName(this string name) => name.SplitName() switch
+    {
+        var (first, last) => $"{char.ToUpper(first[0])}{first[1..]} {char.ToUpper(last[0])}{last[1..]}",
+        _ => null,
+    };
+
     public static string? FromEnv(this string key)
     {
         return Environment.GetEnvironmentVariable(key);

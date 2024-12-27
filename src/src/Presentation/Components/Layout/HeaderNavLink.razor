@@ -1,0 +1,12 @@
+<NavLink href="@Href" Match="NavLinkMatch.All" ActiveClass="active"
+         class="hover:text-foreground text-foreground/80 [&.active]:font-bold [&.active]:text-primary transition-colors">
+    @Title
+</NavLink>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = null!;
+}

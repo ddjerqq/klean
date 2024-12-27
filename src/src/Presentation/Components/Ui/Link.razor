@@ -1,0 +1,32 @@
+<a class="@(Tw.Merge(Class, BaseClass))" href="@Href" @attributes="AdditionalAttributes">
+    @ChildContent
+</a>
+
+@code {
+    public const string BaseClass = "underline underline-offset-4 text-muted-foreground decoration-muted-foreground hover:text-primary";
+
+    [Parameter]
+    public string Class { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public string? Title { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = null!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ChildContent is null && Title is null)
+            throw new ArgumentException("Either ChildContent or Title must be set");
+
+        ChildContent ??= builder => builder.AddContent(0, Title);
+    }
+}

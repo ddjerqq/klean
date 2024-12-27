@@ -1,0 +1,76 @@
+@using Presentation.Components.Ui.Form
+
+<footer class="border-grid border-t bg-background">
+    <div class="container">
+        <div class="py-4 grid items-start gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <div class="col-span-1 sm:col-span-2 flex flex-col gap-2 max-w-md">
+                <span class="text-xl font-semibold mb-2">
+                    Newsletter
+                </span>
+
+                <span class="text-muted-foreground text-sm">
+                    Enter your email to receive notifications about product updates and our newsletter.
+                </span>
+
+                <input class="@FormInputText.BaseClass" placeholder="Enter your email" autocomplete="email"/>
+
+                <Button>Subscribe</Button>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <span class="text-xl font-semibold mb-2">
+                    Partner sites
+                </span>
+
+                <ul class="text-sm space-y-1">
+                    <li>
+                        <Link Title="amazon.com" target="_blank" rel="noreferer" Href="https://amazon.com"/>
+                    </li>
+                    <li>
+                        <Link Title="ebay.com" target="_blank" rel="noreferer" Href="https://ebay.com"/>
+                    </li>
+                    <li>
+                        <Link Title="aliexpress.com" target="_blank" rel="noreferer" Href="https://aliexpress.com"/>
+                    </li>
+                    <li>
+                        <Link Title="alibaba.com" target="_blank" rel="noreferer" Href="https://alibaba.com"/>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <span class="text-xl font-semibold mb-2">
+                    Contact
+                </span>
+
+                <ul class="text-sm space-y-1">
+                    <li>
+                        <Link Href="https://maps.app.goo.gl/T8Sn39Af1F497rms6" target="_blank" rel="noreferrer"
+                              Title="271 Brighton Beach Ave, brooklyn NY 11235, Office number 11"/>
+                    </li>
+                    <li>
+                        <Link Href="tel:+995555010609" target="_blank" rel="noreferrer"
+                              Title="GEO: +995 555010609"/>
+                    </li>
+                    <li>
+                        <Link Href="tel:+13472968792" target="_blank" rel="noreferrer"
+                              Title="USA: +1 3472968792"/>
+                    </li>
+                    <li>
+                        <Link Href="mailto:contact@sangoway.com" target="_blank" rel="noreferrer"
+                              Title="contact@sangoway.com"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="w-full text-center pb-2 text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
+            &copy; 2024-2028 All rights reserved
+
+            Built by
+            <Link Href="https://github.com/ddjerqq" Title="ddjerqq" target="_blank" rel="noreferrer"/>
+            contact:
+            <Link Href="https://t.me/tenxdeveloper" Title="contact" target="_blank" rel="noreferrer"/>
+        </div>
+    </div>
+</footer>

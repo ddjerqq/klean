@@ -1,16 +1,20 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Encodings.Web;
+using Application.Common;
 using Application.Services;
+using Domain.Aggregates;
 using Domain.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace Infrastructure.Services;
 
 public sealed class JwtGenerator : IJwtGenerator
 {
+    public const string CookieName = "authorization";
+
     public static readonly string ClaimsIssuer = "JWT__ISSUER".FromEnvRequired();
     public static readonly string ClaimsAudience = "JWT__AUDIENCE".FromEnvRequired();
     private static readonly string Key = "JWT__KEY".FromEnvRequired();
@@ -19,9 +23,9 @@ public sealed class JwtGenerator : IJwtGenerator
     {
         OnMessageReceived = ctx =>
         {
-            ctx.Request.Query.TryGetValue("authorization", out var query);
-            ctx.Request.Headers.TryGetValue("authorization", out var header);
-            ctx.Request.Cookies.TryGetValue("authorization", out var cookie);
+            ctx.Request.Query.TryGetValue(CookieName, out var query);
+            ctx.Request.Headers.TryGetValue(CookieName, out var header);
+            ctx.Request.Cookies.TryGetValue(CookieName, out var cookie);
             ctx.Token = (string?)query ?? (string?)header ?? cookie;
             return Task.CompletedTask;
         },
@@ -33,7 +37,7 @@ public sealed class JwtGenerator : IJwtGenerator
                 return Task.CompletedTask;
             }
 
-            ctx.Response.Redirect($"/404?returnUrl={UrlEncoder.Default.Encode(ctx.Request.Path)}");
+            ctx.Response.Redirect("auth/denied");
             return Task.CompletedTask;
         },
         OnChallenge = ctx =>
@@ -44,7 +48,7 @@ public sealed class JwtGenerator : IJwtGenerator
                 return Task.CompletedTask;
             }
 
-            ctx.Response.Redirect($"/login?returnUrl={UrlEncoder.Default.Encode(ctx.Request.Path)}");
+            ctx.Response.Redirect("auth/login");
             ctx.HandleResponse();
             return Task.CompletedTask;
         },
@@ -78,5 +82,28 @@ public sealed class JwtGenerator : IJwtGenerator
             signingCredentials: SigningCredentials);
 
         return _handler.WriteToken(token);
+    }
+
+    public string GenerateToken(User user, TimeSpan? expiration = null)
+    {
+        var claims = user.GetAllClaims();
+        return GenerateToken(claims, expiration);
+    }
+
+    public bool TryValidateToken(string token, out List<Claim> claims)
+    {
+        try
+        {
+            var principal = _handler.ValidateToken(token, TokenValidationParameters, out _);
+            claims = principal.Claims.ToList();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Logger.Debug(ex, "Failed to validate token");
+
+            claims = [];
+            return false;
+        }
     }
 }

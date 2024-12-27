@@ -1,0 +1,31 @@
+﻿@using Application.Common
+@using Presentation.Components.Ui.Card
+@inherits LayoutComponentBase
+@layout MainLayout
+@attribute [AllowAnonymous]
+
+<div class="w-full h-full flex flex-col justify-center align-middle items-center gap-6">
+    <Card Class="@("w-full overflow-hidden my-12 max-w-sm " + (IsLoginOrRegister ? "md:max-w-4xl" : "md:max-w-lg"))">
+        <Content
+            Class="@("grid p-0 " + (IsLoginOrRegister ? "md:grid-cols-2" : "md:grid-cols-1"))">
+            <div class="p-6 md:p-8 space-y-6">
+                @Body
+            </div>
+
+            @if (IsLoginOrRegister)
+            {
+                <div class="relative hidden bg-muted md:block">
+                    <img
+                        src="@ClaimsPrincipalExt.GetDefaultAvatar()"
+                        alt="Image"
+                        class="absolute inset-0 h-full w-full object-cover"/>
+                </div>
+            }
+        </Content>
+    </Card>
+</div>
+
+@code {
+    // is auth/login or auth/register but not auth/register_confirmation
+    private bool IsLoginOrRegister => new Uri(NavigationManager.Uri) is var uri && uri.AbsolutePath.Contains("auth/login") || uri.AbsolutePath.Contains("auth/register") && !uri.AbsolutePath.Contains("auth/register_confirmation");
+}

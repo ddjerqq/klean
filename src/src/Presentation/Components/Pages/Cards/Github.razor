@@ -1,0 +1,31 @@
+﻿@using Presentation.Components.Ui.Card
+<Card>
+    <Header class="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
+        <div class="space-y-1">
+            <Title>shadcn/ui</Title>
+            <Description>
+                Beautifully designed components built with Radix UI and Tailwind CSS.
+            </Description>
+        </div>
+        <div class="bg-secondary text-secondary-foreground flex items-center space-x-1 rounded-md">
+            <Button variant="secondary" class="px-3 shadow-none">
+                <Blazicon Svg="Icons.Star" class="mr-2 size-4"/>
+                Star
+            </Button>
+            <Separator Orientation="vertical" Class="h-[20px]"/>
+        </div>
+    </Header>
+    <Content>
+        <div class="text-muted-foreground flex space-x-4 text-sm">
+            <div class="flex items-center">
+                <Blazicon Svg="Icons.Circle" class="mr-1 size-3 fill-sky-400 text-sky-400"/>
+                TypeScript
+            </div>
+            <div class="flex items-center">
+                <Blazicon Svg="Icons.Star" class="mr-1 size-3"/>
+                20k
+            </div>
+            <div>Updated April 2023</div>
+        </div>
+    </Content>
+</Card>

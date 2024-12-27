@@ -1,0 +1,14 @@
+@page "/"
+@inject IJSRuntime Js
+
+<div class="w-full flex flex-row justify-center items-center">
+    <canvas id="globe" class="size-[800px]"></canvas>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await Js.InvokeAsync<IJSObjectReference>("import", "./scripts/globe.min.js");
+    }
+}

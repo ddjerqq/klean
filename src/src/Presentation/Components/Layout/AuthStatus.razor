@@ -1,0 +1,58 @@
+﻿@using Application.Common
+@using Domain.Common
+@using Presentation.Components.Ui.Avatar
+@inject CookieService Cookie
+@inject IdentityRevalidatingAuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <Button Variant="outline" Class="px-0 md:px-3 max-md:size-10 md:h-10 flex-shrink-0" data-dropdown-toggle="dropdown">
+            <span class="hidden md:block">
+                @context.User.GetUsername()?.CapitalizeName()
+            </span>
+
+            <Avatar Class="size-6">
+                <AvatarImage Src="@(ClaimsPrincipalExt.GetDefaultAvatar())" Alt="@(context.User.GetUsername())"/>
+                <AvatarFallback>
+                    @context.User.GetUsername()?.Initials()
+                </AvatarFallback>
+            </Avatar>
+        </Button>
+
+        <div id="dropdown" class="z-10 hidden divide-y divide-background-100 rounded-lg shadow w-44 border bg-background">
+            <div class="px-4 py-3 text-sm">
+                <div>@context.User.GetUsername()?.CapitalizeName()</div>
+                <div class="font-medium text-xs text-muted-foreground truncate">@context.User.GetEmail()</div>
+            </div>
+
+            <nav class="py-2 text-sm">
+                <Button Href="me" Variant="ghost" Class="justify-start w-full rounded-none">
+                    Settings
+                </Button>
+            </nav>
+
+            <div class="py-2">
+                <Button Variant="ghost" Class="justify-start text-destructive hover:text-destructive w-full rounded-none"
+                        @onclick="@SignOut">
+                    <Blazicon Svg="@Icons.LogOut"/>
+                    Sign out
+                </Button>
+            </div>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <Button Href="auth/login" Variant="default">
+            Login
+        </Button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private async Task SignOut()
+    {
+        await Cookie.DeleteCookieAsync(JwtGenerator.CookieName);
+        AuthenticationStateProvider.ForceSignOut();
+        NavigationManager.NavigateTo("auth/login");
+    }
+}

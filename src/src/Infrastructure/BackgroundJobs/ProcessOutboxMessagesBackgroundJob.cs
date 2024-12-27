@@ -1,10 +1,11 @@
+using System.Text.Json;
 using Application.Common;
+using Application.JsonConverters;
 using Application.Services;
 using Domain.Abstractions;
 using Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Quartz;
 using Serilog;
 using Serilog.Events;
@@ -13,7 +14,7 @@ using SerilogTracing;
 namespace Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-public sealed class ProcessOutboxMessagesBackgroundJob(IPublisher publisher, IAppDbContext dbContext, IDateTimeProvider dateTimeProvider) : IJob
+public sealed class ProcessOutboxMessagesBackgroundJob(IPublisher publisher, IAppDbContext dbContext) : IJob
 {
     public static readonly JobKey Key = new("process_outbox_messages");
     private static readonly int MessagesPerBatch = int.Parse("OUTBOX__MESSAGES_PER_BATCH".FromEnv("20"));
@@ -22,21 +23,21 @@ public sealed class ProcessOutboxMessagesBackgroundJob(IPublisher publisher, IAp
     {
         var unprocessedMessageCount = await dbContext
             .Set<OutboxMessage>()
-            .CountAsync(m => m.ProcessedOnUtc == null);
+            .CountAsync(m => m.ProcessedOn == null);
 
         if (unprocessedMessageCount == 0)
             return;
 
         var messages = await dbContext
             .Set<OutboxMessage>()
-            .Where(m => m.ProcessedOnUtc == null)
-            .OrderBy(m => m.OccuredOnUtc)
+            .Where(m => m.ProcessedOn == null)
+            .OrderBy(m => m.Id)
             .Take(MessagesPerBatch)
             .ToListAsync(context.CancellationToken);
 
         foreach (var message in messages)
         {
-            var domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(message.Content, OutboxMessage.JsonSerializerSettings);
+            var domainEvent = JsonSerializer.Deserialize<IDomainEvent>(message.Content, ApplicationJsonConstants.Options.Value);
 
             if (domainEvent is null)
             {
@@ -59,7 +60,7 @@ public sealed class ProcessOutboxMessagesBackgroundJob(IPublisher publisher, IAp
             }
             finally
             {
-                message.ProcessedOnUtc = dateTimeProvider.UtcNow;
+                message.ProcessedOn = DateTimeOffset.UtcNow;
                 await Log.CloseAndFlushAsync();
             }
         }

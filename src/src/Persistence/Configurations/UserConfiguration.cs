@@ -1,4 +1,6 @@
+using System.Globalization;
 using Domain.Aggregates;
+using EntityFrameworkCore.DataProtection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,72 +10,62 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasIndex(x => x.FullName)
+        builder.Property(x => x.PersonalId)
+            .IsEncryptedQueryable(isUnique: true)
+            .HasMaxLength(12);
+
+        builder.HasIndex(x => x.PersonalId)
             .IsUnique();
 
-        // builder.Property<CultureInfo>()
-        //     .HasConversion(culture => culture.Name, name => new CultureInfo(name))
-        //     .HasMaxLength(6);
+        builder.Property(x => x.Username)
+            .IsEncryptedQueryable(isUnique: false)
+            .HasMaxLength(100);
 
-        // builder.Property<IEdition>()
-        //     .HasConversion(e => EditionToString(e), s => StringToEdition(s))
-        //     .HasMaxLength(11);
+        builder.Property(x => x.Email)
+            .IsEncryptedQueryable(isUnique: true)
+            .HasMaxLength(100);
 
+        builder.Property(x => x.PhoneNumber)
+            .IsEncryptedQueryable(isUnique: true)
+            .HasMaxLength(20);
+
+        // email confirmed
+        // phone confirmed
+
+        builder.Property(x => x.PasswordHash).HasMaxLength(100);
+        builder.Property(x => x.SecurityStamp).HasMaxLength(36); // guid
+        builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken().HasMaxLength(36); // guid
+
+        // lockout end
+        // access failed count
+
+        builder.Property(x => x.CultureInfo)
+            .HasConversion<string>(
+                culture => culture.ToString(),
+                str => CultureInfo.GetCultureInfo(str));
+
+        builder.Property(x => x.TimeZone)
+            .HasConversion<string>(
+                tz => tz.Id,
+                id => TimeZoneInfo.FindSystemTimeZoneById(id));
+
+        builder.HasMany(user => user.Claims)
+            .WithOne(uc => uc.User)
+            .HasForeignKey(uc => uc.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        builder.HasMany(user => user.Logins)
+            .WithOne(ul => ul.User)
+            .HasForeignKey(ul => ul.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        builder.HasMany(user => user.Roles)
+            .WithOne(ur => ur.User)
+            .HasForeignKey(ur => ur.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
     }
 
-    // private static string EditionToString(IEdition edition) => edition switch
-    // {
-    //     OrdinalEdition ordinal => $"{ordinal.Number}",
-    //     SeasonalEdition seasonal => $"{Enum.GetName(seasonal.Season)} {seasonal.Year}",
-    //     _ => throw new ArgumentException("Edition type not supported yet"),
-    // };
-    //
-    // private static IEdition StringToEdition(string edition) => edition.Split(' ') switch
-    // {
-    //     [var season, var year] => new SeasonalEdition((Season)Enum.Parse(typeof(Season), season), int.Parse(year)),
-    //     [var number] => new OrdinalEdition(int.Parse(number)),
-    //     _ => throw new ArgumentException("Edition type not supported yet"),
-    // };
 }
-
-// public abstract record PublicationDate;
-//
-// public sealed record FullDate(DateOnly Date) : PublicationDate;
-// public sealed record YearMonth(int Year, int Month) : PublicationDate;
-// public sealed record Year(int Number) : PublicationDate;
-//
-// public static class PublicationDateExt
-// {
-//     public static TResult Map<TResult>(this PublicationDate publicationDate,
-//         Func<FullDate, TResult> fullDate,
-//         Func<YearMonth, TResult> yearMonth,
-//         Func<Year, TResult> year) => publicationDate switch
-//     {
-//         FullDate p => fullDate(p),
-//         YearMonth p => yearMonth(p),
-//         Year p => year(p),
-//         _ => throw new ArgumentException("Publication date type not supported yet"),
-//     };
-// }
-//
-// public abstract record PublicationInfo;
-//
-// public sealed record Published(DateTime PublishedOn) : PublicationInfo;
-//
-// public sealed record Planned(DateTime PlannedFor) : PublicationInfo;
-//
-// public sealed record NotPlanned : PublicationInfo;
-//
-// public static class PublicationInfoExt
-// {
-//     public static TResult Map<TResult>(this PublicationInfo publication,
-//         Func<Published, TResult> published,
-//         Func<Planned, TResult> planned,
-//         Func<NotPlanned, TResult> notPlanned) => publication switch
-//     {
-//         Published p => published(p),
-//         Planned p => planned(p),
-//         NotPlanned p => notPlanned(p),
-//         _ => throw new ArgumentException("Publication type not supported yet"),
-//     };
-// }

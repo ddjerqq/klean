@@ -1,0 +1,58 @@
+﻿@using System.Globalization
+@using Blazored.Toast
+@using Blazored.Toast.Configuration
+@inject NavigationManager Nav
+@inject IJSRuntime Js
+@inject BrowserInternalizationProvider BrowserInternalizationProvider
+
+<CascadingBlazoredModal
+    Class="min-w-sm w-full max-w-full sm:max-w-2xl text-lg sm:text-2xl border-2 rounded-md flex flex-col justify-center text-center p-2"
+    OverlayCustomClass="backdrop-blur p-4"
+    Position="ModalPosition.Middle"
+    AnimationType="ModalAnimationType.FadeInOut">
+
+    <CascadingValue Value="BrowserTimeZone">
+        <CascadingValue Value="BrowserCultureInfo">
+            <Router AppAssembly="@typeof(Program).Assembly">
+                <Found Context="routeData">
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                        <NotAuthorized>
+                            <Redirect To="auth/login" Force/>
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                </Found>
+                <NotFound>
+                    <Redirect To="404" Force/>
+                </NotFound>
+            </Router>
+        </CascadingValue>
+    </CascadingValue>
+</CascadingBlazoredModal>
+
+<BlazoredToasts
+    Position="@ToastPosition.BottomRight"
+    Timeout="100"
+    MaxToastCount="3"
+    ShowCloseButton="false"
+    ShowProgressBar="false"
+    PauseProgressOnHover="true"
+    RemoveToastsOnNavigation="false"/>
+
+@code {
+    public TimeZoneInfo BrowserTimeZone { get; set; } = TimeZoneInfo.Utc;
+    public CultureInfo BrowserCultureInfo { get; set; } = CultureInfo.InvariantCulture;
+
+    protected override async Task OnInitializedAsync()
+    {
+        BrowserTimeZone = await BrowserInternalizationProvider.GetBrowserTimeZoneAsync();
+        BrowserCultureInfo = await BrowserInternalizationProvider.GetBrowserLocaleAsync();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await Js.InvokeVoidAsync("window.initFlowbite");
+    }
+}

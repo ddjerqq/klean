@@ -1,0 +1,26 @@
+﻿<header class="border-grid fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div class="container flex h-14 items-center justify-between">
+        <div class="mr-4 flex">
+            <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/">
+                <Blazicon Svg="@Icons.Truck" class="!size-8"/>
+                <span class="hidden font-bold lg:inline-block">SanGoWay</span>
+            </a>
+
+            <nav class="flex items-center text-sm gap-4 sm:gap-6">
+                <AuthorizeView>
+                    <Authorized>
+                        <HeaderNavLink Href="home" Title="Home"/>
+                        <HeaderNavLink Href="cards" Title="Cards"/>
+                    </Authorized>
+                    <NotAuthorized>
+                        <HeaderNavLink Href="about us" Title="About us"/>
+                        <HeaderNavLink Href="terms" Title="Terms"/>
+                        <HeaderNavLink Href="privacy" Title="Privacy Policy"/>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </nav>
+        </div>
+
+        <AuthStatus/>
+    </div>
+</header>

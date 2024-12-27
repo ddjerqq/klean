@@ -1,6 +1,5 @@
 using System.Threading.RateLimiting;
 using Application;
-using Application.Services;
 using Domain.Aggregates;
 using Domain.Common;
 using Microsoft.AspNetCore.Builder;
@@ -38,11 +37,9 @@ public sealed class ConfigureRateLimiting : ConfigurationBase
 
     private static ValueTask OnRejectedAsync(OnRejectedContext ctx, CancellationToken ct)
     {
-        var dateTimeProvider = ctx.HttpContext.RequestServices.GetRequiredService<IDateTimeProvider>();
-
         if (ctx.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
         {
-            var retryAfterDateRelative = dateTimeProvider.UtcNow.Add(retryAfter);
+            var retryAfterDateRelative = DateTimeOffset.UtcNow.Add(retryAfter);
             ctx.HttpContext.Response.Headers.RetryAfter = retryAfterDateRelative.ToString("R");
         }
 

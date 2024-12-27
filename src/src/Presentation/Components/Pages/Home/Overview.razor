@@ -1,0 +1,76 @@
+﻿@using Presentation.Components.Ui.Card
+
+<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <Card>
+        <Header Class="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Title Class="text-sm font-medium">Transportation</Title>
+            <Blazicon Svg="@Icons.Truck" class="text-muted-foreground size-4"/>
+        </Header>
+        <Content>
+            <div class="text-2xl font-bold">@(45_231.89.ToString("C"))</div>
+            <p class="text-muted-foreground text-xs">
+                +10% from last month
+            </p>
+        </Content>
+    </Card>
+
+    <Card>
+        <Header Class="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Title Class="text-sm font-medium">Your balance</Title>
+            <Blazicon Svg="@Icons.DollarSign" class="text-muted-foreground size-4"/>
+        </Header>
+        <Content>
+            <div class="text-2xl font-bold">@(2_350.00.ToString("C"))</div>
+            <p class="text-muted-foreground text-xs">
+                +10% from last month
+            </p>
+        </Content>
+    </Card>
+
+    <Card>
+        <Header Class="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Title Class="text-sm font-medium">Amount due</Title>
+            <Blazicon Svg="@Icons.Minus" class="text-muted-foreground size-4"/>
+        </Header>
+        <Content>
+            @* destructive if positive *@
+            <div class="text-2xl text-destructive font-bold">@(350.35.ToString("C"))</div>
+            <p class="text-muted-foreground text-xs">
+                +10% from last month
+            </p>
+        </Content>
+    </Card>
+
+    <Card>
+        <Header Class="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Title Class="text-sm font-medium">Top up balance</Title>
+            <Blazicon Svg="@Icons.CreditCard" class="text-muted-foreground size-4"/>
+        </Header>
+        <Content>
+            <Button>Top up using stripe</Button>
+            <p class="text-muted-foreground text-xs">
+                Your payment info is secure
+            </p>
+        </Content>
+    </Card>
+</div>
+
+<div class="grid gap-4 md:grid-cols-2">
+    <Card>
+        <Header>
+            <Title>Overview</Title>
+        </Header>
+        <Content>
+            Bar Chart
+        </Content>
+    </Card>
+    <Card>
+        <Header>
+            <Title>Recent Sales</Title>
+            <Description>You made 265 sales this month.</Description>
+        </Header>
+        <Content>
+            <RecentSales/>
+        </Content>
+    </Card>
+</div>

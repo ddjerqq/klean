@@ -1,0 +1,24 @@
+﻿@page "/404"
+@attribute [AllowAnonymous]
+
+<div class="w-full flex items-center px-4 py-12">
+    <div class="w-full space-y-6 text-center">
+        <div class="space-y-3">
+            <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl">404 - Lost in Cyberspace</h1>
+            <p class="text-2xl text-gray-500">Looks like you've ventured into the unknown digital realm.</p>
+        </div>
+
+        <AuthorizeView>
+            <Authorized>
+                <Button Href="home" Size="lg">
+                    Return to home
+                </Button>
+            </Authorized>
+            <NotAuthorized>
+                <Button Href="auth/login" Size="lg">
+                    Login
+                </Button>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</div>

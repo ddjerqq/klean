@@ -1,0 +1,195 @@
+{
+    "type": "FlightsCollection",
+    "flights": [
+        {
+            "type": "flight",
+            "order": 1,
+            "from" : "FRU",
+            "to": "TAS",
+            "startLat": 42.85,
+            "startLng": 74.5833,
+            "endLat": 41.2666,
+            "endLng": 69.3666
+        },
+        {
+            "type": "flight",
+            "order": 2,
+            "from" : "TAS",
+            "to": "ICN",
+            "startLat": 41.2666,
+            "startLng": 69.3666,
+            "endLat": 37.4722,
+            "endLng": 126.6083
+        },
+        {
+            "type": "flight",
+            "order": 3,
+            "from" : "ICN",
+            "to": "KUL",
+            "startLat": 37.4722,
+            "startLng": 126.6083,
+            "endLat": 3.1166,
+            "endLng": 101.7
+        },
+        {
+            "type": "flight",
+            "order": 4,
+            "from" : "KUL",
+            "to": "SIN",
+            "startLat": 3.1166,
+            "startLng": 101.7,
+            "endLat": 1.2916,
+            "endLng": 103.85
+        },
+        {
+            "type": "flight",
+            "order": 4.5,
+            "from" : "KUL",
+            "to": "SIN",
+            "startLat": 3.1166,
+            "startLng": 101.7,
+            "endLat": 1.2916,
+            "endLng": 103.85
+        },
+        {
+            "type": "flight",
+            "order": 5,
+            "from" : "KUL",
+            "to": "DPS",
+            "startLat": 3.1166,
+            "startLng": 101.7,
+            "endLat": -8.75,
+            "endLng": 115.1666
+        },
+        {
+            "type": "flight",
+            "order": 6,
+            "from" : "DPS",
+            "to": "KUL",
+            "startLat": -8.75,
+            "startLng": 115.1666,
+            "endLat": 3.1166,
+            "endLng": 101.7
+        },
+        {
+            "type": "flight",
+            "order": 7,
+            "from" : "KUL",
+            "to": "DMK",
+            "startLat": 3.1166,
+            "startLng": 101.7,
+            "endLat": 13.9255,
+            "endLng": 100.5923
+        },
+        {
+            "type": "flight",
+            "order": 8,
+            "from" : "BKK",
+            "to": "KJA",
+            "startLat": 13.6900,
+            "startLng": 100.7501,
+            "endLat": 56.05,
+            "endLng": 92.9
+        },
+        {
+            "type": "flight",
+            "order": 9,
+            "from" : "KJA",
+            "to": "OVB",
+            "startLat": 56.05,
+            "startLng": 92.9,
+            "endLat": 55.0333,
+            "endLng": 83
+        },
+        {
+            "type": "flight",
+            "order": 10,
+            "from" : "OVB",
+            "to": "FRU",
+            "startLat": 55.0333,
+            "startLng": 83,
+            "endLat": 42.85,
+            "endLng": 74.5833
+        },
+        {
+            "type": "flight",
+            "order": 10.5,
+            "from" : "FRU",
+            "to": "ALA",
+            "startLat": 42.85,
+            "startLng": 74.5833,
+            "endLat": 43.35,
+            "endLng": 77.0333
+        },
+        {
+            "type": "flight",
+            "order": 11,
+            "from" : "ALA",
+            "to": "ICN",
+            "startLat": 43.35,
+            "startLng": 77.0333,
+            "endLat": 37.4722,
+            "endLng": 126.6083
+        },
+        {
+            "type": "flight",
+            "order": 12,
+            "from" : "FRU",
+            "to": "ALA",
+            "startLat": 42.85,
+            "startLng": 74.5833,
+            "endLat": 43.35,
+            "endLng": 77.0333
+        },
+        {
+            "type": "flight",
+            "order": 13,
+            "from" : "ALA",
+            "to": "BKK",
+            "startLat": 43.35,
+            "startLng": 77.0333,
+            "endLat": 13.6900,
+            "endLng": 100.7501
+        },
+        {
+            "type": "flight",
+            "order": 13.5,
+            "from" : "ICN",
+            "to": "DMK",
+            "startLat": 37.4722,
+            "startLng": 126.6083,
+            "endLat": 13.9255,
+            "endLng": 100.5923
+        },
+        {
+            "type": "flight",
+            "order": 14,
+            "from" : "DMK",
+            "to": "ICN",
+            "startLat": 13.9255,
+            "startLng": 100.5923,
+            "endLat": 37.4722,
+            "endLng": 126.6083
+        },
+        {
+            "type": "flight",
+            "order": 14.5,
+            "from" : "DMK",
+            "to": "ICN",
+            "startLat": 13.9255,
+            "startLng": 100.5923,
+            "endLat": 37.4722,
+            "endLng": 126.6083
+        },
+        {
+            "type": "flight",
+            "order": 15,
+            "from" : "BKK",
+            "to": "ICN",
+            "startLat": 13.6900,
+            "startLng": 100.7501,
+            "endLat": 37.4722,
+            "endLng": 126.6083
+        }
+    ]
+}

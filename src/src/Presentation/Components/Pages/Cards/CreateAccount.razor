@@ -1,0 +1,41 @@
+﻿@using Presentation.Components.Ui.Card
+@using Presentation.Components.Ui.Form
+<Card>
+    <Header class="space-y-1">
+        <Title class="text-2xl">Create an account</Title>
+        <Description>Enter your email below to create your account</Description>
+    </Header>
+    <Content class="grid gap-4">
+        <div class="grid grid-cols-2 gap-6">
+            <Button variant="outline">
+                <Blazicon Svg="Icons.Goal" class="mr-2 size-4" />
+                GitHub
+            </Button>
+            <Button variant="outline">
+                <Blazicon Svg="Icons.ArrowDown" class="mr-2 size-4" />
+                Google
+            </Button>
+        </div>
+        <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+                <span class="w-full border-t"></span>
+            </div>
+            <div class="relative flex justify-center text-xs uppercase">
+                <span class="bg-card text-muted-foreground px-2">
+                    Or continue with
+                </span>
+            </div>
+        </div>
+        <div class="grid gap-2">
+            <FormLabel for="email">Email</FormLabel>
+            <input class="@FormInputText.BaseClass" id="email" type="email" placeholder="m@example.com" />
+        </div>
+        <div class="grid gap-2">
+            <FormLabel for="text">Password</FormLabel>
+            <input class="@FormInputText.BaseClass" id="text" type="text" />
+        </div>
+    </Content>
+    <Footer>
+        <Button class="w-full">Create account</Button>
+    </Footer>
+</Card>

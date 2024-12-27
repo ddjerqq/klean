@@ -1,0 +1,113 @@
+﻿@using Presentation.Components.Layout
+@using Presentation.Components.Ui.Card
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Klean</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <base href="/">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="icon" href="favicons/favicon.ico"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+
+    <link href="Presentation.styles.css" rel="stylesheet"/>
+    <link href="styles/app.min.css" rel="stylesheet"/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="scripts/captchaUtils.js"></script>
+    <script src="scripts/util.js"></script>
+
+    <HeadOutlet @rendermode="InteractiveServer"/>
+
+    <meta property="author" content="ddjerqq"/>
+    <meta property="og:title" content="klean">
+    <meta name="twitter:title" content="klean">
+    <meta name="theme-color" content="#047835">
+    <meta name="og:image" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:description" content="klean">
+    <meta name="description" content="klean">
+    <meta property="twitter:description" content="klean">
+</head>
+<body class="bg-topo overflow-y-scroll">
+
+<Routes @rendermode="InteractiveServer"/>
+
+<div id="blazor-error-ui" class="text-black">
+    TODO need a better banner here, or an ErrorBoundary
+    <a href="" class="reload">reload</a>
+    <a class="dismiss">&times;</a>
+</div>
+
+<div id="components-reconnect-modal">
+    <Card id="reconnect-show">
+        <Header Class="space-y-1">
+            <Title Class="text-2xl">Detected a networking hiccup</Title>
+            <Description>This is not a major issue</Description>
+        </Header>
+        <Content Class="grid gap-4">
+            To continue using the website please reload
+        </Content>
+        <Footer>
+            <Button Class="w-full" onclick="location.reload()">
+                <Blazicon Svg="@Lucide.RefreshCcw" class="size-6"/>
+                Reload
+            </Button>
+        </Footer>
+    </Card>
+
+    <Card id="reconnect-hide">
+        <Header Class="space-y-1">
+            <Title Class="text-2xl">Success</Title>
+        </Header>
+        <Content Class="grid gap-4">
+            Server connection restored
+        </Content>
+    </Card>
+
+    <Card id="reconnect-failed">
+        <Header Class="space-y-1">
+            <Title Class="text-2xl">Connection dropped</Title>
+            <Description>This is not a major issue</Description>
+        </Header>
+        <Content Class="grid gap-4">
+            To continue using the website please reload
+        </Content>
+        <Footer>
+            <Button Class="w-full" onclick="window.Blazor.reconnect()">
+                <Blazicon Svg="@Lucide.RefreshCcw" class="size-6"/>
+                Reload
+            </Button>
+        </Footer>
+    </Card>
+
+    <Card id="reconnect-rejected">
+        <Header Class="space-y-1">
+            <Title Class="text-2xl">Detected a networking hiccup</Title>
+            <Description>This is not a major issue</Description>
+        </Header>
+        <Content Class="grid gap-4">
+            To continue using the website please reload
+        </Content>
+        <Footer>
+            <Button Class="w-full" onclick="location.reload()">
+                <Blazicon Svg="@Lucide.RefreshCcw" class="size-6"/>
+                Reload
+            </Button>
+        </Footer>
+    </Card>
+</div>
+
+<script src="_framework/blazor.web.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
+}

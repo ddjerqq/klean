@@ -1,48 +1,40 @@
 using System.ComponentModel.DataAnnotations;
-using Application.Services;
+using System.Text.Json;
+using Application.JsonConverters;
 using Destructurama.Attributed;
 using Domain.Abstractions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using EntityFrameworkCore.DataProtection;
 
 namespace Application.Common;
 
 public sealed class OutboxMessage
 {
-    public static readonly JsonSerializerSettings JsonSerializerSettings = new()
-    {
-        TypeNameHandling = TypeNameHandling.All,
-        ContractResolver = new DefaultContractResolver
-        {
-            NamingStrategy = new SnakeCaseNamingStrategy(),
-        },
-    };
-
     public Ulid Id { get; init; } = Ulid.NewUlid();
 
     [StringLength(128)]
-    public string Type { get; init; } = default!;
+    public string Type { get; init; } = null!;
 
     [LogMasked]
-    [StringLength(1024)]
+    [Encrypt(false, false)]
+    [StringLength(2048)]
     public string Content { get; init; } = string.Empty;
 
-    public DateTime OccuredOnUtc { get; init; }
+    public DateTimeOffset OccuredOn { get; init; }
 
-    public DateTime? ProcessedOnUtc { get; set; }
+    public DateTimeOffset? ProcessedOn { get; set; }
 
     [StringLength(1024)]
     public string? Error { get; set; }
 
-    public static OutboxMessage FromDomainEvent(IDomainEvent domainEvent, IDateTimeProvider dateTimeProvider)
+    public static OutboxMessage FromDomainEvent(IDomainEvent domainEvent)
     {
         return new OutboxMessage
         {
             Id = Ulid.NewUlid(),
-            Type = domainEvent.GetType().Name,
-            Content = JsonConvert.SerializeObject(domainEvent, JsonSerializerSettings),
-            OccuredOnUtc = dateTimeProvider.UtcNow,
-            ProcessedOnUtc = null,
+            Type = domainEvent.GetType().AssemblyQualifiedName!,
+            Content = JsonSerializer.Serialize(domainEvent, ApplicationJsonConstants.Options.Value),
+            OccuredOn = DateTimeOffset.UtcNow,
+            ProcessedOn = null,
             Error = null,
         };
     }

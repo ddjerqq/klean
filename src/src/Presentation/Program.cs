@@ -2,8 +2,7 @@ using Application;
 using dotenv.net;
 using FluentValidation;
 using Infrastructure.Config;
-using Presentation;
-using SerilogTracing;
+using Presentation.Common;
 
 ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
 // for custom languages
@@ -21,9 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseConfiguredSerilog();
 
 // for serilog - seq tracing
+#if !DEBUG
 using var _ = new ActivityListenerConfiguration()
     .Instrument.AspNetCoreRequests(options => options.IncomingTraceParent = IncomingTraceParent.Trust)
     .TraceToSharedLogger();
+#endif
 
 builder.WebHost.UseSetting(WebHostDefaults.DetailedErrorsKey, "true");
 builder.WebHost.UseStaticWebAssets();
@@ -36,7 +37,10 @@ ConfigurationBase.ConfigureServicesFromAssemblies(builder.Services, [
 
 var app = builder.Build();
 
+#if !DEBUG
 app.UseConfiguredSerilogRequestLogging();
+#endif
+
 await app.MigrateDatabaseAsync();
 app.UseApplicationMiddleware();
 

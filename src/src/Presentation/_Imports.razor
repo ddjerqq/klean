@@ -1,0 +1,27 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using Blazored
+@using Blazicons
+@using Blazored.Modal
+@using Blazored.Toast.Services
+@using Presentation.Components
+@using Presentation.Components.Ui
+@using Microsoft.AspNetCore.Authorization
+@using TailwindMerge
+@using Infrastructure.Services
+@using MediatR
+
+@using Icons = Blazicons.Lucide
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+
+@attribute [Authorize]
+@inject TwMerge Tw
+@inject NavigationManager NavigationManager
+@inject IToastService Toast
+@inject IMediator Mediator

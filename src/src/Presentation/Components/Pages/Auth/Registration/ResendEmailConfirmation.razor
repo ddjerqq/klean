@@ -1,0 +1,53 @@
+﻿@page "/auth/resend_email_confirmation"
+@using Application.Cqrs.Users.Commands
+@using Presentation.Components.Ui.Form
+
+<PageTitle>Resend email confirmation</PageTitle>
+
+<AuthHeader Title="Didn't receive an email?" Description="Enter your email, and we'll send you a link to get confirm your email again."/>
+
+<AppForm @bind-Model="Command" OnValidSubmit="OnValidSubmitAsync" novalidate class="grid gap-6">
+    <FormField>
+        <FormLabel for="email">Email</FormLabel>
+        <FormInputText id="email"
+                       @bind-Value="@Command.Email"
+                       placeholder="name@example.com"
+                       type="email"
+                       required
+                       autocomplete="email"
+                       disabled="@IsLoading"/>
+
+        <FormInvalidFeedback For="@(() => Command.Email)"/>
+    </FormField>
+
+    <Recaptcha @ref="@RecaptchaComponent"/>
+
+    <Button type="submit" disabled="@IsLoading">
+        @if (IsLoading)
+        {
+            <Blazicon Svg="Icons.Loader" class="mr-2 size-4 animate-spin"/>
+        }
+        Resend
+    </Button>
+</AppForm>
+
+@code {
+    private ResendEmailConfirmationCommand Command { get; set; } = new();
+    private bool IsLoading { get; set; }
+    private Recaptcha RecaptchaComponent { get; set; } = null!;
+
+    private async Task OnValidSubmitAsync()
+    {
+        if (!await RecaptchaComponent.IsValid())
+        {
+            Toast.ShowWarning("Please complete captcha before continuing");
+            return;
+        }
+
+        IsLoading = true;
+        await Mediator.Send(Command);
+        IsLoading = false;
+
+        NavigationManager.NavigateTo("auth/register_confirmation");
+    }
+}

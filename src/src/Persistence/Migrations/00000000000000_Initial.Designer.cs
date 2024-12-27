@@ -18,7 +18,7 @@ namespace Persistence.Migrations
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("Application.Common.OutboxMessage", b =>
                 {
@@ -28,7 +28,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(1024)
+                        .HasMaxLength(2048)
                         .HasColumnType("TEXT")
                         .HasColumnName("content");
 
@@ -37,13 +37,13 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("error");
 
-                    b.Property<DateTime>("OccuredOnUtc")
+                    b.Property<DateTimeOffset>("OccuredOn")
                         .HasColumnType("TEXT")
-                        .HasColumnName("occured_on_utc");
+                        .HasColumnName("occured_on");
 
-                    b.Property<DateTime?>("ProcessedOnUtc")
+                    b.Property<DateTimeOffset?>("ProcessedOn")
                         .HasColumnType("TEXT")
-                        .HasColumnName("processed_on_utc");
+                        .HasColumnName("processed_on");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -52,9 +52,9 @@ namespace Persistence.Migrations
                         .HasColumnName("type");
 
                     b.HasKey("Id")
-                        .HasName("p_k_outbox_message");
+                        .HasName("p_k_outbox_messages");
 
-                    b.ToTable("outbox_message");
+                    b.ToTable("outbox_messages");
                 });
 
             modelBuilder.Entity("Domain.Aggregates.User", b =>
@@ -63,11 +63,18 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("id");
 
-                    b.Property<string>("AvatarUrl")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("avatar_url");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("access_failed_count");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("concurrency_stamp");
+
+                    b.Property<DateTimeOffset?>("Created")
                         .HasColumnType("TEXT")
                         .HasColumnName("created");
 
@@ -75,7 +82,12 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime?>("Deleted")
+                    b.Property<string>("CultureInfo")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("culture_info");
+
+                    b.Property<DateTimeOffset?>("Deleted")
                         .HasColumnType("TEXT")
                         .HasColumnName("deleted");
 
@@ -85,15 +97,23 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
-                        .HasColumnName("email");
+                        .HasColumnName("email")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsQueryable", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsUniqueIndex", true);
 
-                    b.Property<string>("FullName")
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("email_confirmed");
+
+                    b.Property<string>("EmailShadowHash")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasColumnName("full_name");
+                        .HasColumnName("email_shadow_hash");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTimeOffset?>("LastModified")
                         .HasColumnType("TEXT")
                         .HasColumnName("last_modified");
 
@@ -101,24 +121,408 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("last_modified_by");
 
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("lockout_end");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
                         .HasColumnName("password_hash");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("role");
+                    b.Property<string>("PersonalId")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("personal_id")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsQueryable", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsUniqueIndex", true);
+
+                    b.Property<string>("PersonalIdShadowHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("personal_id_shadow_hash");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("phone_number")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsQueryable", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsUniqueIndex", true);
+
+                    b.Property<string>("PhoneNumberShadowHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("phone_number_shadow_hash");
 
                     b.Property<string>("SecurityStamp")
                         .IsRequired()
+                        .HasMaxLength(36)
                         .HasColumnType("TEXT")
                         .HasColumnName("security_stamp");
+
+                    b.Property<string>("TimeZone")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("time_zone");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("username")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsQueryable", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsUniqueIndex", false);
+
+                    b.Property<string>("UsernameShadowHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("username_shadow_hash");
 
                     b.HasKey("Id")
                         .HasName("p_k_user");
 
+                    b.HasIndex("PersonalId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_user_personal_id");
+
                     b.ToTable("user");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("concurrency_stamp");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("LastModified")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_role");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_role_name");
+
+                    b.ToTable("role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoleClaim", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ClaimType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("claim_type");
+
+                    b.Property<string>("ClaimValue")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("claim_value");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("LastModified")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("role_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_role_claim");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("i_x_role_claim_role_id");
+
+                    b.ToTable("role_claim");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserClaim", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ClaimType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("claim_type");
+
+                    b.Property<string>("ClaimValue")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("claim_value");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<DateTimeOffset?>("LastModified")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_user_claim");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("i_x_user_claim_user_id");
+
+                    b.ToTable("user_claim");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserLogin", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("deleted_by");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ip_address")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true);
+
+                    b.Property<DateTimeOffset>("LastActive")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_active");
+
+                    b.Property<DateTimeOffset?>("LastModified")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("location")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true);
+
+                    b.Property<string>("UserAgent")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_agent")
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsEncrypted", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsQueryable", true)
+                        .HasAnnotation("Klean.EntityFrameworkCore.DataProtection.IsUniqueIndex", false);
+
+                    b.Property<string>("UserAgentShadowHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_agent_shadow_hash");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_user_login");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("i_x_user_login_user_id");
+
+                    b.ToTable("user_login");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("user_id");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("role_id");
+
+                    b.HasKey("UserId", "RoleId")
+                        .HasName("p_k_user_role");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("i_x_user_role_role_id");
+
+                    b.ToTable("user_role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoleClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.Role", "Role")
+                        .WithMany("Claims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_role_claim_role_role_id");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserClaim", b =>
+                {
+                    b.HasOne("Domain.Aggregates.User", "User")
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_user_claim_user_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserLogin", b =>
+                {
+                    b.HasOne("Domain.Aggregates.User", "User")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_user_login_user_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("Domain.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_user_role_role_role_id");
+
+                    b.HasOne("Domain.Aggregates.User", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_user_role_user_user_id");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.User", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Role", b =>
+                {
+                    b.Navigation("Claims");
                 });
 #pragma warning restore 612, 618
         }

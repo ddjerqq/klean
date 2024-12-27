@@ -1,0 +1,50 @@
+@using Application.Services
+@using Serilog
+@using Domain.Common
+@inject IJSRuntime Js
+@inject IRecaptchaVerifier RecaptchaVerifier
+
+<div id="recaptcha" data-sitekey="@RecaptchaSiteKey" @attributes="AdditionalAttributes"></div>
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = [];
+
+    private static string RecaptchaSiteKey => "RECAPTCHA__SITE_KEY".FromEnvRequired();
+
+    private string _captchaResponse = null!;
+
+    public async Task<bool> IsValid(CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(_captchaResponse))
+            return false;
+
+        var response = await RecaptchaVerifier.VerifyAsync(_captchaResponse, ct);
+
+        if (response.Success)
+            return true;
+
+        Log.Logger.Warning("Recaptcha has errors: {Errors}", string.Join(';', response.ErrorCodes));
+        Toast.ShowWarning($"Captcha errors {string.Join(';', response.ErrorCodes)}");
+
+        return false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await Js.InvokeVoidAsync("renderGoogleRecaptcha", DotNetObjectReference.Create(this), "recaptcha", RecaptchaSiteKey);
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    [JSInvokable]
+    public void OnSuccess(string response)
+    {
+        _captchaResponse = response;
+        Log.Logger.Debug("recaptcha response received: {Response}", response);
+    }
+
+    [JSInvokable]
+    public void OnExpired() => Toast.ShowWarning("Captcha request expired, please do it again.");
+}

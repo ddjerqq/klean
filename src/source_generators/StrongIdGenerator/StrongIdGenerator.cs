@@ -157,6 +157,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                          namespace {{subject.Namespace}};
 
                          {{GeneratedCodeAttribute}}
+                         [global::System.ComponentModel.TypeConverter(typeof({{idClassName}}TypeConverter))]
                          public readonly record struct {{idClassName}}(global::System.Ulid Value) : global::Generated.IStrongId, global::System.IComparable<{{idClassName}}>, global::System.IParsable<{{idClassName}}>
                          {
                              public static {{idClassName}} Empty => new(global::System.Ulid.Empty);
@@ -169,7 +170,7 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                          
                                  if (!string.IsNullOrWhiteSpace(s)
                                      && s.Split("_") is [.. var typeNameParts, var idValue]
-                                     && string.Join(string.Empty, typeNameParts) is var typeName && typeName == global::Generated.SourceGeneratorExt.ToSnakeCase(nameof({{idClassName}}).Replace("Id", ""))
+                                     && string.Join('_', typeNameParts) is var typeName && typeName == global::Generated.SourceGeneratorExt.ToSnakeCase(nameof({{idClassName}}).Replace("Id", ""))
                                      && global::System.Ulid.TryParse(idValue, out var id))
                                  {
                                      result = new {{idClassName}}(id);
@@ -193,6 +194,22 @@ public sealed class StrongIdGenerator : IIncrementalGenerator
                          {
                              public override {{idClassName}} Read(ref global::System.Text.Json.Utf8JsonReader reader, global::System.Type typeToConvert, global::System.Text.Json.JsonSerializerOptions options) => {{idClassName}}.Parse(reader.GetString()!);
                              public override void Write(global::System.Text.Json.Utf8JsonWriter writer, {{idClassName}} value, global::System.Text.Json.JsonSerializerOptions options) => writer.WriteStringValue(value.ToString());
+                         }
+                         
+                         {{GeneratedCodeAttribute}}
+                         public sealed class {{idClassName}}TypeConverter : global::System.ComponentModel.TypeConverter
+                         {
+                             public override bool CanConvertFrom(global::System.ComponentModel.ITypeDescriptorContext? context, Type sourceType) =>
+                                 sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+                         
+                             public override object? ConvertFrom(global::System.ComponentModel.ITypeDescriptorContext? context, global::System.Globalization.CultureInfo? culture, object value) =>
+                                 value is string str && {{idClassName}}.TryParse(str, culture, out var id) ? id : base.ConvertFrom(context, culture, value);
+                         
+                             public override bool CanConvertTo(global::System.ComponentModel.ITypeDescriptorContext? context, Type? destinationType) =>
+                                 destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+                         
+                             public override object? ConvertTo(global::System.ComponentModel.ITypeDescriptorContext? context, global::System.Globalization.CultureInfo? culture, object? value, Type destinationType) =>
+                                destinationType == typeof(string) && value is {{idClassName}} id ? id.ToString() : base.ConvertTo(context, culture, value, destinationType);
                          }
                          """;
 

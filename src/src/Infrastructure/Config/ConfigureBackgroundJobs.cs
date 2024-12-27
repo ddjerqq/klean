@@ -15,11 +15,19 @@ public sealed class ConfigureBackgroundJobs : ConfigurationBase
             var processOutboxMessageIntervalSeconds = int.Parse("OUTBOX__INTERVAL".FromEnv("10"));
 
             config
-                .AddJob<ProcessOutboxMessagesBackgroundJob>(ProcessOutboxMessagesBackgroundJob.Key, job => { job.StoreDurably(); })
+                .AddJob<ProcessOutboxMessagesBackgroundJob>(ProcessOutboxMessagesBackgroundJob.Key, job => job.StoreDurably())
                 .AddTrigger(trigger => trigger
                     .ForJob(ProcessOutboxMessagesBackgroundJob.Key)
                     .WithSimpleSchedule(schedule => schedule
                         .WithInterval(TimeSpan.FromSeconds(processOutboxMessageIntervalSeconds))
+                        .RepeatForever()));
+
+            config
+                .AddJob<DeleteDeletedUsersBackgroundJob>(DeleteDeletedUsersBackgroundJob.Key, job => job.StoreDurably())
+                .AddTrigger(trigger => trigger
+                    .ForJob(DeleteDeletedUsersBackgroundJob.Key)
+                    .WithSimpleSchedule(schedule => schedule
+                        .WithInterval(TimeSpan.FromHours(1))
                         .RepeatForever()));
 
             config.UseInMemoryStore();

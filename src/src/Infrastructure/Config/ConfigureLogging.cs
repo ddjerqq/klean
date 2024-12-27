@@ -7,6 +7,7 @@ using Generated;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Templates.Themes;
 using SerilogTracing.Expressions;
@@ -28,17 +29,11 @@ public sealed class ConfigureLogging : ConfigurationBase
 
 public static class LoggingExt
 {
-    private const string OutputFormat =
-        "[{Timestamp:dd-MM-yyyy HH:mm:ss.fff} {Level:u3}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}";
-
     public static LoggerConfiguration Configure(this LoggerConfiguration config)
     {
-        Serilog.Debugging.SelfLog.Enable(Console.Error);
-
-        var logPath = "LOG__PATH".FromEnvRequired();
+        SelfLog.Enable(Console.Error);
 
         var seqHost = "SEQ__HOST".FromEnvRequired();
-        var seqPort = "SEQ__PORT".FromEnvRequired();
         var seqApiKey = "SEQ__API_KEY".FromEnvRequired();
 
         return config
@@ -56,13 +51,7 @@ public static class LoggingExt
             .Enrich.WithAssemblyName()
             .WriteTo.Debug()
             .WriteTo.Console(Formatters.CreateConsoleTextFormatter(TemplateTheme.Code))
-            // .WriteTo.Seq($"http://{seqHost}:{seqPort}", apiKey: seqApiKey)
-            .WriteTo.File(logPath,
-                outputTemplate: OutputFormat,
-                flushToDiskInterval: TimeSpan.FromSeconds(10),
-                fileSizeLimitBytes: 10_000_000,
-                rollOnFileSizeLimit: true,
-                rollingInterval: RollingInterval.Day);
+            .WriteTo.Seq(seqHost, apiKey: seqApiKey);
     }
 
     public static void UseConfiguredSerilogRequestLogging(this IApplicationBuilder app)

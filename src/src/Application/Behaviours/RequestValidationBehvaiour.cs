@@ -32,7 +32,7 @@ internal sealed class RequestValidationBehaviour<TRequest, TResponse>(IServicePr
                 .Where(f => f is not null)
                 .ToList();
 
-            Log.Logger.Warning("Validation failed for request {@Request} with errors {@Errors}", request, failures);
+            Log.Logger.Warning("Validation failed for request {RequestName} {Request} with errors {Errors}", request.GetType().Name, request, string.Join(';', failures));
 
             throw new ValidationException(failures);
         }

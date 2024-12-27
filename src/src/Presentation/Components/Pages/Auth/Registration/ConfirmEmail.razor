@@ -1,0 +1,26 @@
+﻿@page "/auth/confirm_email"
+@using Application.Cqrs.Users.Commands
+
+<PageTitle>Confirm email</PageTitle>
+<AuthHeader Title="Your account has been confirmed" Description="Welcome to the best app ever!"/>
+<Button Href="auth/login" Class="w-full">
+    Login
+</Button>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string? Token { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Token))
+        {
+            NavigationManager.NavigateTo("/auth/invalid_token");
+            return;
+        }
+
+        var user = await Mediator.Send(new ConfirmEmailCommand(Token));
+        if (user is null)
+            Toast.ShowError("Failed to validate token");
+    }
+}

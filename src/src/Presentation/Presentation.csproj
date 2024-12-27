@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -14,19 +14,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="dotenv.net" Version="3.2.0"/>
-        <PackageReference Include="TailwindMerge.NET" Version="0.3.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8"/>
-        <PackageReference Include="Blazicons.Lucide" Version="1.0.4"/>
+        <PackageReference Include="dotenv.net" Version="3.2.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-        <PackageReference Include="SerilogTracing.Instrumentation.AspNetCore" Version="2.2.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.0.0"/>
-        <PackageReference Include="ZymLabs.NSwag.FluentValidation.AspNetCore" Version="0.7.1"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.8"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+        <PackageReference Include="SerilogTracing.Instrumentation.AspNetCore" Version="2.3.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.0"/>
+        <PackageReference Include="Blazicons.Lucide" Version="1.1.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0" />
+        <PackageReference Include="TailwindMerge.NET" Version="0.3.0"/>
+        <PackageReference Include="Blazored.Modal" Version="7.3.1"/>
+        <PackageReference Include="Blazored.Toast" Version="4.2.1"/>
+        <PackageReference Include="Blazored.FluentValidation" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -34,11 +34,33 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Domain\Domain.csproj"/>
-        <ProjectReference Include="..\Application\Application.csproj"/>
-        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
-        <ProjectReference Include="..\Persistence\Persistence.csproj"/>
-        <ProjectReference Include="..\Client\Client.csproj"/>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Shared\ExternalLoginPicker.razor" />
+      <_ContentIncludedByDefault Remove="Components\Shared\ManageLayout.razor" />
+      <_ContentIncludedByDefault Remove="Components\Shared\ManageNavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Components\Shared\ShowRecoveryCodes.razor" />
+      <_ContentIncludedByDefault Remove="Components\Shared\StatusMessage.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\ChangePassword.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\DeletePersonalData.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\Disable2fa.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\Email.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\EnableAuthenticator.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\ExternalLogins.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\GenerateRecoveryCodes.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\Index.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\PersonalData.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\ResetAuthenticator.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\SetPassword.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\TwoFactorAuthentication.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Auth\Manage\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Addresses\AddressDisplay.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Addresses\AddressField.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Addresses\Index.razor" />
+    </ItemGroup>
 </Project>
